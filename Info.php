@@ -45,6 +45,9 @@ class PEAR_Info extends PEAR_Command_Common
         if ($pear_dir != FALSE) {
             $this->config->set('php_dir',$pear_dir);
         }
+        if (defined('PEAR_INFO_PROXY')) {
+        	$this->config->set('http_proxy',PEAR_INFO_PROXY);
+        }
         $this->r = new PEAR_Remote($this->config);
         $this->reg = new PEAR_Registry($this->config->get('php_dir'));
         // get PEARs packageInfo to show version number at the top of the HTML
@@ -118,13 +121,8 @@ class PEAR_Info extends PEAR_Command_Common
     
     function setProxy($proxy) 
     {
-    	if (is_string($proxy)) {
-    		$config = new PEAR_Config();
-    		$config->set('http_proxy',$proxy);
-    		return TRUE;
-    	} else {
-    		return FALSE;
-    	}
+    	define('PEAR_INFO_PROXY',$proxy);
+    	return true;
     }
 
 	/**
