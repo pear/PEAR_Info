@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.9 2003-05-05 14:10:26 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.10 2003-05-05 14:32:14 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -41,7 +41,6 @@
     <deps>
         <dep type="php" rel="ge">4.1.0</dep>
         <dep type="pkg" rel="ge" version="1.0.1">PEAR</dep>
-        <dep type="pkg" rel="ge" version="1.1.0">Mail</dep>
     </deps>
     <changelog>
         <release>
