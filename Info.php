@@ -110,6 +110,9 @@ class PEAR_Info extends PEAR_Command_Common
             echo '<h1 style="font-size: 12px;">The package list could not be fetched from the remote server. Please try again.</h1>';
             return FALSE;
         }
+        if ((PEAR::isError($latest)) || (!is_array($latest))) {
+        	$latest = FALSE;
+        }
         $packages = '';
         foreach ($available as $name => $info) {
             $installed = $this->reg->packageInfo($name);
@@ -166,17 +169,19 @@ class PEAR_Info extends PEAR_Command_Common
                     <a href="http://pear.php.net/' .trim(strtolower($installed['package'])). '">http://pear.php.net/' .trim(strtolower($installed['package'])). '</a>
                 </td>
             </tr>';
+            if ($latest != FALSE) {
                 if (version_compare($latest[$installed['package']]['version'],$installed['version'],'>')) {
-            $packages .= '<tr class="v">
-                <td class="e">
-                    Latest Version
-                </td>
-                <td>
-                    <a href="http://pear.php.net/get/' .trim($installed['package']). '">' .$latest[$installed['package']]['version'] . '</a>
-                    ('. $latest[$installed['package']]['state']. ')
-                </td>
-            </tr>';
+                    $packages .= '<tr class="v">
+                    <td class="e">
+                        Latest Version
+                    </td>
+                    <td>
+                        <a href="http://pear.php.net/get/' .trim($installed['package']). '">' .$latest[$installed['package']]['version'] . '</a>
+                        ('. $latest[$installed['package']]['state']. ')
+                    </td>
+                    </tr>';
                 }
+            }
         $packages .= '          <tr>
                 <td colspan="2" class="v"><a href="#top">Top</a></td>
             </tr>
