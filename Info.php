@@ -136,7 +136,7 @@ class PEAR_Info extends PEAR_Command_Common
     function getPackages() 
     {
         if (!isset($_SESSION['available'])) {
-            $_SESSION['available'] = $this->r->call('package.listAll', $this->list_options);
+            $_SESSION['available'] = @$this->r->call('package.listAll', $this->list_options);
             $_SESSION['latest'] = @$this->r->call('package.listLatestReleases');
         }
         $available = $_SESSION['available'];
