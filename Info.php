@@ -143,6 +143,7 @@ class PEAR_Info
             echo '<h1 style="font-size: 12px;">The package list could not be fetched from the remote server. Please try again.</h1>';
             return FALSE;
         }
+        natcasesort($available);
         if ((PEAR::isError($latest)) || (!is_array($latest))) {
             $latest = FALSE;
         }
