@@ -23,8 +23,8 @@
     </maintainers>
 
     <release>
-        <version>1.0.1</version>
-        <date>2003-04-24</date>
+        <version>1.0.3</version>
+        <date>2003-05-04</date>
         <state>stable</state>
         <notes>
             Moved output of the PEAR_Info to PEAR_Info::show to allow for extensibility for different (CLI at least) output in the future
