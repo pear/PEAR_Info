@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
+    <!-- $Id: package.xml,v 1.6 2003-05-04 18:10:58 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
