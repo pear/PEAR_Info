@@ -39,9 +39,13 @@ class PEAR_Info extends PEAR_Command_Common
      * @access public
      */
      
-    function PEAR_Info($pear_dir = FALSE)
+    function PEAR_Info($pear_dir = FALSE, $pear_user_config = FALSE)
     {
-        $this->config = new PEAR_Config();
+        if($pear_user_config === FALSE) {
+            $this->config = new PEAR_Config();
+        } else {
+           $this->config = new PEAR_Config($pear_user_config);
+        }
         if ($pear_dir != FALSE) {
             $this->config->set('php_dir',$pear_dir);
         }
