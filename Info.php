@@ -100,6 +100,12 @@ class PEAR_Info extends PEAR_Command_Common
         }
         $available = $_SESSION['available'];
         $latest = $_SESSION['latest'];
+        if (PEAR::isError($available)) {
+            return $this->raiseError($available);
+        }
+        if (!is_array($available)) {
+            return $this->raiseError('The package list could not be fetched from the remote server. Please try again. (Debug info: "'.$available.'")');
+        }
         $packages = '';
         foreach ($available as $name => $info) {
             $installed = $this->reg->packageInfo($name);
