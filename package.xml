@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.15 2003-07-12 08:02:03 mj Exp $ -->
+    <!-- $Id: package.xml,v 1.16 2003-12-22 03:05:57 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -24,12 +24,14 @@
     </maintainers>
 
     <release>
-        <version>1.0.6</version>
-        <date>2003-05-11</date>
+        <version>1.5</version>
+        <date>2003-12-22</date>
         <state>stable</state>
         <notes>
-            * Fixed setProxy method, should actually work now
-            * If you don't need to use a proxy, you don't need to upgrade
+            * Twice as Fast!
+            * Now Allows Off-Line Viewing
+            * Now Shows *all* installed packages, whether in PEAR or not
+            * You can now specify a custom PEAR config file.
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
@@ -45,6 +47,15 @@
         <dep type="pkg" rel="ge" version="1.0.1">PEAR</dep>
     </deps>
     <changelog>
+        <release>
+            <version>1.0.6</version>
+            <date>2003-05-11</date>
+            <state>stable</state>
+            <notes>
+                * Fixed setProxy method, should actually work now
+                * If you don't need to use a proxy, you don't need to upgrade
+            </notes>
+        </release>
         <release>
             <version>1.0.4</version>
             <date>2003-05-10</date>
