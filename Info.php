@@ -192,7 +192,7 @@ class PEAR_Info extends PEAR_Command_Common
             }
         }
         ?>
-        <a name="top"></a>
+        <h2><a name="top">PEAR Packages</a></h2>
         <table style="padding: 3px;">
             <tr>
                 <td class="e">
@@ -221,7 +221,7 @@ class PEAR_Info extends PEAR_Command_Common
     	$keys = $this->config->getKeys();
         sort($keys);
     	?>
-    	<h1>PEAR Config</h1>
+    	<h2>PEAR Config</h2>
     	<table>
     	<?php
     	foreach ($keys as $key) {
