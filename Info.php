@@ -31,14 +31,14 @@ require_once 'PEAR/Registry.php';
 
 class PEAR_Info extends PEAR_Command_Common
 {
-    
+
     /**
      * @desc PEAR_Info Constructor
      * @param pear_dir string[optional]
      * @return bool
      * @access public
      */
-     
+
     function PEAR_Info($pear_dir = FALSE, $pear_user_config = FALSE)
     {
         if($pear_user_config === FALSE) {
@@ -115,15 +115,15 @@ class PEAR_Info extends PEAR_Command_Common
         this will return the actual status of whether or not creating the PEAR_Info object worked */
         return true;
     }
-    
+
     /**
      * @desc Set PEAR http_proxy for remote calls
      * @param proxy string
      * @return bool
      * @access public
      */
-    
-    function setProxy($proxy) 
+
+    function setProxy($proxy)
     {
         define('PEAR_INFO_PROXY',$proxy);
         return true;
@@ -134,8 +134,8 @@ class PEAR_Info extends PEAR_Command_Common
      * @return void
      * @access private
      */
-    
-    function getPackages() 
+
+    function getPackages()
     {
         if (!isset($_SESSION['available'])) {
             $_SESSION['available'] = @$this->r->call('package.listAll', $this->list_options);
@@ -182,7 +182,7 @@ class PEAR_Info extends PEAR_Command_Common
             </tr>
             <tr class="v">
                 <td class="e">
-                    Version 
+                    Version
                 </td>
                 <td>
                     ' .trim($installed['version']). '
@@ -244,7 +244,7 @@ class PEAR_Info extends PEAR_Command_Common
         <?php
         foreach ($this->index as $i) {
             ?>
-            | <a href="#<?php echo $i; ?>"><?php echo strtoupper($i); ?></a> 
+            | <a href="#<?php echo $i; ?>"><?php echo strtoupper($i); ?></a>
             <?php
         }
         ?>|
@@ -255,13 +255,13 @@ class PEAR_Info extends PEAR_Command_Common
         <?php
         echo $packages;
     }
-    
+
     /**
      * @desc Retrieves and formats the PEAR Config data
      * @return void
      * @access private
      */
-    
+
     function getConfig()
     {
         $keys = $this->config->getKeys();
@@ -290,8 +290,8 @@ class PEAR_Info extends PEAR_Command_Common
      * @return void
      * @access private
      */
-    
-    function getCredits() 
+
+    function getCredits()
     {
         ?>
         <h1>PEAR Credits</h1>
@@ -303,7 +303,7 @@ class PEAR_Info extends PEAR_Command_Common
             </tr>
             <tr class="v">
                 <td>
-                    <a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>, 
+                    <a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>,
                     <a href="http://pear.php.net/account-info.php?handle=cox">Thomas V.V.Cox</a>,
                     <a href="http://pear.php.net/account-info.php?handle=mj">Martin Jansen</a>,
                     <a href="http://pear.php.net/account-info.php?handle=cmv">Colin Viebrock</a>,
@@ -333,7 +333,7 @@ class PEAR_Info extends PEAR_Command_Common
         }
         $available = $_SESSION['available'];
         $latest = $_SESSION['latest'];
-        
+
         if (PEAR::isError($available)) {
             unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">An Error occured fetching the credits from the remote server. Please try again.</h1>';
@@ -353,7 +353,7 @@ class PEAR_Info extends PEAR_Command_Common
                 <tr>
                     <td class="e">
                         <a href="http://pear.php.net/<?php echo trim(strtolower($installed['package'])); ?>"><?php echo trim($installed['package']); ?></a>
-                        
+
                     </td>
                     <td class="v">
                         <?php
@@ -376,7 +376,7 @@ class PEAR_Info extends PEAR_Command_Common
      * @return void
      * @access public
      */
-    
+
     function pearImage() {
         $pear_image = 'R0lGODlhaAAyAMT/AMDAwP3+/TWaAvD47Pj89vz++zebBDmcBj6fDEekFluvKmu3PvX68ujz4XvBS8LgrNXqxeHw1ZnPaa/dgvv9+cLqj8LmltD2msnuls';
         $pear_image .= '3xmszwmf7+/f///wAAAAAAAAAAACH5BAEAAAAALAAAAABoADIAQAX/ICCOZGmeaKqubOtWWjwJphLLgH1XUu//C1Jisfj9YLEKQnSY3GaixWQqQTkYHM4';
@@ -394,7 +394,7 @@ class PEAR_Info extends PEAR_Command_Common
         header('content-type: image/gif');
         echo base64_decode($pear_image);
     }
-    
+
     /**
      * @desc Shows PEAR_Info output
      * @return void
