@@ -35,7 +35,9 @@
             </dir>
         </filelist>
     </release>
-
+    <deps>
+        <dep type="php" rel="ge">4.1.0</dep>
+    </deps>
     <changelog>
         <release>
             <version>1.0</version>
