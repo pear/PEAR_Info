@@ -18,8 +18,6 @@
 //
 // $Id$
 
-session_start();
-
 require_once 'PEAR/Command/Common.php';
 require_once 'PEAR/Common.php';
 require_once 'PEAR/Remote.php';
@@ -137,19 +135,13 @@ class PEAR_Info extends PEAR_Command_Common
 
     function getPackages()
     {
-        if (!isset($_SESSION['available'])) {
-            $_SESSION['available'] = @$this->r->call('package.listAll', $this->list_options);
-            $_SESSION['latest'] = @$this->r->call('package.listLatestReleases');
-        }
-        $available = $_SESSION['available'];
-        $latest = $_SESSION['latest'];
+        $latest = @$this->r->call('package.listLatestReleases');
+        $available = $this->reg->listPackages();
         if (PEAR::isError($available)) {
-            unset($_SESSION['available']);
-            echo '<h1 style="font-size: 12px;">An Error occured fetching the package list from the remote server. Please try again.</h1>';
+            echo '<h1 style="font-size: 12px;">An Error occured fetching the package list. Please try again.</h1>';
             return FALSE;
         }
         if (!is_array($available)) {
-            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">The package list could not be fetched from the remote server. Please try again.</h1>';
             return FALSE;
         }
@@ -157,7 +149,7 @@ class PEAR_Info extends PEAR_Command_Common
             $latest = FALSE;
         }
         $packages = '';
-        foreach ($available as $name => $info) {
+        foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
                 if (strlen($installed['package']) > 1) {
                 if (!isset($old_index)) {
@@ -327,26 +319,19 @@ class PEAR_Info extends PEAR_Command_Common
             </tr>
         </table>
         <?php
-        if (!isset($_SESSION['available'])) {
-            $_SESSION['available'] = @$this->r->call('package.listAll', $this->list_options);
-            $_SESSION['latest'] = @$this->r->call('package.listLatestReleases');
-        }
-        $available = $_SESSION['available'];
-        $latest = $_SESSION['latest'];
+        $available = $this->reg->listPackages();
 
         if (PEAR::isError($available)) {
-            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">An Error occured fetching the credits from the remote server. Please try again.</h1>';
             return FALSE;
         }
         if (!is_array($available)) {
-            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">The credits could not be fetched from the remote server. Please try again.</h1>';
             return FALSE;
         }
         echo '<br /><table border="0" cellpadding="3" width="600">';
         echo '<tr class="h"><td>Package</td><td>Maintainers</td></tr>';
-        foreach ($available as $name => $info) {
+        foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
             if (strlen($installed['package']) > 1) {
                 ?>
