@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.11 2003-05-10 00:20:09 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.12 2003-05-10 01:08:05 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -24,15 +24,14 @@
     </maintainers>
 
     <release>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <date>2003-05-10</date>
         <state>stable</state>
         <notes>
-            * Added PEAR Configuration section to the output. (sensitive info is hidden)
-            * Added example script
-            * Added better error checking for remote information gathering
-            * Change showCredits to getCredits for future proofing
-            * Added apidocs (ZDE format)
+            * Added setProxy method (requested)
+            * htmlentities applied to names in 
+            credits to deal with stigs 'ae' char
+            * Updated example to reflect addition of setProxy
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
@@ -48,6 +47,18 @@
         <dep type="pkg" rel="ge" version="1.0.1">PEAR</dep>
     </deps>
     <changelog>
+        <release>
+            <version>1.0.4</version>
+            <date>2003-05-10</date>
+            <state>stable</state>
+            <notes>
+                * Added PEAR Configuration section to the output. (sensitive info is hidden)
+                * Added example script
+                * Added better error checking for remote information gathering
+                * Change showCredits to getCredits for future proofing
+                * Added apidocs (ZDE format)
+            </notes>
+        </release>
         <release>
             <version>1.0.3</version>
             <date>2003-05-04</date>
