@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.13 2003-05-11 11:06:52 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.14 2003-05-11 11:20:26 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -25,7 +25,7 @@
 
     <release>
         <version>1.0.6</version>
-        <date>2003-05-10</date>
+        <date>2003-05-11</date>
         <state>stable</state>
         <notes>
             * Fixed setProxy method, should actually work now
