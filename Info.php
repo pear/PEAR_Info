@@ -31,14 +31,14 @@ require_once 'PEAR/Registry.php';
 
 class PEAR_Info extends PEAR_Command_Common
 {
-	
-	/**
-	 * @desc PEAR_Info Constructor
-	 * @param pear_dir string[optional]
-	 * @return bool
-	 * @access public
-	 */
-	 
+    
+    /**
+     * @desc PEAR_Info Constructor
+     * @param pear_dir string[optional]
+     * @return bool
+     * @access public
+     */
+     
     function PEAR_Info($pear_dir = FALSE)
     {
         $this->config = new PEAR_Config();
@@ -46,7 +46,7 @@ class PEAR_Info extends PEAR_Command_Common
             $this->config->set('php_dir',$pear_dir);
         }
         if (defined('PEAR_INFO_PROXY')) {
-        	$this->config->set('http_proxy',PEAR_INFO_PROXY);
+            $this->config->set('http_proxy',PEAR_INFO_PROXY);
         }
         $this->r = new PEAR_Remote($this->config);
         $this->reg = new PEAR_Registry($this->config->get('php_dir'));
@@ -104,12 +104,12 @@ class PEAR_Info extends PEAR_Command_Common
         ?>
     </body>
 </html>
-    <?php
-    $this->info = ob_get_contents();
-    ob_end_clean();
-    /* With later versions of this where we properly implement the CLI such and stuff
-    this will return the actual status of whether or not creating the PEAR_Info object worked */
-    return true;
+        <?php
+        $this->info = ob_get_contents();
+        ob_end_clean();
+        /* With later versions of this where we properly implement the CLI such and stuff
+        this will return the actual status of whether or not creating the PEAR_Info object worked */
+        return true;
     }
     
     /**
@@ -121,15 +121,15 @@ class PEAR_Info extends PEAR_Command_Common
     
     function setProxy($proxy) 
     {
-    	define('PEAR_INFO_PROXY',$proxy);
-    	return true;
+        define('PEAR_INFO_PROXY',$proxy);
+        return true;
     }
 
-	/**
-	 * @desc Retrieve and format PEAR Packages info
-	 * @return void
-	 * @access private
-	 */
+    /**
+     * @desc Retrieve and format PEAR Packages info
+     * @return void
+     * @access private
+     */
     
     function getPackages() 
     {
@@ -140,17 +140,17 @@ class PEAR_Info extends PEAR_Command_Common
         $available = $_SESSION['available'];
         $latest = $_SESSION['latest'];
         if (PEAR::isError($available)) {
-        	unset($_SESSION['available']);
+            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">An Error occured fetching the package list from the remote server. Please try again.</h1>';
             return FALSE;
         }
         if (!is_array($available)) {
-        	unset($_SESSION['available']);
+            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">The package list could not be fetched from the remote server. Please try again.</h1>';
             return FALSE;
         }
         if ((PEAR::isError($latest)) || (!is_array($latest))) {
-        	$latest = FALSE;
+            $latest = FALSE;
         }
         $packages = '';
         foreach ($available as $name => $info) {
@@ -260,25 +260,25 @@ class PEAR_Info extends PEAR_Command_Common
     
     function getConfig()
     {
-    	$keys = $this->config->getKeys();
+        $keys = $this->config->getKeys();
         sort($keys);
-    	?>
-    	<h2>PEAR Config</h2>
-    	<table>
-    	<?php
-    	foreach ($keys as $key) {
-    		if (($key != 'password') && ($key != 'username') && ($key != 'sig_keyid') && ($key != 'http_proxy')) {
-    			?>
-    			<tr class="v">
-    				<td class="e"><?php echo $key; ?></td>
-    				<td><?php echo $this->config->get($key); ?></td>
-    			</tr>
-    			<?php
-    		}
-    	}
-    	?>
-    	</table>
-    	<?php
+        ?>
+        <h2>PEAR Config</h2>
+        <table>
+        <?php
+        foreach ($keys as $key) {
+            if (($key != 'password') && ($key != 'username') && ($key != 'sig_keyid') && ($key != 'http_proxy')) {
+                ?>
+                <tr class="v">
+                    <td class="e"><?php echo $key; ?></td>
+                    <td><?php echo $this->config->get($key); ?></td>
+                </tr>
+                <?php
+            }
+        }
+        ?>
+        </table>
+        <?php
     }
 
     /**
@@ -331,12 +331,12 @@ class PEAR_Info extends PEAR_Command_Common
         $latest = $_SESSION['latest'];
         
         if (PEAR::isError($available)) {
-        	unset($_SESSION['available']);
+            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">An Error occured fetching the credits from the remote server. Please try again.</h1>';
             return FALSE;
         }
         if (!is_array($available)) {
-        	unset($_SESSION['available']);
+            unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">The credits could not be fetched from the remote server. Please try again.</h1>';
             return FALSE;
         }
