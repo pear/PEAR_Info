@@ -108,6 +108,24 @@ class PEAR_Info extends PEAR_Command_Common
     this will return the actual status of whether or not creating the PEAR_Info object worked */
     return true;
     }
+    
+    /**
+     * @desc Set PEAR http_proxy for remote calls
+     * @param proxy string
+     * @return bool
+     * @access public
+     */
+    
+    function setProxy($proxy) 
+    {
+    	if (is_string($proxy)) {
+    		$config = new PEAR_Config();
+    		$config->set('http_proxy',$proxy);
+    		return TRUE;
+    	} else {
+    		return FALSE;
+    	}
+    }
 
 	/**
 	 * @desc Retrieve and format PEAR Packages info
@@ -339,7 +357,7 @@ class PEAR_Info extends PEAR_Command_Common
                         <?php
                         $maintainers = array();
                         foreach ($installed['maintainers'] as $i) {
-                            $maintainers[] = '<a href="http://pear.php.net/account-info.php?handle=' .$i['handle']. '">' .$i['name']. '</a>' .' (' .$i['role']. ')';
+                            $maintainers[] = '<a href="http://pear.php.net/account-info.php?handle=' .$i['handle']. '">' .htmlentities($i['name']). '</a>' .' (' .$i['role']. ')';
                         }
                         echo implode(', ',$maintainers);
                         ?>
