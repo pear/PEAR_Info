@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.10 2003-05-05 14:32:14 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.11 2003-05-10 00:20:09 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -25,16 +25,21 @@
 
     <release>
         <version>1.0.4</version>
-        <date>2003-05-05</date>
+        <date>2003-05-10</date>
         <state>stable</state>
         <notes>
-            * Added PEAR Configuration section to the output. 
+            * Added PEAR Configuration section to the output. (sensitive info is hidden)
             * Added example script
+            * Added better error checking for remote information gathering
             * Change showCredits to getCredits for future proofing
+            * Added apidocs (ZDE format)
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
                 <file role="php">Info.php</file>
+            </dir>
+            <dir name="tests">
+                <file role="php">pear_info.php</file>
             </dir>
         </filelist>
     </release>
