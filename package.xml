@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.19 2005-01-03 17:40:41 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.20 2005-02-20 02:23:40 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -28,8 +28,7 @@
         <date>2005-01-03</date>
         <state>stable</state>
         <notes>
-            Added a static method, PEAR_Info::packageInstalled(). Allows
-			you to check if a package is installed, and at least of X.Y.Z version.
+            Added a static method, PEAR_Info::packageInstalled(). Allows you to check if a package is installed, and at least of X.Y.Z version.
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
