@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.8 2003-05-05 00:41:55 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.9 2003-05-05 14:10:26 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -24,11 +24,13 @@
     </maintainers>
 
     <release>
-        <version>1.0.3</version>
-        <date>2003-05-04</date>
+        <version>1.0.4</version>
+        <date>2003-05-05</date>
         <state>stable</state>
         <notes>
-            Added remote list error checking and included the PEAR logo so that it's not retrieved from pear.php.net
+            * Added PEAR Configuration section to the output. 
+            * Added example script
+            * Change showCredits to getCredits for future proofing
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
@@ -39,8 +41,15 @@
     <deps>
         <dep type="php" rel="ge">4.1.0</dep>
         <dep type="pkg" rel="ge" version="1.0.1">PEAR</dep>
+        <dep type="pkg" rel="ge" version="1.1.0">Mail</dep>
     </deps>
     <changelog>
+        <release>
+            <version>1.0.3</version>
+            <date>2003-05-04</date>
+            <state>stable</state>
+            <notes>Added remote list error checking and included the PEAR logo so that it's not retrieved from pear.php.net</notes>
+        </release>
         <release>
             <version>1.0.2</version>
             <date>2003-04-25</date>
