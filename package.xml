@@ -37,6 +37,7 @@
     </release>
     <deps>
         <dep type="php" rel="ge">4.1.0</dep>
+        <dep type="pkg" rel="ge" version="1.0.1">PEAR</dep>
     </deps>
     <changelog>
         <release>
