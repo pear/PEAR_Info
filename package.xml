@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.7 2003-05-04 18:37:37 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.8 2003-05-05 00:41:55 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
         This package generates a comprehensive information page for your current PEAR install.
-        The format for the page is similar to that for phpinfo() except using PEAR colors.
-        Has complete PEAR Credits (based on the packages you have installed).
-        Will show if there is a newer version than the one presently installed (and what it's state is)
-        Each package has an anchor in the form pkg_PackageName - where PackageName is a case-sensitive PEAR package name
+        * The format for the page is similar to that for phpinfo() except using PEAR colors.
+        * Has complete PEAR Credits (based on the packages you have installed).
+        * Will show if there is a newer version than the one presently installed (and what its state is)
+        * Each package has an anchor in the form pkg_PackageName - where PackageName is a case-sensitive PEAR package name
     </description>
     
     <license>PHP License</license>
@@ -28,7 +28,7 @@
         <date>2003-05-04</date>
         <state>stable</state>
         <notes>
-            Added remote list error checking and included the PEAR logo so that its not retrieved from pear.php.net
+            Added remote list error checking and included the PEAR logo so that it's not retrieved from pear.php.net
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
