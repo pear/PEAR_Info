@@ -54,7 +54,7 @@ class PEAR_Info extends PEAR_Command_Common
             a:link {color: #006600; text-decoration: none;}
             a:visited { color: #003300; text-decoration: none;}
             a:hover {text-decoration: underline;}
-            table {border-collapse: collapse; width: 600px; max-width: 600px; margin-left: auto; margin-right: auto;}
+            table {border-collapse: collapse; width: 600px; max-width: 600px; margin-left: auto; margin-right: auto; border: 0px; padding: 0px;}
             td, th { border: 1px solid #000000; font-size: 75%; vertical-align: baseline;}
             h1 {font-size: 150%; text-align: center;}
             h2 {font-size: 125%; text-align: center;}
@@ -68,7 +68,7 @@ class PEAR_Info extends PEAR_Command_Common
         </style>
     </head>
     <body>
-        <table border="0" cellpadding="3" width="600">
+        <table>
             <tr class="h">
                 <td>
                     <a href="http://pear.php.net/"><img src="<?php echo $_SERVER['PHP_SELF'];?>?pear_image=true" alt="PEAR Logo" /></a><h1 class="p">PEAR <?php echo $pear['version']; ?></h1>
@@ -79,9 +79,11 @@ class PEAR_Info extends PEAR_Command_Common
             if (!isset($_GET['credits'])) {
                 echo '<h1><a href="' .$_SERVER['PHP_SELF']. '?credits=true">PEAR Credits</a></h1>';
                 // Get packageInfo and Show the HTML for the Packages
+                $this->getConfig();
                 $this->getPackages();
+
             } else {
-                $this->showCredits();
+                $this->getCredits();
             }
         ?>
     </body>
@@ -128,7 +130,7 @@ class PEAR_Info extends PEAR_Command_Common
                 }
                 $packages .= '
         <h2><a name="pkg_' .trim($installed['package']). '">' .trim($installed['package']). '</a></h2>
-        <table border="0" cellpadding="3" width="600">
+        <table>
             <tr class="v">
                 <td class="e">
                     Summary
@@ -190,7 +192,7 @@ class PEAR_Info extends PEAR_Command_Common
         }
         ?>
         <a name="top"></a>
-        <table border="0" cellpadding="3" width="600">
+        <table style="padding: 3px;">
             <tr>
                 <td class="e">
                     Index
@@ -212,12 +214,35 @@ class PEAR_Info extends PEAR_Command_Common
         <?php
         echo $packages;
     }
+    
+    function getConfig()
+    {
+    	$keys = $this->config->getKeys();
+        sort($keys);
+    	?>
+    	<h1>PEAR Config</h1>
+    	<table>
+    	<?php
+    	foreach ($keys as $key) {
+    		if (($key != 'password') && ($key != 'username')) {
+    			?>
+    			<tr class="v">
+    				<td class="e"><?php echo $key; ?></td>
+    				<td><?php echo $this->config->get($key); ?></td>
+    			</tr>
+    			<?php
+    		}
+    	}
+    	?>
+    	</table>
+    	<?php
+    }
 
-    function showCredits() 
+    function getCredits() 
     {
         ?>
         <h1>PEAR Credits</h1>
-        <table cellpadding="3" width="600">
+        <table>
             <tr class="h">
                 <td>
                     PEAR Website Team
@@ -234,7 +259,7 @@ class PEAR_Info extends PEAR_Command_Common
             </tr>
         </table>
         <br />
-        <table border="0" cellpadding="3" width="600">
+        <table>
             <tr class="h">
                 <td>
                     PEAR documentation team
@@ -249,8 +274,22 @@ class PEAR_Info extends PEAR_Command_Common
             </tr>
         </table>
         <?php
-        $available = @$this->r->call('package.listAll', $this->list_options);
-        $latest = @$this->r->call('package.listLatestReleases');
+        if (isset($_SESSION['available'])) {
+        	$available = $_SESSION['available'];
+        	$latest = $_SESSION['latest'];
+        } else {
+        	$available = FALSE;
+        }
+        if (PEAR::isError($available)) {
+        	unset($_SESSION['available']);
+            echo '<h1 style="font-size: 12px;">An Error occured fetching the credits from the remote server. Please try again.</h1>';
+            return FALSE;
+        }
+        if (!is_array($available)) {
+        	unset($_SESSION['available']);
+            echo '<h1 style="font-size: 12px;">The credits could not be fetched from the remote server. Please try again.</h1>';
+            return FALSE;
+        }
         echo '<br /><table border="0" cellpadding="3" width="600">';
         echo '<tr class="h"><td>Package</td><td>Maintainers</td></tr>';
         foreach ($available as $name => $info) {
