@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.18 2004-01-15 19:24:12 pajoye Exp $ -->
+    <!-- $Id: package.xml,v 1.19 2005-01-03 17:40:41 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -24,12 +24,12 @@
     </maintainers>
 
     <release>
-        <version>1.5.1</version>
-        <date>2003-12-23</date>
+        <version>1.6.0</version>
+        <date>2005-01-03</date>
         <state>stable</state>
         <notes>
-            * Fixed Index
-            * Fixed Alphabetic Sorting
+            Added a static method, PEAR_Info::packageInstalled(). Allows
+			you to check if a package is installed, and at least of X.Y.Z version.
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
@@ -42,9 +42,34 @@
     </release>
     <deps>
         <dep type="php" rel="ge" version="4.1.0" />
-        <dep type="pkg" rel="ge" version="1.0.1">PEAR</dep>
+        <dep type="pkg" rel="ge" version="1.3.2">PEAR</dep>
     </deps>
     <changelog>
+	    <release>
+			<version>1.5.2</version>
+			<date>2003-12-31</date>
+			<state>stable</state>
+			<notes>
+				* Fixed Notice when checking for latest version against non-PEAR packages
+			</notes>
+			<filelist>
+				<dir name="/" baseinstalldir="PEAR">
+					<file role="php">Info.php</file>
+				</dir>
+				<dir name="tests">
+					<file role="php">pear_info.php</file>
+				</dir>
+			</filelist>
+		</release>
+    	<release>
+    	    <version>1.5.1</version>
+	        <date>2003-12-23</date>
+	        <state>stable</state>
+	        <notes>
+	            * Fixed Index
+	            * Fixed Alphabetic Sorting
+	        </notes>
+	    </release>
         <release>
             <version>1.5.1</version>
             <date>2003-12-22</date>
