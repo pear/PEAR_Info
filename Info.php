@@ -80,6 +80,7 @@ class PEAR_Info extends PEAR_Command_Common
                 echo '<h1><a href="' .$_SERVER['PHP_SELF']. '?credits=true">PEAR Credits</a></h1>';
                 // Get packageInfo and Show the HTML for the Packages
                 $this->getConfig();
+                echo '<br />';
                 $this->getPackages();
 
             } else {
