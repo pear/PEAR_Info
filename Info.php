@@ -27,7 +27,7 @@ require_once 'PEAR/Registry.php';
  * @desc PEAR_Info generate phpinfo() style PEAR information
  */
 
-class PEAR_Info extends PEAR_Command_Common
+class PEAR_Info
 {
 
     /**
