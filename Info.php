@@ -18,8 +18,6 @@
 //
 // $Id$
 
-require_once 'PEAR/Command/Common.php';
-require_once 'PEAR/Common.php';
 require_once 'PEAR/Remote.php';
 require_once 'PEAR/Registry.php';
 
