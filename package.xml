@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.12 2003-05-10 01:08:05 davey Exp $ -->
+    <!-- $Id: package.xml,v 1.13 2003-05-11 11:06:52 davey Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -24,14 +24,12 @@
     </maintainers>
 
     <release>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
         <date>2003-05-10</date>
         <state>stable</state>
         <notes>
-            * Added setProxy method (requested)
-            * htmlentities applied to names in 
-            credits to deal with stigs 'ae' char
-            * Updated example to reflect addition of setProxy
+            * Fixed setProxy method, should actually work now
+            * If you don't need to use a proxy, you don't need to upgrade
         </notes>
         <filelist>
             <dir name="/" baseinstalldir="PEAR">
