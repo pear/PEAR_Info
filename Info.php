@@ -25,8 +25,20 @@ require_once 'PEAR/Common.php';
 require_once 'PEAR/Remote.php';
 require_once 'PEAR/Registry.php';
 
+/**
+ * @desc PEAR_Info generate phpinfo() style PEAR information
+ */
+
 class PEAR_Info extends PEAR_Command_Common
 {
+	
+	/**
+	 * @desc PEAR_Info Constructor
+	 * @param pear_dir string[optional]
+	 * @return bool
+	 * @access public
+	 */
+	 
     function PEAR_Info($pear_dir = FALSE)
     {
         $this->config = new PEAR_Config();
@@ -92,13 +104,21 @@ class PEAR_Info extends PEAR_Command_Common
     <?php
     $this->info = ob_get_contents();
     ob_end_clean();
+    /* With later versions of this where we properly implement the CLI such and stuff
+    this will return the actual status of whether or not creating the PEAR_Info object worked */
+    return true;
     }
 
-
+	/**
+	 * @desc Retrieve and format PEAR Packages info
+	 * @return void
+	 * @access private
+	 */
+    
     function getPackages() 
     {
         if (!isset($_SESSION['available'])) {
-            $_SESSION['available'] = @$this->r->call('package.listAll', $this->list_options);
+            $_SESSION['available'] = $this->r->call('package.listAll', $this->list_options);
             $_SESSION['latest'] = @$this->r->call('package.listLatestReleases');
         }
         $available = $_SESSION['available'];
@@ -216,6 +236,12 @@ class PEAR_Info extends PEAR_Command_Common
         echo $packages;
     }
     
+    /**
+     * @desc Retrieves and formats the PEAR Config data
+     * @return void
+     * @access private
+     */
+    
     function getConfig()
     {
     	$keys = $this->config->getKeys();
@@ -225,7 +251,7 @@ class PEAR_Info extends PEAR_Command_Common
     	<table>
     	<?php
     	foreach ($keys as $key) {
-    		if (($key != 'password') && ($key != 'username')) {
+    		if (($key != 'password') && ($key != 'username') && ($key != 'sig_keyid') && ($key != 'http_proxy')) {
     			?>
     			<tr class="v">
     				<td class="e"><?php echo $key; ?></td>
@@ -239,6 +265,12 @@ class PEAR_Info extends PEAR_Command_Common
     	<?php
     }
 
+    /**
+     * @desc Retrieves and formats the PEAR Credits
+     * @return void
+     * @access private
+     */
+    
     function getCredits() 
     {
         ?>
@@ -275,12 +307,13 @@ class PEAR_Info extends PEAR_Command_Common
             </tr>
         </table>
         <?php
-        if (isset($_SESSION['available'])) {
-        	$available = $_SESSION['available'];
-        	$latest = $_SESSION['latest'];
-        } else {
-        	$available = FALSE;
+        if (!isset($_SESSION['available'])) {
+            $_SESSION['available'] = @$this->r->call('package.listAll', $this->list_options);
+            $_SESSION['latest'] = @$this->r->call('package.listLatestReleases');
         }
+        $available = $_SESSION['available'];
+        $latest = $_SESSION['latest'];
+        
         if (PEAR::isError($available)) {
         	unset($_SESSION['available']);
             echo '<h1 style="font-size: 12px;">An Error occured fetching the credits from the remote server. Please try again.</h1>';
@@ -318,6 +351,12 @@ class PEAR_Info extends PEAR_Command_Common
         echo '</table>';
     }
 
+    /**
+     * @desc outputs the PEAR logo
+     * @return void
+     * @access public
+     */
+    
     function pearImage() {
         $pear_image = 'R0lGODlhaAAyAMT/AMDAwP3+/TWaAvD47Pj89vz++zebBDmcBj6fDEekFluvKmu3PvX68ujz4XvBS8LgrNXqxeHw1ZnPaa/dgvv9+cLqj8LmltD2msnuls';
         $pear_image .= '3xmszwmf7+/f///wAAAAAAAAAAACH5BAEAAAAALAAAAABoADIAQAX/ICCOZGmeaKqubOtWWjwJphLLgH1XUu//C1Jisfj9YLEKQnSY3GaixWQqQTkYHM4';
@@ -335,6 +374,12 @@ class PEAR_Info extends PEAR_Command_Common
         header('content-type: image/gif');
         echo base64_decode($pear_image);
     }
+    
+    /**
+     * @desc Shows PEAR_Info output
+     * @return void
+     * @access public
+     */
 
     function show() {
         echo $this->info;
