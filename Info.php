@@ -86,13 +86,13 @@ class PEAR_Info
         <table>
             <tr class="h">
                 <td>
-                    <a href="http://pear.php.net/"><img src="<?php echo $_SERVER['PHP_SELF'];?>?pear_image=true" alt="PEAR Logo" /></a><h1 class="p">PEAR <?php echo $pear['version']; ?></h1>
+                    <a href="http://pear.php.net/"><img src="<?php echo htmlentities($_SERVER['PHP_SELF']);?>?pear_image=true" alt="PEAR Logo" /></a><h1 class="p">PEAR <?php echo $pear['version']; ?></h1>
                 </td>
             </tr>
         </table>
     <?php
             if (!isset($_GET['credits'])) {
-                echo '<h1><a href="' .$_SERVER['PHP_SELF']. '?credits=true">PEAR Credits</a></h1>';
+                echo '<h1><a href="' . htmlentities($_SERVER['PHP_SELF']). '?credits=true">PEAR Credits</a></h1>';
                 // Get packageInfo and Show the HTML for the Packages
                 $this->getConfig();
                 echo '<br />';
