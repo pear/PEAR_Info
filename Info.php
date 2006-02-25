@@ -52,6 +52,8 @@ class PEAR_Info
         $this->reg = new PEAR_Registry($this->config->get('php_dir'));
         // get PEARs packageInfo to show version number at the top of the HTML
         $pear = $this->reg->packageInfo("PEAR");
+        $pear['version'] = $this->reg->getPackage("PEAR")->getVersion();
+        $this->index = array();
         $this->list_options = false;
         if ($this->config->get('preferred_state') == 'stable') {
             $this->list_options = true;
@@ -150,7 +152,7 @@ class PEAR_Info
         $packages = '';
         foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
-            if (strlen($installed['package']) > 1) {
+            if (isset($installed['package']) && strlen($installed['package']) > 1) {
                 if (!isset($old_index)) {
                     $old_index = '';
                 }
@@ -331,7 +333,7 @@ class PEAR_Info
         echo '<tr class="h"><td>Package</td><td>Maintainers</td></tr>';
         foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
-            if (strlen($installed['package']) > 1) {
+            if (isset($installed['package']) && strlen($installed['package']) > 1) {
                 ?>
                 <tr>
                     <td class="e">
