@@ -51,8 +51,7 @@ class PEAR_Info
         $this->r = new PEAR_Remote($this->config);
         $this->reg = new PEAR_Registry($this->config->get('php_dir'));
         // get PEARs packageInfo to show version number at the top of the HTML
-        $pear = $this->reg->packageInfo("PEAR");
-        $pear['version'] = $this->reg->getPackage("PEAR")->getVersion();
+        $pear = $this->reg->getPackage("PEAR");
         $this->index = array();
         $this->list_options = false;
         if ($this->config->get('preferred_state') == 'stable') {
@@ -89,7 +88,7 @@ class PEAR_Info
         <table>
             <tr class="h">
                 <td>
-                    <a href="http://pear.php.net/"><img src="<?php echo htmlentities($_SERVER['PHP_SELF']);?>?pear_image=true" alt="PEAR Logo" /></a><h1 class="p">PEAR <?php echo $pear['version']; ?></h1>
+                    <a href="http://pear.php.net/"><img src="<?php echo htmlentities($_SERVER['PHP_SELF']);?>?pear_image=true" alt="PEAR Logo" /></a><h1 class="p">PEAR <?php echo $pear->getVersion(); ?></h1>
                 </td>
             </tr>
         </table>
