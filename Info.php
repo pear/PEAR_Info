@@ -75,6 +75,7 @@ class PEAR_Info
             td, th { border: 1px solid #000000; font-size: 75%; vertical-align: baseline;}
             h1 {font-size: 150%; text-align: center;}
             h2 {font-size: 125%; text-align: center;}
+            h2 a:hover {text-decoration: none;}
             .p {text-align: left;}
             .e {background-color: #006600; font-weight: bold; color: #FFFFFF; width: 100px;}
             .e a:link { color: #FFFFFF; }
@@ -331,6 +332,7 @@ class PEAR_Info
         }
         echo '<br /><table border="0" cellpadding="3" width="600">';
         echo '<tr class="h"><td>Package</td><td>Maintainers</td></tr>';
+        sort($available);
         foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
             if (isset($installed['package']) && strlen($installed['package']) > 1) {
