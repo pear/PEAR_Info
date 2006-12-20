@@ -26,13 +26,29 @@ ini_set('max_input_time',600); */
 // require the PEAR_Info file
 require_once 'PEAR/Info.php';
 
-// If you need to set a http_proxy uncomment the line below
-// PEAR_Info::setProxy('your.proxy.here');
+/* 
+If you need to set a http_proxy value at run-time you can use the 
+following, this must be called BEFORE instantiating the PEAR_Info object
+*/
 
-// Create PEAR_Info object
-$info = new PEAR_Info();
+//PEAR_Info::setProxy('your.proxy.here');
 
-// Display PEAR_Info output
+/* 
+Optional pear_dir variable, allows you to choose where your PEAR 
+install is, in case its not found 
+*/
+
+//$pear_dir = "/path/to/your/pear/files";
+
+/*
+Instantiate PEAR_Info object
+*/
+
+$info = new PEAR_Info($pear_dir);
+
+/*
+Show PEAR_Info output
+*/
+
 $info->show();
-
 ?>

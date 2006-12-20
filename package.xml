@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
-    <!-- $Id: package.xml,v 1.21 2006-03-09 15:18:56 fa Exp $ -->
+    <!-- $Id: package.xml,v 1.22 2006-12-20 13:12:23 fa Exp $ -->
     <name>PEAR_Info</name>
     <summary>Show Information about your PEAR install and its packages</summary>
     <description>
@@ -42,6 +42,9 @@
             </dir>
             <dir name="tests">
                 <file role="php">pear_info.php</file>
+            </dir>
+            <dir name="examples">
+                <file role="doc">pear_info.php</file>
             </dir>
         </filelist>
     </release>
