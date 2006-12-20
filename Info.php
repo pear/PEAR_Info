@@ -159,7 +159,7 @@ class PEAR_Info
         $packages = '';
         foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
-            if (isset($installed['package']) && strlen($installed['package']) > 1) {
+            if ( strlen($this->getPackageName($installed)) > 1 ) {
                 if (!isset($old_index)) {
                     $old_index = '';
                 }
@@ -170,7 +170,7 @@ class PEAR_Info
                     $this->index[] = $current_index;
                 }
                 $packages .= '
-        <h2><a name="pkg_' .trim($installed['package']). '">' .trim($installed['package']). '</a></h2>
+        <h2><a name="pkg_' .trim($this->getPackageName($installed)). '">' .trim($this->getPackageName($installed)). '</a></h2>
         <table>
             <tr class="v">
                 <td class="e">
@@ -185,7 +185,7 @@ class PEAR_Info
                     Version
                 </td>
                 <td>
-                    ' .trim($installed['version']). '
+                    ' .trim($this->getPackageVersion($installed)). '
                 </td>
             </tr>
             <tr class="v">
@@ -201,7 +201,7 @@ class PEAR_Info
                     State
                 </td>
                 <td>
-                    ' .trim($installed['release_state']). '
+                    ' .trim($this->getPackageState($installed)). '
                 </td>
             </tr>
             <tr class="v">
@@ -210,15 +210,15 @@ class PEAR_Info
                 </td>
             </tr>';
             if ($latest != FALSE) {
-            	if (isset($latest[$installed['package']])) {
-                	if (version_compare($latest[$installed['package']]['version'],$installed['version'],'>')) {
+            	if (isset($latest[$this->getPackageName($installed)])) {
+                	if (version_compare($latest[$this->getPackageName($installed)]['version'],$this->getPackageVersion($installed),'>')) {
 	                    $packages .= '<tr class="v">
 	                    <td class="e">
 	                        Latest Version
 	                    </td>
 	                    <td>
-	                        <a href="http://pear.php.net/get/' .trim($installed['package']). '">' .$latest[$installed['package']]['version'] . '</a>
-	                        ('. $latest[$installed['package']]['state']. ')
+	                        <a href="http://pear.php.net/get/' .trim($this->getPackageName($installed)). '">' .$latest[$this->getPackageName($installed)]['version'] . '</a>
+	                        ('. $latest[$this->getPackageName($installed)]['state']. ')
 	                    </td>
 	                    </tr>';
 	                }
@@ -341,11 +341,11 @@ class PEAR_Info
         sort($available);
         foreach ($available as $name) {
             $installed = $this->reg->packageInfo($name);
-            if (isset($installed['package']) && strlen($installed['package']) > 1) {
+            if (strlen($this->getPackageName($installed)) > 1) {
                 ?>
                 <tr>
                     <td class="e">
-                        <a href="http://pear.php.net/<?php echo trim(strtolower($installed['package'])); ?>"><?php echo trim($installed['package']); ?></a>
+                        <a href="http://pear.php.net/<?php echo trim(strtolower($this->getPackageName($installed))); ?>"><?php echo trim($this->getPackageName($installed)); ?></a>
 
                     </td>
                     <td class="v">
@@ -418,8 +418,50 @@ class PEAR_Info
             return $reg->packageExists($package_name);
         } else {        
             $installed = $reg->packageInfo($package_name);
-            return version_compare($version, $installed['version'], '<=');
+            return version_compare($version, $this->getPackageVersion($installed), '<=');
         }
+    }
+
+    function getPackageVersion($pkgInfo) {
+        if ($pkgInfo['xsdversion'] < 2) {
+            (isset($pkgInfo['version'])) ? $pkgVer = $pkgInfo['version'] :
+                $pkgVer = NULL;
+        }
+        else {
+            (isset($pkgInfo['version']['release'])) 
+                ? $pkgVer = $pkgInfo['version']['release']
+                : $pkgVer = NULL;
+        }
+
+        return $pkgVer;
+    }
+
+    function getPackageName($pkgInfo) {
+        if ($pkgInfo['xsdversion'] < 2) {
+            (isset($pkgInfo['package'])) ? $pkgName = $pkgInfo['package'] :
+                $pkgName = NULL;
+        }
+        else {
+            (isset($pkgInfo['name'])) ? $pkgName = $pkgInfo['name'] :
+                $pkgName = NULL;
+        }
+
+        return $pkgName;
+    }
+
+    function getPackageState($pkgInfo) {
+        if ($pkgInfo['xsdversion'] < 2) {
+            (isset($pkgInfo['release_state'])) 
+                ? $pkgState = $pkgInfo['release_state']
+                : $pkgState = NULL;
+        }    
+        else {
+            (isset($pkgInfo['stability']['release'])) 
+                ? $pkgState = $pkgInfo['stability']['release']
+                : $pkgState = NULL;
+        }
+
+        return $pkgState;
     }
 }
 
