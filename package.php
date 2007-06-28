@@ -64,6 +64,8 @@ Only for PEAR 1.4.x or better :
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 $p2->addMaintainer('lead', 'farell', 'Laurent Laville', 'pear@laurent-laville.org');
+$p2->addReplacement('Info.php', 'pear-config', '@data_dir@', 'data_dir');
+$p2->addReplacement('Info.php', 'package-info', '@package_name@', 'name');
 
 if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
     $p2->writePackageFile();
