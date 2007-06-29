@@ -880,18 +880,19 @@ HTML;
      * Check if a package is installed
      *
      * @param  string  $name                        Package name
-     * @param  string  $version (optional)          The minimal version that should be installed
-     * @param  string  $channel (optional)          The package channel distribution
-     * @param  string  $pear_user_config (optional) File to read user-defined options from
+     * @param  string  $version          (optional) The minimal version that should be installed
+     * @param  string  $channel          (optional) The package channel distribution
+     * @param  string  $user_file        (optional) file to read PEAR user-defined options from
+     * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
      * @static
      * @return bool
      * @access public
      * @since  1.6.0
      */
-    function packageInstalled($name, $version = null, $channel = null, $pear_user_config = null)
+    function packageInstalled($name, $version = null, $channel = null, $user_file = '', $system_file = '')
     {
-        $config = new PEAR_Config($pear_user_config);
-        $reg = new PEAR_Registry($config->get('php_dir'));
+        $config =& PEAR_Config::singleton($user_file, $system_file);
+        $reg = &$config->getRegistry();
 
         if (is_null($version)) {
             return $reg->packageExists($name, $channel);
