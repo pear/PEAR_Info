@@ -281,6 +281,7 @@ class PEAR_Info
             foreach ($pkg as $name) {
                 $info = &$this->reg->getPackage($name, $channel);
                 if (is_object($info)) {
+                    $__info = $info->getArray();
                     $installed['package'] = $info->getPackage();
                     $installed['channel'] = $channel;
                     $installed['summary'] = $info->getSummary();
@@ -289,7 +290,11 @@ class PEAR_Info
                         . ' (' . $info->getState() . ') was released on '
                         . $info->getDate();
                     $installed['license'] = $info->getLicense();
-                    if ($info->getPackagexmlVersion() == '2.0' ) {
+                    $installed['packagexml'] = $info->getPackagexmlVersion();
+                    if ($installed['packagexml'] == '1.0' ) {
+                        $installed['lastmodified'] = $info->packageInfo('_lastmodified');
+                        $installed['packagerversion'] = $__info['packagerversion'];
+                    } else {
                         $uri = $info->getLicenseLocation();
                         if ($uri) {
                             if (isset($uri['uri'])) {
@@ -297,6 +302,8 @@ class PEAR_Info
                                     . $info->getLicense() . '</a>';
                             }
                         }
+                        $installed['lastmodified'] = $info->getLastModified();
+                        $installed['packagerversion'] = $__info['attribs']['packagerversion'];
                     }
                     $installed['description'] = $info->getDescription();
                 } else {
@@ -505,6 +512,37 @@ class PEAR_Info
                         }
                     }
                 }
+
+                if (isset($installed['lastmodified'])) {
+                    $ptpl = '
+<tr class="v">
+    <td class="e">
+        Package XML version
+    </td>
+    <td>
+        {packagexml}
+    </td>
+</tr>
+<tr class="v">
+    <td class="e">
+        Last Modified
+    </td>
+    <td>
+        {lastmodified}
+    </td>
+</tr>';
+                    $packages .= str_replace(
+                        array('{packagexml}',
+                            '{lastmodified}'
+                            ),
+                        array($installed['packagexml'] .
+                            ' packaged with PEAR version ' . $installed['packagerversion'],
+                            date('Y-m-d', $installed['lastmodified'])
+                            ),
+                        $ptpl
+                        );
+                }
+
                 $packages .= '
 <tr>
     <td colspan="2" class="v"><a href="#{top}">Top</a></td>
