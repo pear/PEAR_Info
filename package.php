@@ -57,6 +57,8 @@ Only for PEAR 1.4.x or better :
 * changes
 - drop support of package xml 1.0
   (PEAR 1.3.x are encourage to upgrade to PEAR 1.4.x or better)
+- Minimum PEAR required is now 1.4.11
+- Minimum PHP version is now set to 4.3.0 (due to usage of file_get_contents function)
 
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
