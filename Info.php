@@ -322,7 +322,11 @@ class PEAR_Info
                     static $_deps_type_trans = array(
                                  'pkg' => 'Package',
                                  'ext' => 'Extension',
-                                 'php' => 'PHP'
+                                 'php' => 'PHP',
+                                 'prog'=> 'Prog',
+                                 'os'  => 'OS',
+                                 'sapi'=> 'SAPI',
+                                 'zend'=> 'Zend'
                                  );
 
                     $dependencies = '';
