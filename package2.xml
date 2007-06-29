@@ -26,10 +26,10 @@
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2007-06-28</date>
- <time>20:07:56</time>
+ <date>2007-06-29</date>
+ <time>15:10:56</time>
  <version>
-  <release>1.7.0beta1</release>
+  <release>1.7.0beta6</release>
   <api>1.7.0</api>
  </version>
  <stability>
@@ -51,6 +51,8 @@ Only for PEAR 1.4.x or better :
 * changes
 - drop support of package xml 1.0
   (PEAR 1.3.x are encourage to upgrade to PEAR 1.4.x or better)
+- Minimum PEAR required is now 1.4.11
+- Minimum PHP version is now set to 4.3.0 (due to usage of file_get_contents function)
 
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
@@ -67,6 +69,7 @@ Only for PEAR 1.4.x or better :
     <file name="pear_info4.php" role="doc" />
    </dir> <!-- //examples -->
    <file name="Info.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@package_name@" to="name" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
@@ -76,15 +79,15 @@ Only for PEAR 1.4.x or better :
  <dependencies>
   <required>
    <php>
-    <min>4.1.0</min>
+    <min>4.3.0</min>
    </php>
    <pearinstaller>
-    <min>1.4.0b1</min>
+    <min>1.4.11</min>
    </pearinstaller>
    <package>
     <name>PEAR</name>
     <channel>pear.php.net</channel>
-    <min>1.3.2</min>
+    <min>1.4.11</min>
    </package>
   </required>
  </dependencies>
@@ -92,14 +95,14 @@ Only for PEAR 1.4.x or better :
  <changelog>
   <release>
    <version>
-    <release>1.7.0beta1</release>
+    <release>1.7.0beta6</release>
     <api>1.7.0</api>
    </version>
    <stability>
     <release>beta</release>
     <api>stable</api>
    </stability>
-   <date>2007-06-28</date>
+   <date>2007-06-29</date>
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>* news
 - Full compatibility with PEAR 1.3.x, PEAR 1.4.x, PEAR 1.5.x
@@ -115,11 +118,26 @@ Only for PEAR 1.4.x or better :
 * changes
 - drop support of package xml 1.0
   (PEAR 1.3.x are encourage to upgrade to PEAR 1.4.x or better)
+- Minimum PEAR required is now 1.4.11
+- Minimum PHP version is now set to 4.3.0 (due to usage of file_get_contents function)
 
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
 - fixed req #7741 - new feature and pear 1.4.x full compatible
    </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.6.1</release>
+    <api>1.6.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-03-09</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>Mainly bugfixes and a bit of polishing.</notes>
   </release>
   <release>
    <version>
