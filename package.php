@@ -39,7 +39,7 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->generateContents();
 $p2->addRelease();
-$p2->setReleaseVersion('1.7.0beta1');
+$p2->setReleaseVersion('1.7.0beta6');
 $p2->setAPIVersion('1.7.0');
 $p2->setReleaseStability('beta');
 $p2->setAPIStability('stable');
@@ -63,9 +63,10 @@ Only for PEAR 1.4.x or better :
 - fixed req #7741 - new feature and pear 1.4.x full compatible
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
-$p2->addMaintainer('lead', 'farell', 'Laurent Laville', 'pear@laurent-laville.org');
+//$p2->addMaintainer('lead', 'farell', 'Laurent Laville', 'pear@laurent-laville.org');
 $p2->addReplacement('Info.php', 'pear-config', '@data_dir@', 'data_dir');
 $p2->addReplacement('Info.php', 'package-info', '@package_name@', 'name');
+$p2->addReplacement('Info.php', 'package-info', '@package_version@', 'version');
 
 if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
     $p2->writePackageFile();
