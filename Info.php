@@ -976,7 +976,7 @@ class PEAR_Info
                 $ptpl = '
 <tr>
     <td class="e">
-        <a href="http://pear.php.net/{packageURI}">{package}</a>
+        <a href="http://{channel}/{packageURI}">{package}</a>
     </td>
     <td class="v">
         {maintainers}
@@ -997,10 +997,12 @@ class PEAR_Info
                 $html_pear_credits .= str_replace(
                     array('{packageURI}',
                         '{package}',
+                        '{channel}',
                         '{maintainers}'
                         ),
                     array(trim(strtolower($installed['package'])),
                         trim($installed['package']),
+                        $channel,
                         $maintainers
                         ),
                     $ptpl
