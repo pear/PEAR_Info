@@ -154,7 +154,7 @@ class PEAR_Info
      * @param  string  $pear_dir         (optional) The PEAR base install directory
      * @param  string  $user_file        (optional) file to read PEAR user-defined options from
      * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
-     * @param  string  $options          (optional) configure PEAR information output
+     * @param  array   $options          (optional) configure PEAR information output
      * @return void
      * @access public
      * @since  1.0.1
@@ -170,7 +170,7 @@ class PEAR_Info
      * @param  string  $pear_dir         (optional) The PEAR base install directory
      * @param  string  $user_file        (optional) file to read PEAR user-defined options from
      * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
-     * @param  string  $options          (optional) configure PEAR information output
+     * @param  array   $options          (optional) configure PEAR information output
      * @return void
      * @access private
      * @since  1.7.0RC1
