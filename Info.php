@@ -398,6 +398,9 @@ class PEAR_Info
             if (!in_array($channel, $channel_allowed)) {
                 continue;
             }
+            // sort package by alphabetic order
+            sort($pkg);
+            //
             $packages = '';
             $index = array();
             foreach ($pkg as $name) {
@@ -942,6 +945,9 @@ class PEAR_Info
             if (!in_array($channel, $channel_allowed)) {
                 continue;
             }
+            // sort package by alphabetic order
+            sort($pkg);
+            //
             foreach ($pkg as $name) {
                 $info = &$this->reg->getPackage($name, $channel);
                 if (is_object($info)) {
@@ -1111,6 +1117,6 @@ HTML;
 
 if (isset($_GET['pear_image'])) {
     PEAR_Info::pearImage();
-    exit;
+    exit();
 }
 ?>
