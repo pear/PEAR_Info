@@ -11,7 +11,8 @@ h2 a:hover {text-decoration: none;}
 .e {background-color: #006600; font-weight: bold; color: #FFFFFF; width: 100px; vertical-align: top;}
 .e a:link { color: #FFFFFF; }
 .e a:visited { color: #FFFFFF; }
-.h {background-color: #339900; font-weight: bold;}
+.h, .hc {background-color: #339900; font-weight: bold;}
+.hc {text-align: center;}
 .v {background-color: #D9D9D9;}
 img {float: right; border: 0px;}
 p.error {font-size:12px; font-weight: bold; color:red; text-align: center;}
