@@ -39,7 +39,7 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->generateContents();
 $p2->addRelease();
-$p2->setReleaseVersion('1.7.0beta6');
+$p2->setReleaseVersion('1.7.0RC1');
 $p2->setAPIVersion('1.7.0');
 $p2->setReleaseStability('beta');
 $p2->setAPIStability('stable');
@@ -47,6 +47,11 @@ $p2->setNotes('* news
 - Full compatibility with PEAR 1.3.x, PEAR 1.4.x, PEAR 1.5.x
 - Easy change look and feel with a simple CSS file
 - Show packages dependencies list
+- HTML page output is XHTML compliant
+
+Introduce option setup system to :
+- display a quick list of package
+- decide which package channel to show
 
 Only for PEAR 1.4.x or better :
 - Show channel list
@@ -63,6 +68,7 @@ Only for PEAR 1.4.x or better :
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
 - fixed req #7741 - new feature and pear 1.4.x full compatible
+- fixed req #10815 - Quick list of packages
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 //$p2->addMaintainer('lead', 'farell', 'Laurent Laville', 'pear@laurent-laville.org');
