@@ -919,7 +919,7 @@ class PEAR_Info
         </td>
     </tr>
 </table>
-
+<br />
 <table>
 <tr class="h">
     <td>
@@ -948,14 +948,19 @@ class PEAR_Info
                . ' Please try again.</p>';
             return $e;
         }
-        $html_pear_credits .= '
-<table border="0" cellpadding="3" width="600">
-<tr class="h"><td>Package</td><td>Maintainers</td></tr>
-';
+
         foreach ($available as $channel => $pkg) {
             if (!in_array($channel, $channel_allowed)) {
                 continue;
             }
+            $html_pear_credits .= '
+<br />
+<table border="0" cellpadding="3" width="600">
+<tr class="hc"><td colspan="2">Channel {channel}</td></tr>
+<tr class="h"><td>Package</td><td>Maintainers</td></tr>';
+
+            $html_pear_credits = str_replace('{channel}', $channel, $html_pear_credits);
+
             // sort package by alphabetic order
             sort($pkg);
             //
@@ -1001,8 +1006,10 @@ class PEAR_Info
                     $ptpl
                 );
             }
+            $html_pear_credits .= '
+</table>
+';
         }
-        $html_pear_credits .= '</table>';
         return $html_pear_credits;
     }
 
