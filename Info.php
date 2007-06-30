@@ -205,6 +205,12 @@ class PEAR_Info
         } else {
             $layer = 'user';
         }
+        // prevent unexpected result if PEAR config file does not exist
+        $confFile = $this->config->getConfFile($layer);
+        if (!file_exists($confFile)) {
+            trigger_error("PEAR configuration file '$confFile' does not exist", E_USER_WARNING);
+            exit();
+        }
         $this->reg = &$this->config->getRegistry($layer);
 
         // show general informations such as PEAR version, PEAR logo, and config file used
