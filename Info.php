@@ -362,27 +362,36 @@ class PEAR_Info
         // check if there are new versions available for packages installed
         if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
 
-            $mirror = $this->config->get('preferred_mirror');
-//        $channel = array_shift($channel_allowed);  //'pear.php.net';
-            $channel = 'pear.php.net';
-            // Get a channel object.
-            $chan =& $this->reg->getChannel($channel);
-            if ($chan->supportsREST($mirror) &&
-                $base = $chan->getBaseURL('REST1.0', $mirror)) {
-
-                $rest =& $this->config->getREST('1.0', array());
-                if (is_object($rest)) {
-                    $pref_state = $this->config->get('preferred_state');
-                    $installed = array_flip($available[$channel]);
-
-                    $latest = $rest->listLatestUpgrades($base, $pref_state, $installed,
-                                  $channel, $this->reg);
-                } else {
-                    $latest = false;
+            $latest = array();
+            foreach ($channel_allowed as $channel) {
+                // Get a channel object.
+                $chan =& $this->reg->getChannel($channel);
+                if (PEAR::isError($chan)) {
+                    $e = '<p class="error">An error has occured. ' . $chan->getMessage()
+                       . ' Please try again.</p>';
+                    return $e;
                 }
-            } else {
-                $r =& $this->config->getRemote();
-                $latest = @$r->call('package.listLatestReleases');
+
+                if ($chan->supportsREST($channel) &&
+                    $base = $chan->getBaseURL('REST1.0', $channel)) {
+
+                    $rest =& $this->config->getREST('1.0', array());
+                    if (is_object($rest)) {
+                        $pref_state = $this->config->get('preferred_state');
+                        $installed = array_flip($available[$channel]);
+
+                        $l = $rest->listLatestUpgrades($base, $pref_state, $installed,
+                                      $channel, $this->reg);
+                    } else {
+                        $l = false;
+                    }
+                } else {
+                    $r =& $this->config->getRemote();
+                    $l = @$r->call('package.listLatestReleases');
+                }
+                if (is_array($l)) {
+                    $latest = array_merge($latest, $l);
+                }
             }
         } else {
             $latest = false;
@@ -683,17 +692,19 @@ class PEAR_Info
         Latest Version
     </td>
     <td>
-        <a href="http://pear.php.net/get/{package}">{latest_version}</a>({latest_state})
+        <a href="http://{channel}/get/{package}">{latest_version}</a>({latest_state})
     </td>
 </tr>';
                                 $packages .= str_replace(
                                     array('{package}',
                                         '{latest_version}',
-                                        '{latest_state}'
+                                        '{latest_state}',
+                                        '{channel}'
                                         ),
                                     array(trim($installed['package']),
                                         $latest[$installed['package']]['version'],
-                                        $latest[$installed['package']]['state']
+                                        $latest[$installed['package']]['state'],
+                                        $channel
                                         ),
                                     $ptpl
                                 );
