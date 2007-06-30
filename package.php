@@ -67,6 +67,7 @@ Only for PEAR 1.4.x or better :
 
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
+- fixed bug #8165 - Error on code
 - fixed req #7741 - new feature and pear 1.4.x full compatible
 - fixed req #10815 - Quick list of packages
 ');

@@ -27,7 +27,7 @@
   <active>yes</active>
  </lead>
  <date>2007-06-30</date>
- <time>12:39:42</time>
+ <time>18:59:22</time>
  <version>
   <release>1.7.0RC1</release>
   <api>1.7.0</api>
@@ -60,6 +60,7 @@ Only for PEAR 1.4.x or better :
 
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
+- fixed bug #8165 - Error on code
 - fixed req #7741 - new feature and pear 1.4.x full compatible
 - fixed req #10815 - Quick list of packages
  </notes>
@@ -133,6 +134,7 @@ Only for PEAR 1.4.x or better :
 
 * bugs
 - fixed bug #6050 - PEAR version displayed as Array instead of version number
+- fixed bug #8165 - Error on code
 - fixed req #7741 - new feature and pear 1.4.x full compatible
 - fixed req #10815 - Quick list of packages
    </notes>
