@@ -24,6 +24,81 @@ require_once 'PEAR/Remote.php';
 require_once 'PEAR/Registry.php';
 
 /**
+ * PEAR_INFO_* is a bit-field. Or each number up to get desired information.
+ *
+ * Examples:
+ * <code>
+ * <?php
+ * require_once 'PEAR/Info.php';
+ * // will display for each channel (list displayed),
+ * // a quick package list with only its name and version
+ * $options = array('resume' => PEAR_INFO_CHANNELS | PEAR_INFO_PACKAGES_VERSION);
+ * $info = new PEAR_Info('', 'c:\wamp\php\pear.ini', '', $options);
+ * $info->display();
+ * ?>
+ * </code>
+ *
+ * - Show all informations, except for credits
+ *
+ *   $options = array('resume' => PEAR_INFO_ALL & ~PEAR_INFO_CREDITS);
+ *
+ * - Show only credits and configuration
+ *
+ *   $options = array('resume' => PEAR_INFO_CONFIGURATION | PEAR_INFO_CREDITS);
+ */
+/**
+ * The configuration line, pear.ini | .pearrc location, and more.
+ *
+ * @var        integer
+ * @since      1.7.0RC1
+ */
+define ('PEAR_INFO_GENERAL',                  1);
+/**
+ * PEAR Credits
+ *
+ * @var        integer
+ * @since      1.7.0RC1
+ */
+define ('PEAR_INFO_CREDITS',                  2);
+/**
+ * All PEAR settings.
+ *
+ * @var        integer
+ * @since      1.7.0RC1
+ */
+define ('PEAR_INFO_CONFIGURATION',            4);
+/**
+ * Information on PEAR channels.
+ *
+ * @var        integer
+ * @since      1.7.0RC1
+ */
+define ('PEAR_INFO_CHANNELS',                 8);
+/**#@+
+ * Information on PEAR channels.
+ *
+ * @var        integer
+ * @since      1.7.0RC1
+ */
+define ('PEAR_INFO_PACKAGES',              4080);
+define ('PEAR_INFO_PACKAGES_CHANNEL',      2048);
+define ('PEAR_INFO_PACKAGES_SUMMARY',      1024);
+define ('PEAR_INFO_PACKAGES_VERSION',       512);
+define ('PEAR_INFO_PACKAGES_LICENSE',       256);
+define ('PEAR_INFO_PACKAGES_DESCRIPTION',   128);
+define ('PEAR_INFO_PACKAGES_DEPENDENCIES',   64);
+define ('PEAR_INFO_PACKAGES_XML',            32);
+define ('PEAR_INFO_PACKAGES_UPDATE',         16);
+/**#@-*/
+/**
+ * Shows all of the above. This is the default value.
+ *
+ * @var        integer
+ * @since      1.7.0RC1
+ */
+define ('PEAR_INFO_ALL',                    -1);
+
+/**
  * The PEAR_Info class generate phpinfo() style PEAR information.
  *
  * @category   PEAR
@@ -51,7 +126,7 @@ class PEAR_Info
      *
      * @var    string
      * @access public
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
     var $css;
 
@@ -96,10 +171,17 @@ class PEAR_Info
      * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
      * @return void
      * @access private
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
-    function __construct($pear_dir = '', $user_file = '', $system_file = '')
+    function __construct($pear_dir = '', $user_file = '', $system_file = '', $options = null)
     {
+        // options defined at run-time (default)
+        $this->options = array('channels' => array('pear.php.net'), 'resume' => PEAR_INFO_ALL);
+        if (isset($options)) {
+            // overwrite one to all defaults
+            $this->options = array_merge($this->options, $options);
+        }
+
         $this->config =& PEAR_Config::singleton($user_file, $system_file);
 
         // to keep compatibility with version less or equal than 1.6.1
@@ -114,7 +196,7 @@ class PEAR_Info
         // Get the config's registry object.
         if (empty($user_file)) {
             if (empty($system_file)) {
-                $layer = null;
+                $layer = 'user';
             } else {
                 $layer = 'system';
             }
@@ -123,20 +205,16 @@ class PEAR_Info
         }
         $this->reg = &$this->config->getRegistry($layer);
 
-        // get PEARs packageInfo to show version number at the top of the HTML
-        if (method_exists($this->reg, 'getPackage')) {
-            $pear = $this->reg->getPackage("PEAR");
-            $pear_version = $pear->getVersion();
-        } else {
-            $pear = $this->reg->packageInfo('PEAR');
-            $pear_version = $pear['version'];
-        }
-        $index = array();
-        $this->list_options = false;
-        if ($this->config->get('preferred_state') == 'stable') {
-            $this->list_options = true;
-        }
-        $this->info = '
+        // show general informations such as PEAR version, PEAR logo, and config file used
+        if ($this->options['resume'] & PEAR_INFO_GENERAL) {
+            if (method_exists($this->reg, 'getPackage')) {
+                $pear = $this->reg->getPackage("PEAR");
+                $pear_version = $pear->getVersion();
+            } else {
+                $pear = $this->reg->packageInfo('PEAR');
+                $pear_version = $pear['version'];
+            }
+            $this->info = '
 <table>
 <tr class="h">
     <td>
@@ -145,24 +223,47 @@ class PEAR_Info
 </tr>
 </table>
 ';
-        $this->info = str_replace(
-            array('{phpself}', '{pearversion}'),
-            array(htmlentities($_SERVER['PHP_SELF']), $pear_version),
-            $this->info
+            $this->info = str_replace(
+                array('{phpself}', '{pearversion}'),
+                array(htmlentities($_SERVER['PHP_SELF']), $pear_version),
+                $this->info
             );
 
-        if (!isset($_GET['credits'])) {
+            // Loaded configuration file
             $this->info .= '
+<table>
+<tr class="v">
+    <td class="e">Loaded Configuration File</td>
+    <td>{value}</td>
+</tr>
+</table>
+
+';
+            $this->info = str_replace('{value}',
+                $this->config->getConfFile($layer),
+                $this->info
+            );
+        }
+
+        if (!isset($_GET['credits'])) {
+            if ($this->options['resume'] & PEAR_INFO_CREDITS) {
+                $this->info .= '
 <h1><a href="{phpself}?credits=true">PEAR Credits</a></h1>
 ';
-            $this->info = str_replace(
-                '{phpself}', htmlentities($_SERVER['PHP_SELF']),
-                $this->info
+                $this->info = str_replace(
+                    '{phpself}', htmlentities($_SERVER['PHP_SELF']),
+                    $this->info
                 );
-
-            $this->info .= $this->getConfig();
-            $this->info .= $this->getChannels();
-            $this->info .= $this->getPackages();
+            }
+            if ($this->options['resume'] & PEAR_INFO_CONFIGURATION) {
+                $this->info .= $this->getConfig();
+            }
+            if ($this->options['resume'] & PEAR_INFO_CHANNELS) {
+                $this->info .= $this->getChannels();
+            }
+            if ($this->options['resume'] & PEAR_INFO_PACKAGES) {
+                $this->info .= $this->getPackages();
+            }
 
         } else {
             $this->info .= $this->getCredits();
@@ -190,7 +291,7 @@ class PEAR_Info
      * @param  bool  $content (optional) Either return css filename or string contents
      * @return string
      * @access public
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
     function getStyleSheet($content = true)
     {
@@ -208,7 +309,7 @@ class PEAR_Info
      * @param  string  $css (optional) File to read user-defined styles from
      * @return bool    True if custom styles, false if default styles applied
      * @access public
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
     function setStyleSheet($css = null)
     {
@@ -247,26 +348,36 @@ class PEAR_Info
             return $e;
         }
 
-        $mirror = $this->config->get('preferred_mirror');
-        $channel = 'pear.php.net';
-        // Get a channel object.
-        $chan =& $this->reg->getChannel($channel);
-        if ($chan->supportsREST($mirror) &&
-            $base = $chan->getBaseURL('REST1.0', $mirror)) {
+        // list of channels to scan
+        $channel_allowed = $this->options['channels'];
 
-            $rest =& $this->config->getREST('1.0', array());
-            if (is_object($rest)) {
-                $pref_state = 'stable';
-                $installed = array_flip($available[$channel]);
+        // check if there are new versions available for packages installed
+        if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
 
-                $latest = $rest->listLatestUpgrades($base, $pref_state, $installed,
-                              $channel, $this->reg);
+            $mirror = $this->config->get('preferred_mirror');
+//        $channel = array_shift($channel_allowed);  //'pear.php.net';
+            $channel = 'pear.php.net';
+            // Get a channel object.
+            $chan =& $this->reg->getChannel($channel);
+            if ($chan->supportsREST($mirror) &&
+                $base = $chan->getBaseURL('REST1.0', $mirror)) {
+
+                $rest =& $this->config->getREST('1.0', array());
+                if (is_object($rest)) {
+                    $pref_state = $this->config->get('preferred_state');
+                    $installed = array_flip($available[$channel]);
+
+                    $latest = $rest->listLatestUpgrades($base, $pref_state, $installed,
+                                  $channel, $this->reg);
+                } else {
+                    $latest = false;
+                }
             } else {
-                $latest = false;
+                $r =& $this->config->getRemote();
+                $latest = @$r->call('package.listLatestReleases');
             }
         } else {
-            $r =& $this->config->getRemote();
-            $latest = @$r->call('package.listLatestReleases');
+            $latest = false;
         }
 
         if ((PEAR::isError($latest)) || (!is_array($latest))) {
@@ -276,68 +387,101 @@ class PEAR_Info
         $s = '';
         $anchor_suffix = 0;  // make page XHTML compliant
         foreach ($available as $channel => $pkg) {
+            if (!in_array($channel, $channel_allowed)) {
+                continue;
+            }
             $packages = '';
             $index = array();
             foreach ($pkg as $name) {
+                // show general package informations
                 $info = &$this->reg->getPackage($name, $channel);
                 if (is_object($info)) {
                     $__info = $info->getArray();
                     $installed['package'] = $info->getPackage();
-                    $installed['channel'] = $channel;
-                    $installed['summary'] = $info->getSummary();
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
+                        $installed['channel'] = $channel;
+                    }
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_SUMMARY) {
+                        $installed['summary'] = $info->getSummary();
+                    }
                     $installed['version'] = $info->getVersion();
-                    $installed['current_release'] = $installed['version']
-                        . ' (' . $info->getState() . ') was released on '
-                        . $info->getDate();
-                    $installed['license'] = $info->getLicense();
-                    $installed['packagexml'] = $info->getPackagexmlVersion();
-                    if ($installed['packagexml'] == '1.0' ) {
-                        $installed['lastmodified'] = $info->packageInfo('_lastmodified');
-                        $installed['packagerversion'] = $__info['packagerversion'];
-                    } else {
-                        $uri = $info->getLicenseLocation();
-                        if ($uri) {
-                            if (isset($uri['uri'])) {
-                                $installed['license'] = '<a href="' . $uri['uri'] . '">'
-                                    . $info->getLicense() . '</a>';
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
+                        $installed['current_release'] = $installed['version']
+                            . ' (' . $info->getState() . ') was released on '
+                            . $info->getDate();
+                    }
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
+                        $installed['license'] = $info->getLicense();
+                    }
+                    if ($info->getPackagexmlVersion() == '1.0' ) {
+                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
+                            $installed['lastmodified'] = $info->packageInfo('_lastmodified');
+                        }
+                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
+                            $installed['packagexml'] = $info->getPackagexmlVersion();
+                            if (isset($__info['packagerversion'])) {
+                                $installed['packagerversion'] = $__info['packagerversion'];
                             }
                         }
-                        $installed['lastmodified'] = $info->getLastModified();
-                        $installed['packagerversion'] = $__info['attribs']['packagerversion'];
+                    } else {
+                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
+                            $uri = $info->getLicenseLocation();
+                            if ($uri) {
+                                if (isset($uri['uri'])) {
+                                    $installed['license'] = '<a href="' . $uri['uri'] . '">'
+                                        . $info->getLicense() . '</a>';
+                                }
+                            }
+                        }
+                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
+                            $installed['lastmodified'] = $info->getLastModified();
+                        }
+                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
+                            $installed['packagexml'] = $info->getPackagexmlVersion();
+                            $installed['packagerversion'] = $__info['attribs']['packagerversion'];
+                        }
                     }
-                    $installed['description'] = $info->getDescription();
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_DESCRIPTION) {
+                        $installed['description'] = $info->getDescription();
+                    }
                 } else {
                     $installed = $info;
-                    $installed['channel'] = 'pear.php.net';
-                    $installed['current_release'] = $info['version']
-                        . ' (' . $info['release_state'] . ') was released on '
-                        . $info['release_date'];
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
+                        $installed['channel'] = 'pear.php.net';
+                    }
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
+                        $installed['current_release'] = $info['version']
+                            . ' (' . $info['release_state'] . ') was released on '
+                            . $info['release_date'];
+                    }
                 }
 
-                $deps = $info->getDeps();
-                if (is_array($deps)) {
-                    static $_deps_rel_trans = array(
-                                 'lt' => '<',
-                                 'le' => '<=',
-                                 'eq' => '=',
-                                 'ne' => '!=',
-                                 'gt' => '>',
-                                 'ge' => '>=',
-                                 'has' => 'has',
-                                 'not' => 'not'
-                                 );
-                    static $_deps_type_trans = array(
-                                 'pkg' => 'Package',
-                                 'ext' => 'Extension',
-                                 'php' => 'PHP',
-                                 'prog'=> 'Prog',
-                                 'os'  => 'OS',
-                                 'sapi'=> 'SAPI',
-                                 'zend'=> 'Zend'
-                                 );
+                // show dependency list
+                $dependencies = '';
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_DEPENDENCIES) {
+                    $deps = $info->getDeps();
+                    if (is_array($deps)) {
+                        static $_deps_rel_trans = array(
+                                     'lt' => '<',
+                                     'le' => '<=',
+                                     'eq' => '=',
+                                     'ne' => '!=',
+                                     'gt' => '>',
+                                     'ge' => '>=',
+                                     'has' => 'has',
+                                     'not' => 'not'
+                                     );
+                        static $_deps_type_trans = array(
+                                     'pkg' => 'Package',
+                                     'ext' => 'Extension',
+                                     'php' => 'PHP',
+                                     'prog'=> 'Prog',
+                                     'os'  => 'OS',
+                                     'sapi'=> 'SAPI',
+                                     'zend'=> 'Zend'
+                                     );
 
-                    $dependencies = '';
-                    $ptpl = '
+                        $ptpl = '
 <tr class="w">
     <td>
         {dep_required}
@@ -356,27 +500,27 @@ class PEAR_Info
     </td>
 </tr>
 ';
-                    foreach($deps as $dep) {
-                        if (!isset($dep['optional'])) {
-                            $dep['optional'] = '';
+                        foreach($deps as $dep) {
+                            if (!isset($dep['optional'])) {
+                                $dep['optional'] = '';
+                            }
+                            $dependencies .= str_replace(
+                                array('{dep_required}',
+                                    '{dep_type}',
+                                    '{dep_name}',
+                                    '{dep_rel}',
+                                    '{dep_version}',
+                                    ),
+                                array(($dep['optional'] == 'no') ? 'Yes' : 'No',
+                                    $_deps_type_trans[$dep['type']],
+                                    isset($dep['name']) ? $dep['name'] : '',
+                                    $_deps_rel_trans[$dep['rel']],
+                                    isset($dep['version']) ? $dep['version'] : ''
+                                    ),
+                                $ptpl
+                            );
                         }
-                        $dependencies .= str_replace(
-                            array('{dep_required}',
-                                '{dep_type}',
-                                '{dep_name}',
-                                '{dep_rel}',
-                                '{dep_version}',
-                                ),
-                            array(($dep['optional'] == 'no') ? 'Yes' : 'No',
-                                $_deps_type_trans[$dep['type']],
-                                isset($dep['name']) ? $dep['name'] : '',
-                                $_deps_rel_trans[$dep['rel']],
-                                isset($dep['version']) ? $dep['version'] : ''
-                                ),
-                            $ptpl
-                        );
-                    }
-                    $ptpl = '
+                        $ptpl = '
 <tr class="w">
     <td class="f">
         Required
@@ -395,8 +539,9 @@ class PEAR_Info
     </td>
 </tr>
 ';
-                    $dependencies = $ptpl . $dependencies;
-                }
+                        $dependencies = $ptpl . $dependencies;
+                    }
+                } // end deps-list
 
                 if (!isset($old_index)) {
                     $old_index = '';
@@ -407,9 +552,19 @@ class PEAR_Info
                     $old_index = $current_index;
                     $index[] = $current_index;
                 }
+
+                // prepare package informations template
                 $ptpl = '
 <h2><a name="pkg_{package}">{package}</a></h2>
 <table>
+';
+                $packages .= str_replace('{package}',
+                    trim($installed['package']),
+                    $ptpl
+                );
+
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         Channel
@@ -418,6 +573,14 @@ class PEAR_Info
         {channel}
     </td>
 </tr>
+';
+                    $packages .= str_replace('{channel}',
+                        trim($installed['channel']),
+                        $ptpl
+                    );
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_SUMMARY) {
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         Summary
@@ -426,6 +589,14 @@ class PEAR_Info
         {summary}
     </td>
 </tr>
+';
+                    $packages .= str_replace('{summary}',
+                        nl2br(htmlentities(trim($installed['summary']))),
+                        $ptpl
+                    );
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         Version
@@ -434,6 +605,14 @@ class PEAR_Info
         {version}
     </td>
 </tr>
+';
+                    $packages .= str_replace('{version}',
+                        trim($installed['current_release']),
+                        $ptpl
+                    );
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         License
@@ -442,6 +621,14 @@ class PEAR_Info
         {license}
     </td>
 </tr>
+';
+                    $packages .= str_replace('{license}',
+                        trim($installed['license']),
+                        $ptpl
+                    );
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_DESCRIPTION) {
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         Description
@@ -449,10 +636,15 @@ class PEAR_Info
     <td>
         {description}
     </td>
-</tr>';
-
+</tr>
+';
+                    $packages .= str_replace('{description}',
+                        nl2br(htmlentities(trim($installed['description']))),
+                        $ptpl
+                    );
+                }
                 if (!empty($dependencies)) {
-                    $ptpl .= '
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         Dependencies
@@ -463,33 +655,18 @@ class PEAR_Info
         </table>
     </td>
 </tr>';
+                    $packages .= str_replace('{dependencies}',
+                        $dependencies,
+                        $ptpl
+                    );
                 }
 
-                $packages .= str_replace(
-                    array('{package}',
-                        '{channel}',
-                        '{summary}',
-                        '{version}',
-                        '{license}',
-                        '{description}',
-                        '{dependencies}'
-                        ),
-                    array(trim($installed['package']),
-                        trim($installed['channel']),
-                        nl2br(htmlentities(trim($installed['summary']))),
-                        trim($installed['current_release']),
-                        trim($installed['license']),
-                        nl2br(htmlentities(trim($installed['description']))),
-                        $dependencies
-                        ),
-                    $ptpl
-                );
-
-                if ($latest != false) {
-                    if (isset($latest[$installed['package']])) {
-                        if (version_compare($latest[$installed['package']]['version'],
-                            $installed['version'], '>')) {
-                            $ptpl = '
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
+                    if ($latest != false) {
+                        if (isset($latest[$installed['package']])) {
+                            if (version_compare($latest[$installed['package']]['version'],
+                                $installed['version'], '>')) {
+                                $ptpl = '
 <tr class="v">
     <td class="e">
         Latest Version
@@ -498,23 +675,23 @@ class PEAR_Info
         <a href="http://pear.php.net/get/{package}">{latest_version}</a>({latest_state})
     </td>
 </tr>';
-                            $packages .= str_replace(
-                                array('{package}',
-                                    '{latest_version}',
-                                    '{latest_state}'
-                                    ),
-                                array(trim($installed['package']),
-                                    $latest[$installed['package']]['version'],
-                                    $latest[$installed['package']]['state']
-                                    ),
-                                $ptpl
+                                $packages .= str_replace(
+                                    array('{package}',
+                                        '{latest_version}',
+                                        '{latest_state}'
+                                        ),
+                                    array(trim($installed['package']),
+                                        $latest[$installed['package']]['version'],
+                                        $latest[$installed['package']]['state']
+                                        ),
+                                    $ptpl
                                 );
+                            }
                         }
                     }
-                }
 
-                if (isset($installed['lastmodified'])) {
-                    $ptpl = '
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
+                        $ptpl = '
 <tr class="v">
     <td class="e">
         Package XML version
@@ -522,7 +699,18 @@ class PEAR_Info
     <td>
         {packagexml}
     </td>
-</tr>
+</tr>';
+                        $packagexml = $installed['packagexml'];
+                        if (isset($installed['packagerversion'])) {
+                            $packagexml .= ' packaged with PEAR version '
+                                . $installed['packagerversion'];
+                        }
+                        $packages .= str_replace('{packagexml}',
+                            $packagexml,
+                            $ptpl
+                        );
+                    }
+                    $ptpl = '
 <tr class="v">
     <td class="e">
         Last Modified
@@ -531,16 +719,11 @@ class PEAR_Info
         {lastmodified}
     </td>
 </tr>';
-                    $packages .= str_replace(
-                        array('{packagexml}',
-                            '{lastmodified}'
-                            ),
-                        array($installed['packagexml'] .
-                            ' packaged with PEAR version ' . $installed['packagerversion'],
-                            date('Y-m-d', $installed['lastmodified'])
-                            ),
+                    $packages .= str_replace('{lastmodified}',
+                        date('Y-m-d', $installed['lastmodified']),
                         $ptpl
-                        );
+                    );
+
                 }
 
                 $packages .= '
@@ -564,7 +747,8 @@ class PEAR_Info
     <td class ="v" style="text-align: center">
 ';
             $index_header = str_replace(array('{channel}', '{top}'),
-                array($channel, 'top'.$anchor_suffix), $index_header);
+                array($channel, 'top'.$anchor_suffix), $index_header
+            );
             foreach ($index as $i) {
                 $index_header .= ' | <a href="#'.$i.$anchor_suffix.'">'.strtoupper($i).'</a>';
             }
@@ -593,7 +777,7 @@ class PEAR_Info
         sort($keys);
 
         $html_pear_config = '
-<h2>PEAR Config</h2>
+<h2>PEAR Configuration</h2>
 <table>';
         foreach ($keys as $key) {
             if (($key != 'password') && ($key != 'username') && ($key != 'sig_keyid') && ($key != 'http_proxy')) {
@@ -606,7 +790,7 @@ class PEAR_Info
                     array('{key}', '{value}'),
                     array($key, $this->config->get($key)),
                     $html_config
-                    );
+                );
                 $html_pear_config .= $html_config;
             }
         }
@@ -622,7 +806,7 @@ class PEAR_Info
      *
      * @return string
      * @access private
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
     function getChannels()
     {
@@ -632,12 +816,16 @@ class PEAR_Info
                . ' Please try again.</p>';
             return $e;
         }
+        $channel_allowed = $this->options['channels'];
 
         $html_pear_channel = '
 <h2>PEAR Channels</h2>';
 
         $anchor_suffix = 0;
         foreach ($channels as $channel) {
+            if (!in_array($channel, $channel_allowed)) {
+                continue;
+            }
             $html_pear_channel .= '
 <table>';
             $info = $this->reg->channelInfo($channel);
@@ -668,7 +856,7 @@ class PEAR_Info
                     array('{key}', '{value}'),
                     array(ucfirst($key), $value),
                     $html_channel
-                    );
+                );
                 $html_pear_channel .= $html_channel;
             }
             $html_pear_channel .= '
@@ -725,6 +913,8 @@ class PEAR_Info
 </tr>
 </table>
 ';
+        $channel_allowed = $this->options['channels'];
+
         $available = $this->reg->listAllPackages();
         if (PEAR::isError($available)) {
             $e = '<p class="error">An Error occured while fetching the credits from the remote server.'
@@ -741,6 +931,9 @@ class PEAR_Info
 <tr class="h"><td>Package</td><td>Maintainers</td></tr>
 ';
         foreach ($available as $channel => $pkg) {
+            if (!in_array($channel, $channel_allowed)) {
+                continue;
+            }
             foreach ($pkg as $name) {
                 $info = &$this->reg->getPackage($name, $channel);
                 if (is_object($info)) {
@@ -832,7 +1025,7 @@ class PEAR_Info
      *
      * @return void
      * @access public
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
     function display()
     {
@@ -844,7 +1037,7 @@ class PEAR_Info
      *
      * @return string
      * @access public
-     * @since  1.7.0b1
+     * @since  1.7.0RC1
      */
     function toHtml()
     {
