@@ -48,16 +48,13 @@ $p2->setNotes('* news
 - Easy change look and feel with a simple CSS file
 - Show packages dependencies list
 - HTML page output is XHTML compliant
-
-Introduce option setup system to :
-- display a quick list of package
-- decide which package channel to show
+- Introduce a full and flexible configuration system to show only information you want
+  (see example pear_info5.php)
 
 Only for PEAR 1.4.x or better :
 - Show channel list
 - Show maintainer inactive status in Credits page
 - Support REST 1.0 protocol
-- Support site mirror (preferred_mirror)
 
 * changes
 - drop support of package xml 1.0
