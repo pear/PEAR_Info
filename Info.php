@@ -195,10 +195,15 @@ class PEAR_Info
             $this->config->set('http_proxy', PEAR_INFO_PROXY);
         }
 
-        // Get the config's registry object.
         if (empty($user_file)) {
             if (empty($system_file)) {
-                $layer = 'user';
+                $user_file = $this->config->getConfFile('user');
+                if (file_exists($user_file)) {
+                    $layer = 'user';
+                } else {
+                    $system_file = $this->config->getConfFile('system');
+                    $layer = 'system';
+                }
             } else {
                 $layer = 'system';
             }
@@ -206,12 +211,11 @@ class PEAR_Info
             $layer = 'user';
         }
         // prevent unexpected result if PEAR config file does not exist
-        $userConf = $this->config->getConfFile('user');
-        $systemConf = $this->config->getConfFile('system');
-        if (!file_exists($userConf) && !file_exists($systemConf)) {
-            trigger_error("PEAR configuration files '$userConf', '$systemConf' does not exist", E_USER_ERROR);
+        if (!file_exists($user_file) && !file_exists($system_file)) {
+            trigger_error("PEAR configuration files '$user_file', '$system_file' does not exist", E_USER_ERROR);
             exit();
         }
+        // Get the config's registry object.
         $this->reg = &$this->config->getRegistry($layer);
 
         // Get list of all channels in your PEAR install, when 'channels' option is empty
