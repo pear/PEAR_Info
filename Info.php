@@ -206,12 +206,23 @@ class PEAR_Info
             $layer = 'user';
         }
         // prevent unexpected result if PEAR config file does not exist
-        $confFile = $this->config->getConfFile($layer);
-        if (!file_exists($confFile)) {
-            trigger_error("PEAR configuration file '$confFile' does not exist", E_USER_WARNING);
+        $userConf = $this->config->getConfFile('user');
+        $systemConf = $this->config->getConfFile('system');
+        if (!file_exists($userConf) && !file_exists($systemConf)) {
+            trigger_error("PEAR configuration files '$userConf', '$systemConf' does not exist", E_USER_ERROR);
             exit();
         }
         $this->reg = &$this->config->getRegistry($layer);
+
+        // Get list of all channels in your PEAR install, when 'channels' option is empty
+        if (isset($this->options['channels']) && empty($this->options['channels'])) {
+            $channels = $this->reg->listChannels();
+            if (PEAR::isError($channels)) {
+                $this->options['channels'] = array('pear.php.net');
+            } else {
+                $this->options['channels'] = $channels;
+            }
+        }
 
         // show general informations such as PEAR version, PEAR logo, and config file used
         if ($this->options['resume'] & PEAR_INFO_GENERAL) {
