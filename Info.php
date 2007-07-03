@@ -1111,7 +1111,9 @@ $styles
 </style>
 </head>
 <body>
+<div>
 $body
+</div>
 </body>
 </html>
 HTML;
