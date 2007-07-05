@@ -21,11 +21,13 @@
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'AllTests::main');
+    define('PHPUnit_MAIN_METHOD', 'PEAR_Info_AllTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
+
+chdir(dirname(__FILE__));
 
 require_once 'PEAR_Info_TestCase_DefaultConfig.php';
 require_once 'PEAR_Info_TestCase_CustomConfig.php';
@@ -34,11 +36,11 @@ require_once 'PEAR_Info_TestCase_CustomConfig.php';
  * PEAR_Info no-regression test suite
  *
  * Run all tests from the package root directory:
- * #phpunit AllTests tests/AllTests.php
+ * #phpunit PEAR_Info_AllTests tests/AllTests.php
  * or
  * #php tests/AllTests.php
  * or for code coverage testing
- * #phpunit --report tests/coverage AllTests tests/AllTests.php
+ * #phpunit --report tests/coverage PEAR_Info_AllTests tests/AllTests.php
  *
  * After the code coverage test browse the index.html file in tests/coverage.
  * The code coverage is close to 100%.
@@ -53,7 +55,7 @@ require_once 'PEAR_Info_TestCase_CustomConfig.php';
  * @since      Class available since Release 1.7.0
  */
 
-class AllTests
+class PEAR_Info_AllTests
 {
     /**
      * Runs the test suite
@@ -85,8 +87,8 @@ class AllTests
     }
 }
 
-if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
-    AllTests::main();
+if (PHPUnit_MAIN_METHOD == 'PEAR_Info_AllTests::main') {
+    PEAR_Info_AllTests::main();
 }
 
 ?>
