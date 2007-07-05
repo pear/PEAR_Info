@@ -607,14 +607,14 @@ class PEAR_Info
                 }
                 $current_index = $name{0};
                 if (strtolower($current_index) != strtolower($old_index)) {
-                    $packages .= '<a name="' . $current_index . $anchor_suffix . '"></a>';
+                    $packages .= '<a id="' . $current_index . $anchor_suffix . '"></a>';
                     $old_index = $current_index;
                     $index[] = $current_index;
                 }
 
                 // prepare package informations template
                 $ptpl = '
-<h2><a name="pkg_{package}">{package}</a></h2>
+<h2><a id="pkg_{package}">{package}</a></h2>
 <table>
 ';
                 $packages .= str_replace('{package}',
@@ -797,7 +797,7 @@ class PEAR_Info
             }
 
             $index_header = '
-<h2><a name="{top}">Installed Packages, Channel {channel}</a></h2>
+<h2><a id="{top}">Installed Packages, Channel {channel}</a></h2>
 <table>
 <tr>
     <td class="e">
