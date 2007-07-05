@@ -184,12 +184,36 @@ class PEAR_Info
             $this->options = array_merge($this->options, $options);
         }
 
-        $this->config =& PEAR_Config::singleton($user_file, $system_file);
-
         // to keep compatibility with version less or equal than 1.6.1
         if (!empty($pear_dir) && empty($user_file) && empty($system_file)) {
-            $this->config->set('php_dir', $pear_dir);
+            // try to find a PEAR user-defined config file into $pear_dir
+            $user_file = $pear_dir . DIRECTORY_SEPARATOR;
+            if (OS_WINDOWS) {
+                $user_file .= 'pear.ini';
+            } else {
+                $user_file .= '.pearrc';
+            }
+            if (!file_exists($user_file)) {
+            // try to find a PEAR system-wide config file into $pear_dir
+                $system_file = $pear_dir . DIRECTORY_SEPARATOR;
+                if (OS_WINDOWS) {
+                    $system_file .= 'pearsys.ini';
+                } else {
+                    $system_file .= 'pear.conf';
+                }
+
+                if (!file_exists($system_file)) {
+                    trigger_error("No PEAR configuration files ("
+                        . basename($user_file) . " or ". basename($system_file)
+                        . ") found into '$pear_dir' directory", E_USER_ERROR);
+                    exit();
+                }
+                $user_file = '';
+            }
         }
+
+        $this->config =& PEAR_Config::singleton($user_file, $system_file);
+
         // to keep compatibility with version less or equal than 1.6.1
         if (defined('PEAR_INFO_PROXY')) {
             $this->config->set('http_proxy', PEAR_INFO_PROXY);
