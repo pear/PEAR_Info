@@ -64,7 +64,7 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
     {
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
         // in PEAR Info TestCase DefaultConfig
-        require_once 'PEAR/Info.php';
+        require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
     }
 
     /**

@@ -79,7 +79,7 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
         // debug-code: error_log('set PHP_PEAR_SYSCONF_DIR to ' . getenv('PHP_PEAR_SYSCONF_DIR'), 0);
 
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
-        require_once 'PEAR/Info.php';
+        require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
     }
 
     /**
