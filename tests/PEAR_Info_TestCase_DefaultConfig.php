@@ -26,6 +26,8 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 
 require_once 'PHPUnit/Framework.php';
 
+chdir(dirname(__FILE__));
+
 /**
  * Unit test case for PEAR_Info default configuration files usage.
  *
