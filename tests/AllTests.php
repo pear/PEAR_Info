@@ -31,6 +31,7 @@ chdir(dirname(__FILE__));
 
 require_once 'PEAR_Info_TestCase_DefaultConfig.php';
 require_once 'PEAR_Info_TestCase_CustomConfig.php';
+require_once 'PEAR_Info_TestCase_Install.php';
 
 /**
  * PEAR_Info no-regression test suite
@@ -83,6 +84,7 @@ class PEAR_Info_AllTests
         $suite = new PHPUnit_Framework_TestSuite('PEAR_Info Test Suite');
         $suite->addTestSuite('PEAR_Info_TestCase_DefaultConfig');
         $suite->addTestSuite('PEAR_Info_TestCase_CustomConfig');
+        $suite->addTestSuite('PEAR_Info_TestCase_Install');
         return $suite;
     }
 }
