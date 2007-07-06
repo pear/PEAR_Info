@@ -318,9 +318,9 @@ class PEAR_Info
     }
 
     /**
-     * Set PEAR http_proxy for remote calls
+     * Sets PEAR HTTP Proxy Server Address
      *
-     * @param  string  $proxy  HTTP Proxy Server Address
+     * @param  string  $proxy  PEAR HTTP Proxy Server Address
      * @static
      * @return bool
      * @access public
@@ -333,7 +333,13 @@ class PEAR_Info
     }
 
     /**
-     * Returns the custom style sheet to use for layout
+     * Returns the custom style sheet to use for presentation
+     *
+     * Default behavior is to return css string contents.
+     * Sets $content parameter to false will return css filename reference
+     * (defined by setStyleSheet function).
+     * Easy for a <link rel="stylesheet" type="text/css" href="" />
+     * html tag integration (see example pear_info3.php).
      *
      * @param  bool  $content (optional) Either return css filename or string contents
      * @return string
@@ -351,7 +357,10 @@ class PEAR_Info
     }
 
     /**
-     * Set the custom style sheet to use your own styles
+     * Sets the custom style sheet to use your own styles
+     *
+     * Sets the custom style sheet (colors, sizes) to applied to PEAR_Info output.
+     * If you don't give any parameter, you'll then apply again the default style.
      *
      * @param  string  $css (optional) File to read user-defined styles from
      * @return bool    True if custom styles, false if default styles applied
@@ -1083,9 +1092,12 @@ class PEAR_Info
     /**
      * Shows PEAR_Info output
      *
+     * Displays PEAR_Info output depending of style applied (style sheet).
+     *
      * @return void
      * @access public
      * @since  1.0.1
+     * @see    setStyleSheet()
      * @deprecated  use display() instead
      */
     function show()
@@ -1096,9 +1108,12 @@ class PEAR_Info
     /**
      * Displays PEAR_Info output
      *
+     * Displays PEAR_Info output depending of style applied (style sheet).
+     *
      * @return void
      * @access public
      * @since  1.7.0RC1
+     * @see    setStyleSheet()
      */
     function display()
     {
@@ -1108,9 +1123,12 @@ class PEAR_Info
     /**
      * Returns PEAR_Info output (html code)
      *
+     * Returns html code. This code is XHTML 1.1 compliant since version 1.7.0
+     *
      * @return string
      * @access public
      * @since  1.7.0RC1
+     * @see    setStyleSheet(), getStyleSheet()
      */
     function toHtml()
     {
