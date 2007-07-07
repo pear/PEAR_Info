@@ -75,6 +75,7 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         chdir(dirname(__FILE__));
+        xdebug_start_trace(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'trace.pear_info.out');
 
         $this->sysconfdir = getenv('PHP_PEAR_SYSCONF_DIR');
         $sysconfdir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sysconf_dir';
@@ -108,6 +109,7 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+        xdebug_stop_trace();
         putenv("PHP_PEAR_SYSCONF_DIR=" . $this->sysconfdir);
         // debug-code:  error_log('restore PHP_PEAR_SYSCONF_DIR to ' . getenv('PHP_PEAR_SYSCONF_DIR'), 0);
     }
