@@ -26,8 +26,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 
 require_once 'PHPUnit/Framework.php';
 
-chdir(dirname(__FILE__));
-
 /**
  * Unit test case for PEAR_Info default configuration files usage.
  *
@@ -76,12 +74,29 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        chdir(dirname(__FILE__));
+
         $this->sysconfdir = getenv('PHP_PEAR_SYSCONF_DIR');
-        putenv("PHP_PEAR_SYSCONF_DIR=" . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sysconf_dir');
+        $sysconfdir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sysconf_dir';
+        putenv("PHP_PEAR_SYSCONF_DIR=" . $sysconfdir);
         // debug-code: error_log('set PHP_PEAR_SYSCONF_DIR to ' . getenv('PHP_PEAR_SYSCONF_DIR'), 0);
 
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
         require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
+        // debug-code: error_log('pear_info included from = '. realpath('..' . DIRECTORY_SEPARATOR), 0);
+
+        if (OS_WINDOWS) {
+            $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pearsys.ini';
+        } else {
+            $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pear.conf';
+        }
+
+        if (!file_exists($conf_file)) {
+            $config =& PEAR_Config::singleton();
+            $config->set('php_dir', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'pear_dir');
+            $config->writeConfigFile($conf_file);
+            // debug-code: error_log('write pear config file : ' . $conf_file, 0);
+        }
     }
 
     /**

@@ -26,8 +26,6 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 
 require_once 'PHPUnit/Framework.php';
 
-chdir(dirname(__FILE__));
-
 /**
  * Unit test case for PEAR_Info custom configuration files usage.
  *
@@ -42,6 +40,24 @@ chdir(dirname(__FILE__));
  */
 class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Tells what is your local primary PEAR install directory (for simulation)
+     *
+     * @var    string
+     * @access private
+     * @since  1.7.0
+     */
+    private $peardir;
+
+    /**
+     * Tells what is your local secondary PEAR install directory (for simulation)
+     *
+     * @var    string
+     * @access private
+     * @since  1.7.0
+     */
+    private $userdir;
+
     /**
      * Runs the test methods of this class.
      *
@@ -64,9 +80,37 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        chdir(dirname(__FILE__));
+
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
         // in PEAR Info TestCase DefaultConfig
         require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
+
+        $this->peardir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'pear_dir';
+        $this->userdir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'user_dir';
+
+        // prepare a simulation of a PEAR install
+        if (OS_WINDOWS) {
+            $conf_file    = $this->peardir . DIRECTORY_SEPARATOR . 'pearsys.ini';
+            $custom_file1 = $this->peardir . DIRECTORY_SEPARATOR . 'name1.pearsys.ini';
+            $custom_file2 = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pearsys.ini';
+        } else {
+            $conf_file    = $this->peardir . DIRECTORY_SEPARATOR . 'pear.conf';
+            $custom_file1 = $this->peardir . DIRECTORY_SEPARATOR . 'name1.pear.conf';
+            $custom_file2 = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pear.conf';
+        }
+
+        // write once PEAR system-wide config file for simulation
+        if (!file_exists($conf_file)) {
+            $config =& PEAR_Config::singleton();
+            $config->set('php_dir', $this->peardir);
+            $config->writeConfigFile($conf_file, 'system');
+            // debug-code: error_log('write pear config file : ' . $conf_file, 0);
+
+            // also writes custom pear system config files
+            $config->writeConfigFile($custom_file1, 'system');
+            $config->writeConfigFile($custom_file2, 'system');
+        }
     }
 
     /**
@@ -91,8 +135,7 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
      */
     public function testConfigFilesExistWithDefaultNameInPearDir()
     {
-        $pearDir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'pear_dir';
-        $pearInfo = new PEAR_Info($pearDir);
+        $pearInfo = new PEAR_Info($this->peardir);
         $this->assertTrue(is_a($pearInfo, 'PEAR_Info'));
     }
 
@@ -108,10 +151,15 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
      */
     public function testConfigFilesExistWithCustomNameInPearDir()
     {
-        $pearDir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'pear_dir' . DIRECTORY_SEPARATOR;
-        $userFile = $pearDir . 'pear.custom.ini';
-        $systemFile = $pearDir . 'pearsys.custom.ini';
-        $pearInfo = new PEAR_Info($pearDir, $userFile, $systemFile);
+        // both files are not necessary, we creates only pear system file
+        if (OS_WINDOWS) {
+            $systemFile = $this->peardir . DIRECTORY_SEPARATOR . 'name1.pearsys.ini';
+        } else {
+            $systemFile = $this->peardir . DIRECTORY_SEPARATOR . 'name1.pear.conf';
+        }
+        $userFile = '';
+
+        $pearInfo = new PEAR_Info($this->peardir, $userFile, $systemFile);
         $this->assertTrue(is_a($pearInfo, 'PEAR_Info'));
     }
 
@@ -126,9 +174,13 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
      */
     public function testConfigFilesExistInUsrConfDir()
     {
-        $userDir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'user_dir' . DIRECTORY_SEPARATOR;
-        $userFile = $userDir . 'pear.custom.ini';
-        $systemFile = $userDir . 'pearsys.custom.ini';
+        // both files are not necessary, we creates only pear system file
+        if (OS_WINDOWS) {
+            $systemFile = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pearsys.ini';
+        } else {
+            $systemFile = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pear.conf';
+        }
+        $userFile = '';
 
         $pearInfo = new PEAR_Info('', $userFile, $systemFile);
         $this->assertTrue(is_a($pearInfo, 'PEAR_Info'));
