@@ -74,6 +74,8 @@ class PEAR_Info_TestCase_Install extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        chdir(dirname(__FILE__));
+
         $this->sysconfdir = getenv('PHP_PEAR_SYSCONF_DIR');
         putenv("PHP_PEAR_SYSCONF_DIR=" . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sysconf_dir');
 
