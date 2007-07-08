@@ -136,7 +136,7 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
     public function testConfigFilesExistWithDefaultNameInPearDir()
     {
         $pearInfo = new PEAR_Info($this->peardir);
-        $this->assertTrue(is_a($pearInfo, 'PEAR_Info'));
+        $this->assertTrue($pearInfo instanceof PEAR_Info);
     }
 
     /**
@@ -160,7 +160,7 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
         $userFile = '';
 
         $pearInfo = new PEAR_Info($this->peardir, $userFile, $systemFile);
-        $this->assertTrue(is_a($pearInfo, 'PEAR_Info'));
+        $this->assertTrue($pearInfo instanceof PEAR_Info);
     }
 
     /**
@@ -183,7 +183,7 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
         $userFile = '';
 
         $pearInfo = new PEAR_Info('', $userFile, $systemFile);
-        $this->assertTrue(is_a($pearInfo, 'PEAR_Info'));
+        $this->assertTrue($pearInfo instanceof PEAR_Info);
     }
 }
 
