@@ -75,7 +75,7 @@ define ('PEAR_INFO_CONFIGURATION',            4);
  */
 define ('PEAR_INFO_CHANNELS',                 8);
 /**#@+
- * Information on PEAR channels.
+ * Information on PEAR packages.
  *
  * @var        integer
  * @since      1.7.0RC1
@@ -96,7 +96,27 @@ define ('PEAR_INFO_PACKAGES_UPDATE',         16);
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_ALL',                    -1);
+define ('PEAR_INFO_ALL',                   4095);
+/**#@+
+ * Information on PEAR credits.
+ *
+ * @var        integer
+ * @since      1.7.0RC3
+ */
+define ('PEAR_INFO_CREDITS_GROUP',         4096);
+define ('PEAR_INFO_CREDITS_DOCS',          8192);
+define ('PEAR_INFO_CREDITS_WEBSITE',      16384);
+define ('PEAR_INFO_CREDITS_PACKAGES',     32768);
+define ('PEAR_INFO_CREDITS_ALL',          61440);
+/**#@-*/
+/**
+ * Indicates that a complete stand-alone HTML page needs to be printed
+ * including the information indicated by the other flags.
+ *
+ * @var        integer
+ * @since      1.7.0RC3
+ */
+define ('PEAR_INFO_FULLPAGE',             65536);
 
 /**
  * The PEAR_Info class generate phpinfo() style PEAR information.
@@ -178,7 +198,8 @@ class PEAR_Info
     function __construct($pear_dir = '', $user_file = '', $system_file = '', $options = null)
     {
         // options defined at run-time (default)
-        $this->options = array('channels' => array('pear.php.net'), 'resume' => PEAR_INFO_ALL);
+        $this->options = array('channels' => array('pear.php.net'),
+            'resume' => PEAR_INFO_ALL | PEAR_INFO_FULLPAGE);
         if (isset($options)) {
             // overwrite one to all defaults
             $this->options = array_merge($this->options, $options);
@@ -292,7 +313,10 @@ class PEAR_Info
             );
         }
 
-        if (!isset($_GET['credits'])) {
+        if (($this->options['resume'] & PEAR_INFO_CREDITS_ALL) ||
+            isset($_GET['credits'])) {
+            $this->info .= $this->getCredits();
+        } else {
             if ($this->options['resume'] & PEAR_INFO_CREDITS) {
                 $this->info .= '
 <h1><a href="{phpself}?credits=true">PEAR Credits</a></h1>
@@ -311,9 +335,6 @@ class PEAR_Info
             if ($this->options['resume'] & PEAR_INFO_PACKAGES) {
                 $this->info .= $this->getPackages();
             }
-
-        } else {
-            $this->info .= $this->getCredits();
         }
     }
 
@@ -949,40 +970,109 @@ class PEAR_Info
      */
     function getCredits()
     {
-        $html_pear_credits = '
-<h1>PEAR Credits</h1>
+        $html_pear_credits = '<h1>PEAR Credits</h1>';
+
+        $teams = PEAR_Info::getMembers();
+
+        if (($this->options['resume'] & PEAR_INFO_CREDITS_GROUP) ||
+            isset($_GET['credits'])) {
+            $html_pear_credits .= '
 <table>
-    <tr class="h">
+    <tr class="hc">
+        <td colspan="2">
+            PEAR Group
+        </td>
+    </tr>
+    <tr class="v">
+        <td class="e">
+            President
+        </td>
+        <td>
+            {president}
+        </td>
+    </tr>
+    <tr class="v">
+        <td colspan="2">
+';
+            foreach ($teams['president'] as $handle => $name) {
+                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                    . $handle .'">'. $name .'</a>,';
+                $html_pear_credits = str_replace('{president}',
+                    $html_member, $html_pear_credits);
+            }
+
+            foreach ($teams['group'] as $handle => $name) {
+                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                    . $handle .'">'. $name .'</a>,';
+                $html_pear_credits .= $html_member;
+            }
+
+            $html_pear_credits .= '
+        </td>
+    </tr>
+</table>
+<br />
+';
+        }
+
+        if (($this->options['resume'] & PEAR_INFO_CREDITS_DOCS) ||
+            isset($_GET['credits'])) {
+            $html_pear_credits .= '
+<table>
+    <tr class="hc">
+        <td>
+            PEAR Documentation Team
+        </td>
+    </tr>
+    <tr class="v">
+        <td>
+';
+            foreach ($teams['docs'] as $handle => $name) {
+                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                    . $handle .'">'. $name .'</a>,';
+                $html_pear_credits .= $html_member;
+            }
+
+            $html_pear_credits .= '
+        </td>
+    </tr>
+</table>
+<br />
+';
+        }
+
+        if (($this->options['resume'] & PEAR_INFO_CREDITS_WEBSITE) ||
+            isset($_GET['credits'])) {
+            $html_pear_credits .= '
+<table>
+    <tr class="hc">
         <td>
             PEAR Website Team
         </td>
     </tr>
     <tr class="v">
         <td>
-            <a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>,
-            <a href="http://pear.php.net/account-info.php?handle=cox">Thomas V.V.Cox</a>,
-            <a href="http://pear.php.net/account-info.php?handle=mj">Martin Jansen</a>,
-            <a href="http://pear.php.net/account-info.php?handle=cmv">Colin Viebrock</a>,
-            <a href="http://pear.php.net/account-info.php?handle=richard">Richard Heyes</a>
+';
+            foreach ($teams['website'] as $handle => $name) {
+                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                    . $handle .'">'. $name .'</a>,';
+                $html_pear_credits .= $html_member;
+            }
+
+            $html_pear_credits .= '
         </td>
     </tr>
 </table>
 <br />
-<table>
-<tr class="h">
-    <td>
-        PEAR documentation team
-    </td>
-</tr>
-<tr class="v">
-    <td>
-        <a href="http://pear.php.net/account-info.php?handle=cox">Thomas V.V.Cox</a>,
-        <a href="http://pear.php.net/account-info.php?handle=mj">Martin Jansen</a>,
-        <a href="http://pear.php.net/account-info.php?handle=alexmerz">Alexander Merz</a>
-    </td>
-</tr>
-</table>
 ';
+        }
+
+        if (!($this->options['resume'] & PEAR_INFO_CREDITS_PACKAGES) &&
+            !isset($_GET['credits'])) {
+            return $html_pear_credits;
+        }
+
+        // Credits authors of packages group by channels
         $channel_allowed = $this->options['channels'];
 
         $available = $this->reg->listAllPackages();
@@ -1090,6 +1180,63 @@ class PEAR_Info
     }
 
     /**
+     * Returns a members list depending of its category (group, docs, website)
+     *
+     * @param  string $group   (optional) Member list category.
+     *                         Either president, group, docs or website
+     * @param  bool   $sort    (optional) Return a member list sorted
+     *                         in alphabetic order
+     * @static
+     * @return array
+     * @access public
+     * @since  1.7.0RC3
+     */
+    function getMembers($group = 'all', $sort = true)
+    {
+         $members = array(
+             'president' => array('cellog' => 'Gregory Beaver'),
+             'group'     => array(
+                 'mj' => 'Martin Jansen',
+                 'davidc' => 'David Coallier',
+                 'arnaud' => 'Arnaud Limbourg',
+                 'jeichorn' => 'Joshua Eichorn',
+                 'cweiske' => 'Christian Weiske',
+                 'dufuz' => 'Helgi &thorn;ormar',
+                 'pmjones' => 'Paul M. Jones',
+                 ),
+             'docs'      => array(
+                 'mj' => 'Martin Jansen',
+                 'cox' => 'Thomas V.V.Cox',
+                 'alexmerz' => 'Alexander Merz',
+                 ),
+             'website'   => array(
+                 'ssb' => 'Stig Bakken',
+                 'mj' => 'Martin Jansen',
+                 'cox' => 'Thomas V.V.Cox',
+                 'cmv' => 'Colin Viebrock',
+                 'richard' => 'Richard Heyes',
+                 )
+             );
+
+         if ($group === 'all') {
+             $list = $members;
+             if ($sort === true) {
+                 asort($list['group']);
+                 asort($list['docs']);
+                 asort($list['website']);
+             }
+         }elseif (in_array($group, array_keys($members))) {
+             $list = $members[$group];
+             if ($sort === true) {
+                 asort($list);
+             }
+         } else {
+             $list = false;
+         }
+         return $list;
+    }
+
+    /**
      * Shows PEAR_Info output
      *
      * Displays PEAR_Info output depending of style applied (style sheet).
@@ -1124,6 +1271,8 @@ class PEAR_Info
      * Returns PEAR_Info output (html code)
      *
      * Returns html code. This code is XHTML 1.1 compliant since version 1.7.0
+     * A stand-alone HTML page will be printed only if PEAR_INFO_FULLPAGE
+     * resume options is set.
      *
      * @return string
      * @access public
@@ -1132,13 +1281,17 @@ class PEAR_Info
      */
     function toHtml()
     {
+        $body = $this->info;
+
+        if (!($this->options['resume'] & PEAR_INFO_FULLPAGE)) {
+            return $body;
+        }
+
         if (!isset($this->css)) {
             // when no user-styles defined, used the default values
             $this->setStyleSheet();
         }
         $styles = $this->getStyleSheet();
-
-        $body = $this->info;
 
         $html = <<<HTML
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
