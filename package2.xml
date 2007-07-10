@@ -26,10 +26,10 @@
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2007-07-02</date>
- <time>22:36:50</time>
+ <date>2007-07-10</date>
+ <time>19:49:56</time>
  <version>
-  <release>1.7.0RC2</release>
+  <release>1.7.0RC3</release>
   <api>1.7.0</api>
  </version>
  <stability>
@@ -38,13 +38,12 @@
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>* changes
-- &quot;channels&quot; key option not defined give only the pear.php.net channel information
-- &quot;channels&quot; key option with a list give only this list of channels
-- &quot;channels&quot; key option with an empty array give all channels information
-  (see new example pear_info6.php)
+- Credits page is now customizable with PEAR_INFO_CREDITS_* constant
+- You may have a standalone html page (default behavior) with PEAR_INFO_FULLPAGE
+  or just part of html code related to information wanted ; Easy to include in your own pages
+- new method that give PEAR members list (president, group, docs, website)
 
-* bugs
-- fixed bug #11489 - Configuration file warning
+Stable release 1.7.0 is scheduled for July 17. This is the last release candidate.
  </notes>
  <contents>
   <dir baseinstalldir="PEAR" name="/">
@@ -57,7 +56,20 @@
     <file name="pear_info4.php" role="doc" />
     <file name="pear_info5.php" role="doc" />
     <file name="pear_info6.php" role="doc" />
-   </dir> <!-- //examples -->
+    <file name="pear_info7.php" role="doc" />
+   </dir> <!-- /examples -->
+   <dir name="tests">
+    <dir name="templates">
+     <file name="credits.tpl" role="test" />
+     <file name="general.tpl" role="test" />
+    </dir> <!-- /tests/templates -->
+    <file name="AllTests.php" role="test" />
+    <file name="OutputTestCase.php" role="test" />
+    <file name="PEAR_Info_TestCase_CustomConfig.php" role="test" />
+    <file name="PEAR_Info_TestCase_DefaultConfig.php" role="test" />
+    <file name="PEAR_Info_TestCase_Install.php" role="test" />
+    <file name="PEAR_Info_TestCase_Output.php" role="test" />
+   </dir> <!-- /tests -->
    <file name="Info.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@package_name@" to="name" type="package-info" />
@@ -85,6 +97,26 @@
  <changelog>
   <release>
    <version>
+    <release>1.7.0RC3</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-07-10</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* changes
+- Credits page is now customizable with PEAR_INFO_CREDITS_* constant
+- You may have a standalone html page (default behavior) with PEAR_INFO_FULLPAGE
+  or just part of html code related to information wanted ; Easy to include in your own pages
+- new method that give PEAR members list (president, group, docs, website)
+
+Stable release 1.7.0 is scheduled for July 17. This is the last release candidate.
+   </notes>
+  </release>
+  <release>
+   <version>
     <release>1.7.0RC2</release>
     <api>1.7.0</api>
    </version>
@@ -101,8 +133,7 @@
   (see new example pear_info6.php)
 
 * bugs
-- fixed bug #11489 - Configuration file warning
-   </notes>
+- fixed bug #11489 - Configuration file warning</notes>
   </release>
   <release>
    <version>

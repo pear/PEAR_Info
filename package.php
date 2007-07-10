@@ -39,18 +39,17 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->generateContents();
 $p2->addRelease();
-$p2->setReleaseVersion('1.7.0RC2');
+$p2->setReleaseVersion('1.7.0RC3');
 $p2->setAPIVersion('1.7.0');
 $p2->setReleaseStability('beta');
 $p2->setAPIStability('stable');
 $p2->setNotes('* changes
-- "channels" key option not defined give only the pear.php.net channel information
-- "channels" key option with a list give only this list of channels
-- "channels" key option with an empty array give all channels information
-  (see new example pear_info6.php)
+- Credits page is now customizable with PEAR_INFO_CREDITS_* constant
+- You may have a standalone html page (default behavior) with PEAR_INFO_FULLPAGE
+  or just part of html code related to information wanted ; Easy to include in your own pages
+- new method that give PEAR members list (president, group, docs, website)
 
-* bugs
-- fixed bug #11489 - Configuration file warning
+Stable release 1.7.0 is scheduled for July 17. This is the last release candidate.
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 //$p2->addMaintainer('lead', 'farell', 'Laurent Laville', 'pear@laurent-laville.org');
