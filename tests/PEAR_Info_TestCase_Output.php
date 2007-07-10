@@ -25,7 +25,8 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 }
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Extensions/OutputTestCase.php';
+#require_once 'PHPUnit/Extensions/OutputTestCase.php';
+require_once 'OutputTestCase.php';
 
 /**
  * Unit test case to get html code results
@@ -85,7 +86,6 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
     protected function setUp()
     {
         chdir(dirname(__FILE__));
-        xdebug_start_trace(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'trace.pear_info.out');
 
         $this->tpldir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'templates';
 
@@ -94,6 +94,8 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
 
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
         require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
+
+        $this->setOutputCallback(array(&$this, 'normalizeOutput'));
     }
 
     /**
@@ -105,12 +107,11 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
      */
     protected function tearDown()
     {
-        xdebug_stop_trace();
         putenv("PHP_PEAR_SYSCONF_DIR=" . $this->sysconfdir);
     }
 
     /**
-     * Test the html output render.
+     * Test the general html output render.
      *
      * @access public
      * @since  1.7.0
@@ -124,7 +125,7 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
             $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pear.conf';
         }
 
-        $options = array('resume' =>  PEAR_INFO_GENERAL);
+        $options = array('resume' =>  PEAR_INFO_GENERAL | PEAR_INFO_FULLPAGE);
         $pearInfo = new PEAR_Info('', '', '', $options);
         // We must specify here the default stylesheet used, because package source
         // did not include the task replacement values
@@ -135,13 +136,44 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
         $html = file_get_contents($this->tpldir . DIRECTORY_SEPARATOR . 'general.tpl');
         $html = str_replace(array('{config_file}', '{script_filename}'),
             array($conf_file, $_SERVER['SCRIPT_FILENAME']), $html);
-        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'general.exp', $html);
+        $html = $this->normalizeOutput($html);
 
         $this->expectOutputString($html);
         $pearInfo->show();
+    }
 
-        $now = ob_get_contents();
-        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'general.out', $now);
+    /**
+     * Test the credits html output render.
+     *
+     * @access public
+     * @since  1.7.0
+     */
+    public function testHtmlOutputCredits()
+    {
+        $sysconfdir = getenv('PHP_PEAR_SYSCONF_DIR');
+        if (OS_WINDOWS) {
+            $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pearsys.ini';
+        } else {
+            $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pear.conf';
+        }
+
+        $options = array('resume' =>  PEAR_INFO_GENERAL |
+            (PEAR_INFO_CREDITS_ALL - PEAR_INFO_CREDITS_PACKAGES) |
+            PEAR_INFO_FULLPAGE);
+        $pearInfo = new PEAR_Info('', '', '', $options);
+        // We must specify here the default stylesheet used, because package source
+        // did not include the task replacement values
+        $css = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . 'pearinfo.css';
+        $pearInfo->setStyleSheet($css);
+
+        $html = file_get_contents($this->tpldir . DIRECTORY_SEPARATOR . 'credits.tpl');
+        $html = str_replace(array('{config_file}', '{script_filename}'),
+            array($conf_file, $_SERVER['SCRIPT_FILENAME']), $html);
+        $html = $this->normalizeOutput($html);
+
+        $this->expectOutputString($html);
+        $pearInfo->show();
     }
 }
 
