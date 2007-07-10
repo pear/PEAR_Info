@@ -31,7 +31,7 @@ error_reporting(E_ALL);
 #$options = array('resume' => PEAR_INFO_CONFIGURATION);
 #$options = array('resume' => PEAR_INFO_CREDITS);
 #$options = array('resume' => PEAR_INFO_GENERAL | PEAR_INFO_CREDITS | PEAR_INFO_CONFIGURATION);
-$options = array('resume' =>  PEAR_INFO_GENERAL |PEAR_INFO_CHANNELS | PEAR_INFO_PACKAGES_VERSION,
+$options = array('resume' =>  PEAR_INFO_GENERAL | PEAR_INFO_CHANNELS | PEAR_INFO_PACKAGES_VERSION | PEAR_INFO_FULLPAGE,
     'channels' => array('pear.php.net', '__uri')
 );
 

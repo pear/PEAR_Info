@@ -10,7 +10,7 @@
 
 require_once 'PEAR/Info.php';
 
-$options = array('resume' =>  PEAR_INFO_GENERAL | PEAR_INFO_CHANNELS,
+$options = array('resume' =>  PEAR_INFO_GENERAL | PEAR_INFO_CHANNELS | PEAR_INFO_FULLPAGE,
     'channels' => array()
 );
 
