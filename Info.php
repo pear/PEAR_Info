@@ -224,10 +224,11 @@ class PEAR_Info
                 }
 
                 if (!file_exists($system_file)) {
-                    trigger_error("No PEAR configuration files ("
-                        . basename($user_file) . " or ". basename($system_file)
-                        . ") found into '$pear_dir' directory", E_USER_ERROR);
-                    exit();
+                    $e = '<p class="error">No PEAR configuration files ('
+                        . basename($user_file) . ' or ' . basename($system_file)
+                        . ") found into '$pear_dir' directory</p>";
+                    $this->info = $e;
+                    return;
                 }
                 $user_file = '';
             }
@@ -240,8 +241,8 @@ class PEAR_Info
             $this->config->set('http_proxy', PEAR_INFO_PROXY);
         }
 
-        if (empty($user_file)) {
-            if (empty($system_file)) {
+        if (empty($user_file) || !file_exists($user_file)) {
+            if (empty($system_file) || !file_exists($system_file)) {
                 $user_file = $this->config->getConfFile('user');
                 if (file_exists($user_file)) {
                     $layer = 'user';
@@ -257,8 +258,10 @@ class PEAR_Info
         }
         // prevent unexpected result if PEAR config file does not exist
         if (!file_exists($user_file) && !file_exists($system_file)) {
-            trigger_error("PEAR configuration files '$user_file', '$system_file' does not exist", E_USER_ERROR);
-            exit();
+            $e = '<p class="error">PEAR configuration files '
+                . $user_file . ', ' . $system_file . ' does not exist</p>';
+            $this->info = $e;
+            return;
         }
         // Get the config's registry object.
         $this->reg = &$this->config->getRegistry($layer);
