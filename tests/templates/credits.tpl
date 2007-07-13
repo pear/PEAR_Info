@@ -81,7 +81,7 @@ td.f {background-color: #006600; font-weight: bold; color: #FFFFFF; }
     </tr>
     <tr class="v">
         <td>
-<a href="http://pear.php.net/account-info.php?handle=alexmerz">Alexander Merz</a>,<a href="http://pear.php.net/account-info.php?handle=mj">Martin Jansen</a>,<a href="http://pear.php.net/account-info.php?handle=cox">Thomas V.V.Cox</a>,
+
         </td>
     </tr>
 </table>
@@ -95,7 +95,7 @@ td.f {background-color: #006600; font-weight: bold; color: #FFFFFF; }
     </tr>
     <tr class="v">
         <td>
-<a href="http://pear.php.net/account-info.php?handle=cmv">Colin Viebrock</a>,<a href="http://pear.php.net/account-info.php?handle=mj">Martin Jansen</a>,<a href="http://pear.php.net/account-info.php?handle=richard">Richard Heyes</a>,<a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a>,<a href="http://pear.php.net/account-info.php?handle=cox">Thomas V.V.Cox</a>,
+
         </td>
     </tr>
 </table>
