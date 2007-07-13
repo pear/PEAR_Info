@@ -113,6 +113,21 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
     }
 
     /**
+     *
+     * @return string
+     * @access public
+     */
+    public function normalizeOutput($buffer)
+    {
+        $tpl = '<tr class="v">\s+<td class="e">\s+'
+            . '(Latest Version|Last Modified)'
+            . '\s+</td>\s+<td>\s+(.*)+\s+</td>\s+</tr>';
+        $buffer = preg_replace("`$tpl`", '', $buffer);
+
+        return str_replace("\r", "", $buffer);
+    }
+
+    /**
      * Test the general html output render.
      *
      * @access public
@@ -143,6 +158,47 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
 
         $this->expectOutputString($html);
         $pearInfo->show();
+    }
+
+    /**
+     * Test the packages html output render.
+     *
+     * @access public
+     * @since  1.7.0
+     */
+    public function testHtmlOutputPackages()
+    {
+        $sysconfdir = getenv('PHP_PEAR_SYSCONF_DIR');
+        if (OS_WINDOWS) {
+            $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pearsys.ini';
+        } else {
+            $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pear.conf';
+        }
+
+        $options = array('resume' =>  PEAR_INFO_FULLPAGE
+            | PEAR_INFO_GENERAL | PEAR_INFO_PACKAGES_VERSION | PEAR_INFO_PACKAGES_UPDATE,
+            'channels' => array()
+        );
+        $pearInfo = new PEAR_Info('', '', '', $options);
+        // We must specify here the default stylesheet used, because package source
+        // did not include the task replacement values
+        $css = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . 'pearinfo.css';
+        $pearInfo->setStyleSheet($css);
+        $styles = $pearInfo->getStyleSheet();
+
+        $html = file_get_contents($this->tpldir . DIRECTORY_SEPARATOR . 'packages.tpl');
+        $html = str_replace(array('{config_file}', '{script_filename}', '{styles}'),
+            array($conf_file, $_SERVER['SCRIPT_FILENAME'], $styles), $html);
+        $html = $this->normalizeOutput($html);
+        $this->expectOutputString($html);
+
+        // we force package update check (PEAR_INFO_PACKAGES_UPDATE)
+        // for a better code coverage but without display results
+        $now = $pearInfo->toHtml();
+        // we get normal output and remove 'Latest version' and 'Last Modified' lines
+        $html = $this->normalizeOutput($html);
+        echo $html;
     }
 
     /**
