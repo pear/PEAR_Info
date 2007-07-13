@@ -1208,16 +1208,8 @@ class PEAR_Info
                  'pmjones' => 'Paul M. Jones',
                  ),
              'docs'      => array(
-                 'mj' => 'Martin Jansen',
-                 'cox' => 'Thomas V.V.Cox',
-                 'alexmerz' => 'Alexander Merz',
                  ),
              'website'   => array(
-                 'ssb' => 'Stig Bakken',
-                 'mj' => 'Martin Jansen',
-                 'cox' => 'Thomas V.V.Cox',
-                 'cmv' => 'Colin Viebrock',
-                 'richard' => 'Richard Heyes',
                  )
              );
 
