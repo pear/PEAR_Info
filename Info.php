@@ -278,13 +278,8 @@ class PEAR_Info
 
         // show general informations such as PEAR version, PEAR logo, and config file used
         if ($this->options['resume'] & PEAR_INFO_GENERAL) {
-            if (method_exists($this->reg, 'getPackage')) {
-                $pear = $this->reg->getPackage("PEAR");
-                $pear_version = $pear->getVersion();
-            } else {
-                $pear = $this->reg->packageInfo('PEAR');
-                $pear_version = $pear['version'];
-            }
+            $pear = $this->reg->getPackage("PEAR");
+            $pear_version = $pear->getVersion();
             $this->info = '
 <table>
 <tr class="h">
