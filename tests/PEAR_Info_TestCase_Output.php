@@ -134,10 +134,11 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
         $css = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
             . DIRECTORY_SEPARATOR . 'pearinfo.css';
         $pearInfo->setStyleSheet($css);
+        $styles = $pearInfo->getStyleSheet();
 
         $html = file_get_contents($this->tpldir . DIRECTORY_SEPARATOR . 'general.tpl');
-        $html = str_replace(array('{config_file}', '{script_filename}'),
-            array($conf_file, $_SERVER['SCRIPT_FILENAME']), $html);
+        $html = str_replace(array('{config_file}', '{script_filename}', '{styles}'),
+            array($conf_file, $_SERVER['SCRIPT_FILENAME'], $styles), $html);
         $html = $this->normalizeOutput($html);
 
         $this->expectOutputString($html);
@@ -168,10 +169,11 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
         $css = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
             . DIRECTORY_SEPARATOR . 'pearinfo.css';
         $pearInfo->setStyleSheet($css);
+        $styles = $pearInfo->getStyleSheet();
 
         $html = file_get_contents($this->tpldir . DIRECTORY_SEPARATOR . 'credits.tpl');
-        $html = str_replace(array('{config_file}', '{script_filename}'),
-            array($conf_file, $_SERVER['SCRIPT_FILENAME']), $html);
+        $html = str_replace(array('{config_file}', '{script_filename}', '{styles}'),
+            array($conf_file, $_SERVER['SCRIPT_FILENAME'], $styles), $html);
         $html = $this->normalizeOutput($html);
 
         $this->expectOutputString($html);
