@@ -105,7 +105,6 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
             $config =& PEAR_Config::singleton();
             $config->set('php_dir', $this->peardir);
             $config->writeConfigFile($conf_file, 'system');
-            // debug-code: error_log('write pear config file : ' . $conf_file, 0);
 
             // also writes custom pear system config files
             $config->writeConfigFile($custom_file1, 'system');
@@ -135,16 +134,16 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
      */
     public function testConfigFilesExistWithDefaultNameInPearDir()
     {
+        $GLOBALS['_PEAR_Config_instance'] = null;
         $pearInfo = new PEAR_Info($this->peardir);
-        $this->assertTrue($pearInfo instanceof PEAR_Info);
+        $this->assertNotNull($pearInfo->reg);
     }
 
     /**
      * Test class constructor with first 3 parameters ($pear_dir, $user_file, and $system_file).
      *
-     * Will try to detect if user config files (named pear.custom.ini),
-     * and/or system config files (named pearsys.custom.ini) are available
-     * into $pear_dir directory.
+     * Will try to detect if user config files and/or system config files
+     * are available into $pear_dir directory.
      *
      * @access public
      * @since  1.7.0
@@ -158,32 +157,74 @@ class PEAR_Info_TestCase_CustomConfig extends PHPUnit_Framework_TestCase
             $systemFile = $this->peardir . DIRECTORY_SEPARATOR . 'name1.pear.conf';
         }
         $userFile = '';
-
+        $GLOBALS['_PEAR_Config_instance'] = null;
         $pearInfo = new PEAR_Info($this->peardir, $userFile, $systemFile);
-        $this->assertTrue($pearInfo instanceof PEAR_Info);
+        $this->assertNotNull($pearInfo->reg);
     }
 
     /**
      * Test class constructor with parameters ($user_file, and $system_file).
      *
-     * Will try to detect if user config files (named pear.custom.ini),
-     * and/or system config files (named pearsys.custom.ini) are available.
+     * Will try to detect if user config files and/or system config files
+     * are available into user directory.
      *
      * @access public
      * @since  1.7.0
      */
-    public function testConfigFilesExistInUsrConfDir()
+    public function testConfigFilesExistInUserDir()
     {
         // both files are not necessary, we creates only pear system file
         if (OS_WINDOWS) {
+            $userFile   = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pear.ini';
             $systemFile = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pearsys.ini';
         } else {
+            $userFile   = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pearrc';
             $systemFile = $this->userdir . DIRECTORY_SEPARATOR . 'name2.pear.conf';
         }
-        $userFile = '';
-
+        $GLOBALS['_PEAR_Config_instance'] = null;
         $pearInfo = new PEAR_Info('', $userFile, $systemFile);
-        $this->assertTrue($pearInfo instanceof PEAR_Info);
+        $this->assertNotNull($pearInfo->reg);
+    }
+
+    /**
+     * Test class constructor with only $pear_dir parameter.
+     *
+     * No user or system file exists into pear directory.
+     * Will display error to prevent unexpected behavior.
+     *
+     * @access public
+     * @since  1.7.0
+     * @see    http://pear.php.net/bugs/bug.php?id=11524  Bug #11524
+     */
+    public function testNoConfigFilesFoundIntoPearDir()
+    {
+        $peardir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'pear2_dir';
+        $GLOBALS['_PEAR_Config_instance'] = null;
+        $pearInfo = new PEAR_Info($peardir);
+        $this->assertNull($pearInfo->config, 'Standard config files found into pear directory');
+    }
+
+    /**
+     * Test class constructor with only $user_file and $system_file parameters.
+     *
+     * No such (name3) user or system file exists into user directory.
+     * Will display an error to prevent unexpected behavior.
+     *
+     * @access public
+     * @since  1.7.0
+     */
+    public function testNoConfigFilesFoundIntoUserDir()
+    {
+        if (OS_WINDOWS) {
+            $userFile   = $this->userdir . DIRECTORY_SEPARATOR . 'name3.pear.ini';
+            $systemFile = $this->userdir . DIRECTORY_SEPARATOR . 'name3.pearsys.ini';
+        } else {
+            $userFile   = $this->userdir . DIRECTORY_SEPARATOR . 'name3.pearrc';
+            $systemFile = $this->userdir . DIRECTORY_SEPARATOR . 'name3.pear.conf';
+        }
+        $GLOBALS['_PEAR_Config_instance'] = null;
+        $pearInfo = new PEAR_Info('', $userFile, $systemFile);
+        $this->assertNull($pearInfo->reg, 'Custom config files exist into user directory');
     }
 }
 

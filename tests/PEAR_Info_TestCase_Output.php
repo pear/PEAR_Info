@@ -95,6 +95,8 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
         require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
 
+        $GLOBALS['_PEAR_Config_instance'] = null;
+
         $this->setOutputCallback(array(&$this, 'normalizeOutput'));
     }
 

@@ -79,11 +79,9 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
         $this->sysconfdir = getenv('PHP_PEAR_SYSCONF_DIR');
         $sysconfdir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sysconf_dir';
         putenv("PHP_PEAR_SYSCONF_DIR=" . $sysconfdir);
-        // debug-code: error_log('set PHP_PEAR_SYSCONF_DIR to ' . getenv('PHP_PEAR_SYSCONF_DIR'), 0);
 
         // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
         require_once '..' . DIRECTORY_SEPARATOR . 'Info.php';
-        // debug-code: error_log('pear_info included from = '. realpath('..' . DIRECTORY_SEPARATOR), 0);
 
         if (OS_WINDOWS) {
             $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pearsys.ini';
@@ -95,7 +93,6 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
             $config =& PEAR_Config::singleton();
             $config->set('php_dir', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'pear_dir');
             $config->writeConfigFile($conf_file);
-            // debug-code: error_log('write pear config file : ' . $conf_file, 0);
         }
     }
 
@@ -109,7 +106,6 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         putenv("PHP_PEAR_SYSCONF_DIR=" . $this->sysconfdir);
-        // debug-code:  error_log('restore PHP_PEAR_SYSCONF_DIR to ' . getenv('PHP_PEAR_SYSCONF_DIR'), 0);
     }
 
     /**
@@ -122,8 +118,9 @@ class PEAR_Info_TestCase_DefaultConfig extends PHPUnit_Framework_TestCase
      */
     public function testConfigFilesExistInSysConfDir()
     {
+        $GLOBALS['_PEAR_Config_instance'] = null;
         $pearInfo = new PEAR_Info();
-        $this->assertTrue($pearInfo instanceof PEAR_Info);
+        $this->assertNotNull($pearInfo->reg, 'System PEAR configuration files does not exist');
     }
 }
 
