@@ -50,6 +50,36 @@
 </table>
 <br />
 
+<br />
+<table border="0" cellpadding="3" width="600">
+<tr class="hc"><td colspan="2">Channel pear.php.net</td></tr>
+<tr class="h"><td>Package</td><td>Maintainers</td></tr>
+<tr>
+    <td class="e">
+        <a href="http://pear.php.net/console_getopt">Console_Getopt</a>
+    </td>
+    <td class="v">
+        <a href="http://pear.php.net/account-info.php?handle=andrei">Andrei Zmievski</a> (lead), <a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a> (developer, inactive), <a href="http://pear.php.net/account-info.php?handle=cellog">Greg Beaver</a> (helper)
+    </td>
+</tr>
+<tr>
+    <td class="e">
+        <a href="http://pear.php.net/pear">PEAR</a>
+    </td>
+    <td class="v">
+        <a href="http://pear.php.net/account-info.php?handle=cellog">Greg Beaver</a> (lead), <a href="http://pear.php.net/account-info.php?handle=pajoye">Pierre-Alain Joye</a> (lead, inactive), <a href="http://pear.php.net/account-info.php?handle=ssb">Stig Bakken</a> (lead, inactive), <a href="http://pear.php.net/account-info.php?handle=cox">Tomas V.V.Cox</a> (lead, inactive), <a href="http://pear.php.net/account-info.php?handle=tias">Tias Guns</a> (developer), <a href="http://pear.php.net/account-info.php?handle=timj">Tim Jackson</a> (helper), <a href="http://pear.php.net/account-info.php?handle=toggg">Bertrand Gugger</a> (helper, inactive), <a href="http://pear.php.net/account-info.php?handle=mj">Martin Jansen</a> (helper, inactive)
+    </td>
+</tr>
+<tr>
+    <td class="e">
+        <a href="http://pear.php.net/text_diff">Text_Diff</a>
+    </td>
+    <td class="v">
+        <a href="http://pear.php.net/account-info.php?handle=chagenbu">Chuck Hagenbuch</a> (lead), <a href="http://pear.php.net/account-info.php?handle=jon">Jon Parise</a> (lead), <a href="http://pear.php.net/account-info.php?handle=pmjones">Paul M Jones</a> (lead), <a href="http://pear.php.net/account-info.php?handle=yunosh">Jan Schneider</a> (lead)
+    </td>
+</tr>
+</table>
+
 </div>
 </body>
 </html>
