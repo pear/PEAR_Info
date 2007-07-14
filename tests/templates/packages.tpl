@@ -70,6 +70,7 @@
     </td>
 </tr>
 
+
 <tr>
     <td colspan="2" class="v"><a href="#top1">Top</a></td>
 </tr>
@@ -86,6 +87,7 @@
         1.6.1 (stable) was released on 2007-06-23
     </td>
 </tr>
+
 
 <tr>
     <td colspan="2" class="v"><a href="#top1">Top</a></td>
@@ -118,6 +120,8 @@
         3.1.2 (stable) was released on 2007-07-03
     </td>
 </tr>
+
+
 
 <tr>
     <td colspan="2" class="v"><a href="#top2">Top</a></td>
