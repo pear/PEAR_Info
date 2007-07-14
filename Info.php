@@ -482,65 +482,56 @@ class PEAR_Info
             foreach ($pkg as $name) {
                 // show general package informations
                 $info = &$this->reg->getPackage($name, $channel);
-                if (is_object($info)) {
-                    $__info = $info->getArray();
-                    $installed['package'] = $info->getPackage();
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
-                        $installed['channel'] = $channel;
+                if (!is_object($info)) {
+                    continue; // should never arrive, if package is really installed
+                }
+                $__info = $info->getArray();
+                $installed['package'] = $info->getPackage();
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
+                    $installed['channel'] = $channel;
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_SUMMARY) {
+                    $installed['summary'] = $info->getSummary();
+                }
+                $installed['version'] = $info->getVersion();
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
+                    $installed['current_release'] = $installed['version']
+                        . ' (' . $info->getState() . ') was released on '
+                        . $info->getDate();
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
+                    $installed['license'] = $info->getLicense();
+                }
+                if ($info->getPackagexmlVersion() == '1.0' ) {
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
+                        $installed['lastmodified'] = $info->packageInfo('_lastmodified');
                     }
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_SUMMARY) {
-                        $installed['summary'] = $info->getSummary();
-                    }
-                    $installed['version'] = $info->getVersion();
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
-                        $installed['current_release'] = $installed['version']
-                            . ' (' . $info->getState() . ') was released on '
-                            . $info->getDate();
-                    }
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
-                        $installed['license'] = $info->getLicense();
-                    }
-                    if ($info->getPackagexmlVersion() == '1.0' ) {
-                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
-                            $installed['lastmodified'] = $info->packageInfo('_lastmodified');
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
+                        $installed['packagexml'] = $info->getPackagexmlVersion();
+                        if (isset($__info['packagerversion'])) {
+                            $installed['packagerversion'] = $__info['packagerversion'];
                         }
-                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
-                            $installed['packagexml'] = $info->getPackagexmlVersion();
-                            if (isset($__info['packagerversion'])) {
-                                $installed['packagerversion'] = $__info['packagerversion'];
-                            }
-                        }
-                    } else {
-                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
-                            $uri = $info->getLicenseLocation();
-                            if ($uri) {
-                                if (isset($uri['uri'])) {
-                                    $installed['license'] = '<a href="' . $uri['uri'] . '">'
-                                        . $info->getLicense() . '</a>';
-                                }
-                            }
-                        }
-                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
-                            $installed['lastmodified'] = $info->getLastModified();
-                        }
-                        if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
-                            $installed['packagexml'] = $info->getPackagexmlVersion();
-                            $installed['packagerversion'] = $__info['attribs']['packagerversion'];
-                        }
-                    }
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_DESCRIPTION) {
-                        $installed['description'] = $info->getDescription();
                     }
                 } else {
-                    $installed = $info;
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
-                        $installed['channel'] = 'pear.php.net';
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
+                        $uri = $info->getLicenseLocation();
+                        if ($uri) {
+                            if (isset($uri['uri'])) {
+                                $installed['license'] = '<a href="' . $uri['uri'] . '">'
+                                    . $info->getLicense() . '</a>';
+                            }
+                        }
                     }
-                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
-                        $installed['current_release'] = $info['version']
-                            . ' (' . $info['release_state'] . ') was released on '
-                            . $info['release_date'];
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
+                        $installed['lastmodified'] = $info->getLastModified();
                     }
+                    if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
+                        $installed['packagexml'] = $info->getPackagexmlVersion();
+                        $installed['packagerversion'] = $__info['attribs']['packagerversion'];
+                    }
+                }
+                if ($this->options['resume'] & PEAR_INFO_PACKAGES_DESCRIPTION) {
+                    $installed['description'] = $info->getDescription();
                 }
 
                 // show dependency list
