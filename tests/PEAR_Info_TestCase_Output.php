@@ -155,9 +155,12 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
         $html = str_replace(array('{config_file}', '{script_filename}', '{styles}'),
             array($conf_file, $_SERVER['SCRIPT_FILENAME'], $styles), $html);
         $html = $this->normalizeOutput($html);
+        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'general.exp', $html);
 
         $this->expectOutputString($html);
         $pearInfo->show();
+        $html = ob_get_contents();
+        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'general.out', $html);
     }
 
     /**
@@ -192,13 +195,15 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
             array($conf_file, $_SERVER['SCRIPT_FILENAME'], $styles), $html);
         $html = $this->normalizeOutput($html);
         $this->expectOutputString($html);
+        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'packages.exp', $html);
 
         // we force package update check (PEAR_INFO_PACKAGES_UPDATE)
         // for a better code coverage but without display results
-        $now = $pearInfo->toHtml();
+        $html = $pearInfo->toHtml();
         // we get normal output and remove 'Latest version' and 'Last Modified' lines
         $html = $this->normalizeOutput($html);
         echo $html;
+        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'packages.out', $html);
     }
 
     /**
@@ -231,9 +236,12 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
         $html = str_replace(array('{config_file}', '{script_filename}', '{styles}'),
             array($conf_file, $_SERVER['SCRIPT_FILENAME'], $styles), $html);
         $html = $this->normalizeOutput($html);
+        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'credits.exp', $html);
 
         $this->expectOutputString($html);
         $pearInfo->show();
+        $html = ob_get_contents();
+        file_put_contents($this->tpldir . DIRECTORY_SEPARATOR . 'credits.out', $html);
     }
 }
 
