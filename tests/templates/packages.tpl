@@ -52,7 +52,7 @@
 </tr>
 <tr>
     <td class ="v" style="text-align: center">
- | <a href="#c1">C</a> | <a href="#p1">P</a> |
+ | <a href="#c1">C</a> | <a href="#p1">P</a> | <a href="#t1">T</a> |
     </td>
 </tr>
 </table>
@@ -93,6 +93,24 @@
     <td colspan="2" class="v"><a href="#top1">Top</a></td>
 </tr>
 </table>
+<a id="t1"></a>
+<h2><a id="pkg_Text_Diff">Text_Diff</a></h2>
+<table>
+
+<tr class="v">
+    <td class="e">
+        Version
+    </td>
+    <td>
+        0.2.1 (beta) was released on 2006-02-06
+    </td>
+</tr>
+
+
+<tr>
+    <td colspan="2" class="v"><a href="#top1">Top</a></td>
+</tr>
+</table>
 
 <h2><a id="top2">Installed Packages, Channel pear.phpunit.de</a></h2>
 <table>
@@ -103,12 +121,12 @@
 </tr>
 <tr>
     <td class ="v" style="text-align: center">
- |
+ | <a href="#p2">P</a> |
     </td>
 </tr>
 </table>
 
-
+<a id="p2"></a>
 <h2><a id="pkg_PHPUnit">PHPUnit</a></h2>
 <table>
 
