@@ -1015,7 +1015,8 @@ class PEAR_Info
 
         if (($this->options['resume'] & PEAR_INFO_CREDITS_DOCS) ||
             isset($_GET['credits'])) {
-            $html_pear_credits .= '
+            if (count($teams['docs']) > 0) {
+                $html_pear_credits .= '
 <table>
     <tr class="hc">
         <td>
@@ -1025,23 +1026,25 @@ class PEAR_Info
     <tr class="v">
         <td>
 ';
-            foreach ($teams['docs'] as $handle => $name) {
-                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
-                    . $handle .'">'. $name .'</a>,';
-                $html_pear_credits .= $html_member;
-            }
+                foreach ($teams['docs'] as $handle => $name) {
+                    $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                        . $handle .'">'. $name .'</a>,';
+                    $html_pear_credits .= $html_member;
+                }
 
-            $html_pear_credits .= '
+                $html_pear_credits .= '
         </td>
     </tr>
 </table>
 <br />
 ';
+            }
         }
 
         if (($this->options['resume'] & PEAR_INFO_CREDITS_WEBSITE) ||
             isset($_GET['credits'])) {
-            $html_pear_credits .= '
+            if (count($teams['website']) > 0) {
+                $html_pear_credits .= '
 <table>
     <tr class="hc">
         <td>
@@ -1051,18 +1054,19 @@ class PEAR_Info
     <tr class="v">
         <td>
 ';
-            foreach ($teams['website'] as $handle => $name) {
-                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
-                    . $handle .'">'. $name .'</a>,';
-                $html_pear_credits .= $html_member;
-            }
+                foreach ($teams['website'] as $handle => $name) {
+                    $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                        . $handle .'">'. $name .'</a>,';
+                    $html_pear_credits .= $html_member;
+                }
 
-            $html_pear_credits .= '
+                $html_pear_credits .= '
         </td>
     </tr>
 </table>
 <br />
 ';
+            }
         }
 
         if (!($this->options['resume'] & PEAR_INFO_CREDITS_PACKAGES) &&
