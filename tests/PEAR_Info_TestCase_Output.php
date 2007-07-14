@@ -221,8 +221,7 @@ class PEAR_Info_TestCase_Output extends PHPUnit_Extensions_OutputTestCase
             $conf_file = $sysconfdir . DIRECTORY_SEPARATOR . 'pear.conf';
         }
 
-        $options = array('resume' =>  PEAR_INFO_GENERAL |
-            (PEAR_INFO_CREDITS_ALL - PEAR_INFO_CREDITS_PACKAGES) |
+        $options = array('resume' =>  PEAR_INFO_GENERAL | PEAR_INFO_CREDITS_ALL |
             PEAR_INFO_FULLPAGE);
         $pearInfo = new PEAR_Info('', '', '', $options);
         // We must specify here the default stylesheet used, because package source
