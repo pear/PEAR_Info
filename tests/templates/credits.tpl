@@ -50,34 +50,6 @@
 </table>
 <br />
 
-<table>
-    <tr class="hc">
-        <td>
-            PEAR Documentation Team
-        </td>
-    </tr>
-    <tr class="v">
-        <td>
-
-        </td>
-    </tr>
-</table>
-<br />
-
-<table>
-    <tr class="hc">
-        <td>
-            PEAR Website Team
-        </td>
-    </tr>
-    <tr class="v">
-        <td>
-
-        </td>
-    </tr>
-</table>
-<br />
-
 </div>
 </body>
 </html>
