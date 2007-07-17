@@ -27,7 +27,7 @@
   <active>yes</active>
  </lead>
  <date>2007-07-17</date>
- <time>18:09:59</time>
+ <time>18:21:14</time>
  <version>
   <release>1.7.0</release>
   <api>1.7.0</api>
@@ -77,16 +77,28 @@
       <dir name=".channel.pear.phpunit.de">
        <file name="phpunit.reg" role="test" />
       </dir> <!-- /tests/pear_dir/.registry/.channel.pear.phpunit.de -->
+      <dir name=".channel.pecl.php.net">
+       <file name="empty_dir.txt" role="test" />
+      </dir> <!-- /tests/pear_dir/.registry/.channel.pecl.php.net -->
+      <dir name=".channel.__uri">
+       <file name="empty_dir.txt" role="test" />
+      </dir> <!-- /tests/pear_dir/.registry/.channel.__uri -->
       <file name="console_getopt.reg" role="test" />
       <file name="pear.reg" role="test" />
       <file name="text_diff.reg" role="test" />
      </dir> <!-- /tests/pear_dir/.registry -->
     </dir> <!-- /tests/pear_dir -->
+    <dir name="sysconf_dir">
+     <file name="empty_dir.txt" role="test" />
+    </dir> <!-- /tests/sysconf_dir -->
     <dir name="templates">
      <file name="credits.tpl" role="test" />
      <file name="general.tpl" role="test" />
      <file name="packages.tpl" role="test" />
     </dir> <!-- /tests/templates -->
+    <dir name="user_dir">
+     <file name="empty_dir.txt" role="test" />
+    </dir> <!-- /tests/user_dir -->
     <file name="AllTests.php" role="test" />
     <file name="OutputTestCase.php" role="test" />
     <file name="PEAR_Info_TestCase_CustomConfig.php" role="test" />
