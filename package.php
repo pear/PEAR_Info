@@ -29,6 +29,7 @@ $packagefile = 'c:/php/pear/PEAR_Info/package2.xml';
 $options = array('filelistgenerator' => 'cvs',
     'packagefile' => 'package2.xml',
     'baseinstalldir' => 'PEAR',
+    'addhiddenfiles' => true,
     'simpleoutput' => true,
     'clearcontents' => false,
     'changelogoldtonew' => false,
@@ -37,19 +38,18 @@ $options = array('filelistgenerator' => 'cvs',
 
 $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
-$p2->generateContents();
 $p2->addRelease();
-$p2->setReleaseVersion('1.7.0RC3');
+$p2->generateContents();
+$p2->setReleaseVersion('1.7.0');
 $p2->setAPIVersion('1.7.0');
-$p2->setReleaseStability('beta');
+$p2->setReleaseStability('stable');
 $p2->setAPIStability('stable');
-$p2->setNotes('* changes
-- Credits page is now customizable with PEAR_INFO_CREDITS_* constant
-- You may have a standalone html page (default behavior) with PEAR_INFO_FULLPAGE
-  or just part of html code related to information wanted ; Easy to include in your own pages
-- new method that give PEAR members list (president, group, docs, website)
-
-Stable release 1.7.0 is scheduled for July 17. This is the last release candidate.
+$p2->setNotes('* changes since RC3
+- class is fully tested with PHPUnit 3
+- removed trigger_error, but not replaced by PEAR_Error (as suggested).
+  Will output the error at display() method call.
+- docs and website teams are empty and will not be display on credits page.
+- definitively removed support of PEAR 1.3.x
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 //$p2->addMaintainer('lead', 'farell', 'Laurent Laville', 'pear@laurent-laville.org');
