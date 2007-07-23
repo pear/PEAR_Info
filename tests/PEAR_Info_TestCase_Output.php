@@ -25,8 +25,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 }
 
 require_once 'PHPUnit/Framework.php';
-#require_once 'PHPUnit/Extensions/OutputTestCase.php';
-require_once 'OutputTestCase.php';
+require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
 /**
  * Unit test case to get html code results
