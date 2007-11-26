@@ -10,14 +10,14 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   PEAR
- * @package    PEAR_Info
- * @author     Laurent Laville <pear@laurent-laville.org>
- * @copyright  2007 Laurent Laville
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PEAR_Info
- * @since      File available since Release 1.7.0
+ * @category  PEAR
+ * @package   PEAR_Info
+ * @author    Laurent Laville <pear@laurent-laville.org>
+ * @copyright 2007 Laurent Laville
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PEAR_Info
+ * @since     File available since Release 1.7.0
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
@@ -47,14 +47,14 @@ require_once 'PEAR_Info_TestCase_Output.php';
  * After the code coverage test browse the index.html file in tests/coverage.
  * The code coverage is close to 100%.
  *
- * @category   PEAR
- * @package    PEAR_Info
- * @author     Laurent Laville <pear@laurent-laville.org>
- * @copyright  2007 Laurent Laville
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PEAR_Info
- * @since      Class available since Release 1.7.0
+ * @category  PEAR
+ * @package   PEAR_Info
+ * @author    Laurent Laville <pear@laurent-laville.org>
+ * @copyright 2007 Laurent Laville
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PEAR_Info
+ * @since     Class available since Release 1.7.0
  */
 
 class PEAR_Info_AllTests
@@ -63,7 +63,6 @@ class PEAR_Info_AllTests
      * Runs the test suite
      *
      * @return void
-     * @access public
      * @static
      * @since  1.7.0
      */
@@ -76,7 +75,6 @@ class PEAR_Info_AllTests
      * Runs the test suite
      *
      * @return object the PHPUnit_Framework_TestSuite object
-     * @access public
      * @static
      * @since  1.7.0
      */
@@ -94,5 +92,4 @@ class PEAR_Info_AllTests
 if (PHPUnit_MAIN_METHOD == 'PEAR_Info_AllTests::main') {
     PEAR_Info_AllTests::main();
 }
-
 ?>
