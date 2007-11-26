@@ -10,18 +10,17 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   PEAR
- * @package    PEAR_Info
- * @author     Davey Shafik <davey@pixelated-dreams.com>
- * @author     Laurent Laville <pear@laurent-laville.org>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @since      File available since Release 1.0.1
- * @link       http://pear.php.net/package/PEAR_Info
+ * @category PEAR
+ * @package  PEAR_Info
+ * @author   Davey Shafik <davey@pixelated-dreams.com>
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version  CVS: $Id$
+ * @link     http://pear.php.net/package/PEAR_Info
+ * @since    File available since Release 1.0.1
  */
 
-require_once 'PEAR/Remote.php';
-require_once 'PEAR/Registry.php';
+require_once 'PEAR/Config.php';
 
 /**
  * PEAR_INFO_* is a bit-field. Or each number up to get desired information.
@@ -52,43 +51,43 @@ require_once 'PEAR/Registry.php';
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_GENERAL',                  1);
+define('PEAR_INFO_GENERAL', 1);
 /**
  * PEAR Credits
  *
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_CREDITS',                  2);
+define('PEAR_INFO_CREDITS', 2);
 /**
  * All PEAR settings.
  *
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_CONFIGURATION',            4);
+define('PEAR_INFO_CONFIGURATION', 4);
 /**
  * Information on PEAR channels.
  *
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_CHANNELS',                 8);
+define('PEAR_INFO_CHANNELS', 8);
 /**#@+
  * Information on PEAR packages.
  *
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_PACKAGES',              4080);
-define ('PEAR_INFO_PACKAGES_CHANNEL',      2048);
-define ('PEAR_INFO_PACKAGES_SUMMARY',      1024);
-define ('PEAR_INFO_PACKAGES_VERSION',       512);
-define ('PEAR_INFO_PACKAGES_LICENSE',       256);
-define ('PEAR_INFO_PACKAGES_DESCRIPTION',   128);
-define ('PEAR_INFO_PACKAGES_DEPENDENCIES',   64);
-define ('PEAR_INFO_PACKAGES_XML',            32);
-define ('PEAR_INFO_PACKAGES_UPDATE',         16);
+define('PEAR_INFO_PACKAGES', 4080);
+define('PEAR_INFO_PACKAGES_CHANNEL', 2048);
+define('PEAR_INFO_PACKAGES_SUMMARY', 1024);
+define('PEAR_INFO_PACKAGES_VERSION', 512);
+define('PEAR_INFO_PACKAGES_LICENSE', 256);
+define('PEAR_INFO_PACKAGES_DESCRIPTION', 128);
+define('PEAR_INFO_PACKAGES_DEPENDENCIES', 64);
+define('PEAR_INFO_PACKAGES_XML', 32);
+define('PEAR_INFO_PACKAGES_UPDATE', 16);
 /**#@-*/
 /**
  * Shows all of the above. This is the default value.
@@ -96,18 +95,18 @@ define ('PEAR_INFO_PACKAGES_UPDATE',         16);
  * @var        integer
  * @since      1.7.0RC1
  */
-define ('PEAR_INFO_ALL',                   4095);
+define('PEAR_INFO_ALL', 4095);
 /**#@+
  * Information on PEAR credits.
  *
  * @var        integer
  * @since      1.7.0RC3
  */
-define ('PEAR_INFO_CREDITS_GROUP',         4096);
-define ('PEAR_INFO_CREDITS_DOCS',          8192);
-define ('PEAR_INFO_CREDITS_WEBSITE',      16384);
-define ('PEAR_INFO_CREDITS_PACKAGES',     32768);
-define ('PEAR_INFO_CREDITS_ALL',          61440);
+define('PEAR_INFO_CREDITS_GROUP', 4096);
+define('PEAR_INFO_CREDITS_DOCS', 8192);
+define('PEAR_INFO_CREDITS_WEBSITE', 16384);
+define('PEAR_INFO_CREDITS_PACKAGES', 32768);
+define('PEAR_INFO_CREDITS_ALL', 61440);
 /**#@-*/
 /**
  * Indicates that a complete stand-alone HTML page needs to be printed
@@ -116,18 +115,19 @@ define ('PEAR_INFO_CREDITS_ALL',          61440);
  * @var        integer
  * @since      1.7.0RC3
  */
-define ('PEAR_INFO_FULLPAGE',             65536);
+define('PEAR_INFO_FULLPAGE', 65536);
 
 /**
  * The PEAR_Info class generate phpinfo() style PEAR information.
  *
- * @category   PEAR
- * @package    PEAR_Info
- * @author     Davey Shafik <davey@pixelated-dreams.com>
- * @author     Laurent Laville <pear@laurent-laville.org>
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
- * @since      Class available since Release 1.0.1
+ * @category PEAR
+ * @package  PEAR_Info
+ * @author   Davey Shafik <davey@pixelated-dreams.com>
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version  Release: @package_version@
+ * @link     http://pear.php.net/package/PEAR_Info
+ * @since    Class available since Release 1.0.1
  */
 
 class PEAR_Info
@@ -171,15 +171,19 @@ class PEAR_Info
     /**
      * PHP 4 style constructor (ZE1)
      *
-     * @param  string  $pear_dir         (optional) The PEAR base install directory
-     * @param  string  $user_file        (optional) file to read PEAR user-defined options from
-     * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
-     * @param  array   $options          (optional) configure PEAR information output
+     * @param string $pear_dir    (optional) The PEAR base install directory
+     * @param string $user_file   (optional) file to read PEAR user-defined
+     *                            options from
+     * @param string $system_file (optional) file to read PEAR system-wide
+     *                            defaults from
+     * @param array  $options     (optional) configure PEAR information output
+     *
      * @return void
      * @access public
      * @since  1.0.1
      */
-    function PEAR_Info($pear_dir = '', $user_file = '', $system_file = '', $options = null)
+    function PEAR_Info($pear_dir = '', $user_file = '', $system_file = '',
+        $options = null)
     {
         $this->__construct($pear_dir, $user_file, $system_file, $options);
     }
@@ -187,15 +191,19 @@ class PEAR_Info
     /**
      * PHP 5 style constructor (ZE2)
      *
-     * @param  string  $pear_dir         (optional) The PEAR base install directory
-     * @param  string  $user_file        (optional) file to read PEAR user-defined options from
-     * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
-     * @param  array   $options          (optional) configure PEAR information output
+     * @param string $pear_dir    (optional) The PEAR base install directory
+     * @param string $user_file   (optional) file to read PEAR user-defined
+     *                            options from
+     * @param string $system_file (optional) file to read PEAR system-wide
+     *                            defaults from
+     * @param array  $options     (optional) configure PEAR information output
+     *
      * @return void
      * @access private
      * @since  1.7.0RC1
      */
-    function __construct($pear_dir = '', $user_file = '', $system_file = '', $options = null)
+    function __construct($pear_dir = '', $user_file = '', $system_file = '',
+        $options = null)
     {
         // options defined at run-time (default)
         $this->options = array('channels' => array('pear.php.net'),
@@ -215,7 +223,7 @@ class PEAR_Info
                 $user_file .= '.pearrc';
             }
             if (!file_exists($user_file)) {
-            // try to find a PEAR system-wide config file into $pear_dir
+                // try to find a PEAR system-wide config file into $pear_dir
                 $system_file = $pear_dir . DIRECTORY_SEPARATOR;
                 if (OS_WINDOWS) {
                     $system_file .= 'pearsys.ini';
@@ -227,6 +235,7 @@ class PEAR_Info
                     $e = '<p class="error">No PEAR configuration files ('
                         . basename($user_file) . ' or ' . basename($system_file)
                         . ") found into '$pear_dir' directory</p>";
+
                     $this->info = $e;
                     return;
                 }
@@ -248,7 +257,7 @@ class PEAR_Info
                     $layer = 'user';
                 } else {
                     $system_file = $this->config->getConfFile('system');
-                    $layer = 'system';
+                    $layer       = 'system';
                 }
             } else {
                 $layer = 'system';
@@ -260,14 +269,17 @@ class PEAR_Info
         if (!file_exists($user_file) && !file_exists($system_file)) {
             $e = '<p class="error">PEAR configuration files '
                 . $user_file . ', ' . $system_file . ' does not exist</p>';
+
             $this->info = $e;
             return;
         }
         // Get the config's registry object.
         $this->reg = &$this->config->getRegistry($layer);
 
-        // Get list of all channels in your PEAR install, when 'channels' option is empty
-        if (isset($this->options['channels']) && empty($this->options['channels'])) {
+        // Get list of all channels in your PEAR install,
+        // when 'channels' option is empty
+        if (isset($this->options['channels'])
+            && empty($this->options['channels'])) {
             $channels = $this->reg->listChannels();
             if (PEAR::isError($channels)) {
                 $this->options['channels'] = array('pear.php.net');
@@ -276,24 +288,26 @@ class PEAR_Info
             }
         }
 
-        // show general informations such as PEAR version, PEAR logo, and config file used
+        // show general informations such as PEAR version, PEAR logo,
+        // and config file used
         if ($this->options['resume'] & PEAR_INFO_GENERAL) {
-            $pear = $this->reg->getPackage("PEAR");
+            $pear         = $this->reg->getPackage("PEAR");
             $pear_version = $pear->getVersion();
-            $this->info = '
+            $this->info   = '
 <table>
 <tr class="h">
     <td>
-        <a href="http://pear.php.net/"><img src="{phpself}?pear_image=true" alt="PEAR Logo" /></a><h1 class="p">PEAR {pearversion}</h1>
+        <a href="http://pear.php.net/">
+            <img src="{phpself}?pear_image=true" alt="PEAR Logo" />
+        </a>
+        <h1 class="p">PEAR {pearversion}</h1>
     </td>
 </tr>
 </table>
 ';
-            $this->info = str_replace(
-                array('{phpself}', '{pearversion}'),
+            $this->info   = str_replace(array('{phpself}', '{pearversion}'),
                 array(htmlentities($_SERVER['PHP_SELF']), $pear_version),
-                $this->info
-            );
+                $this->info);
 
             // Loaded configuration file
             $this->info .= '
@@ -305,10 +319,9 @@ class PEAR_Info
 </table>
 
 ';
-            $this->info = str_replace('{value}',
+            $this->info  = str_replace('{value}',
                 $this->config->getConfFile($layer),
-                $this->info
-            );
+                $this->info);
         }
 
         if (($this->options['resume'] & PEAR_INFO_CREDITS_ALL) ||
@@ -319,10 +332,9 @@ class PEAR_Info
                 $this->info .= '
 <h1><a href="{phpself}?credits=true">PEAR Credits</a></h1>
 ';
-                $this->info = str_replace(
-                    '{phpself}', htmlentities($_SERVER['PHP_SELF']),
-                    $this->info
-                );
+                $this->info  = str_replace('{phpself}',
+                    htmlentities($_SERVER['PHP_SELF']),
+                    $this->info);
             }
             if ($this->options['resume'] & PEAR_INFO_CONFIGURATION) {
                 $this->info .= $this->getConfig();
@@ -339,7 +351,8 @@ class PEAR_Info
     /**
      * Sets PEAR HTTP Proxy Server Address
      *
-     * @param  string  $proxy  PEAR HTTP Proxy Server Address
+     * @param string $proxy PEAR HTTP Proxy Server Address
+     *
      * @static
      * @return bool
      * @access public
@@ -360,7 +373,8 @@ class PEAR_Info
      * Easy for a <link rel="stylesheet" type="text/css" href="" />
      * html tag integration (see example pear_info3.php).
      *
-     * @param  bool  $content (optional) Either return css filename or string contents
+     * @param bool $content (optional) Either return css filename or string contents
+     *
      * @return string
      * @access public
      * @since  1.7.0RC1
@@ -381,7 +395,8 @@ class PEAR_Info
      * Sets the custom style sheet (colors, sizes) to applied to PEAR_Info output.
      * If you don't give any parameter, you'll then apply again the default style.
      *
-     * @param  string  $css (optional) File to read user-defined styles from
+     * @param string $css (optional) File to read user-defined styles from
+     *
      * @return bool    True if custom styles, false if default styles applied
      * @access public
      * @since  1.7.0RC1
@@ -418,8 +433,8 @@ class PEAR_Info
             return $e;
         }
         if (!is_array($available)) {
-            $e = '<p class="error">The package list could not be fetched from the remote server.'
-               . ' Please try again.</p>';
+            $e = '<p class="error">The package list could not be fetched'
+               . ' from the remote server. Please try again.</p>';
             return $e;
         }
 
@@ -434,7 +449,8 @@ class PEAR_Info
                 // Get a channel object.
                 $chan =& $this->reg->getChannel($channel);
                 if (PEAR::isError($chan)) {
-                    $e = '<p class="error">An error has occured. ' . $chan->getMessage()
+                    $e = '<p class="error">An error has occured. '
+                       . $chan->getMessage()
                        . ' Please try again.</p>';
                     return $e;
                 }
@@ -445,10 +461,10 @@ class PEAR_Info
                     $rest =& $this->config->getREST('1.0', array());
                     if (is_object($rest)) {
                         $pref_state = $this->config->get('preferred_state');
-                        $installed = array_flip($available[$channel]);
+                        $installed  = array_flip($available[$channel]);
 
-                        $l = $rest->listLatestUpgrades($base, $pref_state, $installed,
-                                      $channel, $this->reg);
+                        $l = $rest->listLatestUpgrades($base, $pref_state,
+                                 $installed, $channel, $this->reg);
                     } else {
                         $l = false;
                     }
@@ -468,7 +484,7 @@ class PEAR_Info
             $latest = false;
         }
 
-        $s = '';
+        $s             = '';
         $anchor_suffix = 0;  // make page XHTML compliant
         foreach ($available as $channel => $pkg) {
             if (!in_array($channel, $channel_allowed)) {
@@ -478,14 +494,14 @@ class PEAR_Info
             sort($pkg);
             //
             $packages = '';
-            $index = array();
+            $index    = array();
             foreach ($pkg as $name) {
                 // show general package informations
                 $info = &$this->reg->getPackage($name, $channel);
                 if (!is_object($info)) {
                     continue; // should never arrive, if package is really installed
                 }
-                $__info = $info->getArray();
+                $__info               = $info->getArray();
                 $installed['package'] = $info->getPackage();
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
                     $installed['channel'] = $channel;
@@ -504,12 +520,14 @@ class PEAR_Info
                 }
                 if ($info->getPackagexmlVersion() == '1.0' ) {
                     if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
-                        $installed['lastmodified'] = $info->packageInfo('_lastmodified');
+                        $installed['lastmodified']
+                            = $info->packageInfo('_lastmodified');
                     }
                     if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
                         $installed['packagexml'] = $info->getPackagexmlVersion();
                         if (isset($__info['packagerversion'])) {
-                            $installed['packagerversion'] = $__info['packagerversion'];
+                            $installed['packagerversion']
+                                = $__info['packagerversion'];
                         }
                     }
                 } else {
@@ -517,7 +535,8 @@ class PEAR_Info
                         $uri = $info->getLicenseLocation();
                         if ($uri) {
                             if (isset($uri['uri'])) {
-                                $installed['license'] = '<a href="' . $uri['uri'] . '">'
+                                $installed['license'] = '<a href="'
+                                    . $uri['uri'] . '">'
                                     . $info->getLicense() . '</a>';
                             }
                         }
@@ -527,7 +546,8 @@ class PEAR_Info
                     }
                     if ($this->options['resume'] & PEAR_INFO_PACKAGES_XML) {
                         $installed['packagexml'] = $info->getPackagexmlVersion();
-                        $installed['packagerversion'] = $__info['attribs']['packagerversion'];
+                        $installed['packagerversion']
+                            = $__info['attribs']['packagerversion'];
                     }
                 }
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_DESCRIPTION) {
@@ -578,12 +598,11 @@ class PEAR_Info
     </td>
 </tr>
 ';
-                        foreach($deps as $dep) {
+                        foreach ($deps as $dep) {
                             if (!isset($dep['optional'])) {
                                 $dep['optional'] = '';
                             }
-                            $dependencies .= str_replace(
-                                array('{dep_required}',
+                            $dependencies .= str_replace(array('{dep_required}',
                                     '{dep_type}',
                                     '{dep_name}',
                                     '{dep_rel}',
@@ -595,8 +614,7 @@ class PEAR_Info
                                     $_deps_rel_trans[$dep['rel']],
                                     isset($dep['version']) ? $dep['version'] : ''
                                     ),
-                                $ptpl
-                            );
+                                $ptpl);
                         }
                         $ptpl = '
 <tr class="w">
@@ -617,6 +635,7 @@ class PEAR_Info
     </td>
 </tr>
 ';
+
                         $dependencies = $ptpl . $dependencies;
                     }
                 } // end deps-list
@@ -626,9 +645,10 @@ class PEAR_Info
                 }
                 $current_index = $name{0};
                 if (strtolower($current_index) != strtolower($old_index)) {
-                    $packages .= '<a id="' . $current_index . $anchor_suffix . '"></a>';
+                    $packages .= '<a id="' . $current_index . $anchor_suffix
+                              . '"></a>';
                     $old_index = $current_index;
-                    $index[] = $current_index;
+                    $index[]   = $current_index;
                 }
 
                 // prepare package informations template
@@ -636,10 +656,10 @@ class PEAR_Info
 <h2><a id="pkg_{package}">{package}</a></h2>
 <table>
 ';
+
                 $packages .= str_replace('{package}',
                     trim($installed['package']),
-                    $ptpl
-                );
+                    $ptpl);
 
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
                     $ptpl = '
@@ -652,10 +672,10 @@ class PEAR_Info
     </td>
 </tr>
 ';
+
                     $packages .= str_replace('{channel}',
                         trim($installed['channel']),
-                        $ptpl
-                    );
+                        $ptpl);
                 }
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_SUMMARY) {
                     $ptpl = '
@@ -668,10 +688,10 @@ class PEAR_Info
     </td>
 </tr>
 ';
+
                     $packages .= str_replace('{summary}',
                         nl2br(htmlentities(trim($installed['summary']))),
-                        $ptpl
-                    );
+                        $ptpl);
                 }
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_VERSION) {
                     $ptpl = '
@@ -684,10 +704,10 @@ class PEAR_Info
     </td>
 </tr>
 ';
+
                     $packages .= str_replace('{version}',
                         trim($installed['current_release']),
-                        $ptpl
-                    );
+                        $ptpl);
                 }
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_LICENSE) {
                     $ptpl = '
@@ -700,10 +720,10 @@ class PEAR_Info
     </td>
 </tr>
 ';
+
                     $packages .= str_replace('{license}',
                         trim($installed['license']),
-                        $ptpl
-                    );
+                        $ptpl);
                 }
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_DESCRIPTION) {
                     $ptpl = '
@@ -716,10 +736,10 @@ class PEAR_Info
     </td>
 </tr>
 ';
+
                     $packages .= str_replace('{description}',
                         nl2br(htmlentities(trim($installed['description']))),
-                        $ptpl
-                    );
+                        $ptpl);
                 }
                 if (!empty($dependencies)) {
                     $ptpl = '
@@ -733,16 +753,17 @@ class PEAR_Info
         </table>
     </td>
 </tr>';
+
                     $packages .= str_replace('{dependencies}',
                         $dependencies,
-                        $ptpl
-                    );
+                        $ptpl);
                 }
 
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_UPDATE) {
                     if ($latest != false) {
                         if (isset($latest[$installed['package']])) {
-                            if (version_compare($latest[$installed['package']]['version'],
+                            $latestInstalledPkg = $latest[$installed['package']];
+                            if (version_compare($latestInstalledPkg['version'],
                                 $installed['version'], '>')) {
                                 $ptpl = '
 <tr class="v">
@@ -753,19 +774,18 @@ class PEAR_Info
         <a href="http://{channel}/get/{package}">{latest_version}</a>({latest_state})
     </td>
 </tr>';
-                                $packages .= str_replace(
-                                    array('{package}',
+
+                                $packages .= str_replace(array('{package}',
                                         '{latest_version}',
                                         '{latest_state}',
                                         '{channel}'
                                         ),
                                     array(trim($installed['package']),
-                                        $latest[$installed['package']]['version'],
-                                        $latest[$installed['package']]['state'],
+                                        $latestInstalledPkg['version'],
+                                        $latestInstalledPkg['state'],
                                         $channel
                                         ),
-                                    $ptpl
-                                );
+                                    $ptpl);
                             }
                         }
                     }
@@ -780,6 +800,7 @@ class PEAR_Info
         {packagexml}
     </td>
 </tr>';
+
                         $packagexml = $installed['packagexml'];
                         if (isset($installed['packagerversion'])) {
                             $packagexml .= ' packaged with PEAR version '
@@ -787,8 +808,7 @@ class PEAR_Info
                         }
                         $packages .= str_replace('{packagexml}',
                             $packagexml,
-                            $ptpl
-                        );
+                            $ptpl);
                     }
                     $ptpl = '
 <tr class="v">
@@ -799,10 +819,10 @@ class PEAR_Info
         {lastmodified}
     </td>
 </tr>';
+
                     $packages .= str_replace('{lastmodified}',
                         date('Y-m-d', $installed['lastmodified']),
-                        $ptpl
-                    );
+                        $ptpl);
 
                 }
 
@@ -812,7 +832,7 @@ class PEAR_Info
 </tr>
 </table>
 ';
-                $packages = str_replace('{top}', 'top'.$anchor_suffix, $packages);
+                $packages  = str_replace('{top}', 'top'.$anchor_suffix, $packages);
             }
 
             $index_header = '
@@ -827,10 +847,10 @@ class PEAR_Info
     <td class ="v" style="text-align: center">
 ';
             $index_header = str_replace(array('{channel}', '{top}'),
-                array($channel, 'top'.$anchor_suffix), $index_header
-            );
+                array($channel, 'top'.$anchor_suffix), $index_header);
             foreach ($index as $i) {
-                $index_header .= ' | <a href="#'.$i.$anchor_suffix.'">'.strtoupper($i).'</a>';
+                $index_header .= ' | <a href="#'.$i.$anchor_suffix.'">'
+                              . strtoupper($i) . '</a>';
             }
             $index_header .= ' |
     </td>
@@ -838,6 +858,7 @@ class PEAR_Info
 </table>
 
 ';
+
             $s .= $index_header . $packages;
             $anchor_suffix++;
         }
@@ -860,17 +881,20 @@ class PEAR_Info
 <h2>PEAR Configuration</h2>
 <table>';
         foreach ($keys as $key) {
-            if (($key != 'password') && ($key != 'username') && ($key != 'sig_keyid') && ($key != 'http_proxy')) {
+            if (   ($key != 'password')
+                && ($key != 'username')
+                && ($key != 'sig_keyid')
+                && ($key != 'http_proxy')) {
                 $html_config = '
 <tr class="v">
     <td class="e">{key}</td>
     <td>{value}</td>
 </tr>';
-                $html_config = str_replace(
-                    array('{key}', '{value}'),
+
+                $html_config = str_replace(array('{key}', '{value}'),
                     array($key, $this->config->get($key)),
-                    $html_config
-                );
+                    $html_config);
+
                 $html_pear_config .= $html_config;
             }
         }
@@ -908,6 +932,7 @@ class PEAR_Info
             }
             $html_pear_channel .= '
 <table>';
+
             $info = $this->reg->channelInfo($channel);
             if (PEAR::isError($info) || is_null($info)) {
                 $e = '<p class="error">An Error occured while fetching '
@@ -932,11 +957,10 @@ class PEAR_Info
                     $value = '<a href="#top' . $anchor_suffix . '">'
                         . $value . '</a>';
                 }
-                $html_channel = str_replace(
-                    array('{key}', '{value}'),
+                $html_channel = str_replace(array('{key}', '{value}'),
                     array(ucfirst($key), $value),
-                    $html_channel
-                );
+                    $html_channel);
+
                 $html_pear_channel .= $html_channel;
             }
             $html_pear_channel .= '
@@ -984,15 +1008,19 @@ class PEAR_Info
         <td colspan="2">
 ';
             foreach ($teams['president'] as $handle => $name) {
-                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                $html_member
+                    = '<a href="http://pear.php.net/account-info.php?handle='
                     . $handle .'">'. $name .'</a>,';
+
                 $html_pear_credits = str_replace('{president}',
                     $html_member, $html_pear_credits);
             }
 
             foreach ($teams['group'] as $handle => $name) {
-                $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                $html_member
+                    = '<a href="http://pear.php.net/account-info.php?handle='
                     . $handle .'">'. $name .'</a>,';
+
                 $html_pear_credits .= $html_member;
             }
 
@@ -1018,8 +1046,10 @@ class PEAR_Info
         <td>
 ';
                 foreach ($teams['docs'] as $handle => $name) {
-                    $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                    $html_member
+                        = '<a href="http://pear.php.net/account-info.php?handle='
                         . $handle .'">'. $name .'</a>,';
+
                     $html_pear_credits .= $html_member;
                 }
 
@@ -1046,8 +1076,10 @@ class PEAR_Info
         <td>
 ';
                 foreach ($teams['website'] as $handle => $name) {
-                    $html_member = '<a href="http://pear.php.net/account-info.php?handle='
+                    $html_member
+                        = '<a href="http://pear.php.net/account-info.php?handle='
                         . $handle .'">'. $name .'</a>,';
+
                     $html_pear_credits .= $html_member;
                 }
 
@@ -1070,13 +1102,13 @@ class PEAR_Info
 
         $available = $this->reg->listAllPackages();
         if (PEAR::isError($available)) {
-            $e = '<p class="error">An Error occured while fetching the credits from the remote server.'
-               . ' Please try again.</p>';
+            $e = '<p class="error">An Error occured while fetching the credits'
+               . ' from the remote server. Please try again.</p>';
             return $e;
         }
         if (!is_array($available)) {
-            $e = '<p class="error">The credits could not be fetched from the remote server.'
-               . ' Please try again.</p>';
+            $e = '<p class="error">The credits could not be fetched'
+               . ' from the remote server. Please try again.</p>';
             return $e;
         }
 
@@ -1090,7 +1122,8 @@ class PEAR_Info
 <tr class="hc"><td colspan="2">Channel {channel}</td></tr>
 <tr class="h"><td>Package</td><td>Maintainers</td></tr>';
 
-            $html_pear_credits = str_replace('{channel}', $channel, $html_pear_credits);
+            $html_pear_credits = str_replace('{channel}', $channel,
+                                     $html_pear_credits);
 
             // sort package by alphabetic order
             sort($pkg);
@@ -1098,7 +1131,7 @@ class PEAR_Info
             foreach ($pkg as $name) {
                 $info = &$this->reg->getPackage($name, $channel);
                 if (is_object($info)) {
-                    $installed['package'] = $info->getPackage();
+                    $installed['package']     = $info->getPackage();
                     $installed['maintainers'] = $info->getMaintainers();
                 } else {
                     $installed = $info;
@@ -1113,20 +1146,22 @@ class PEAR_Info
         {maintainers}
     </td>
 </tr>';
+
                 $maintainers = array();
                 foreach ($installed['maintainers'] as $i) {
-                    $maintainers[] = '<a href="http://pear.php.net/account-info.php?handle='
-                                   . $i['handle']. '">'
-                                   . htmlentities($i['name'])
-                                   . '</a>'
-                                   .' (' . $i['role']
-                                   . (isset($i['active']) && $i['active'] === 'no' ? ', inactive' : '')
-                                   . ')';
+                    $maintainers[]
+                        = '<a href="http://pear.php.net/account-info.php?handle='
+                        . $i['handle']. '">'
+                        . htmlentities($i['name'])
+                        . '</a>'
+                        .' (' . $i['role']
+                        . (isset($i['active']) && $i['active'] === 'no'
+                            ? ', inactive' : '')
+                        . ')';
                 }
-                $maintainers = implode(', ',$maintainers);
+                $maintainers = implode(', ', $maintainers);
 
-                $html_pear_credits .= str_replace(
-                    array('{packageURI}',
+                $html_pear_credits .= str_replace(array('{packageURI}',
                         '{package}',
                         '{channel}',
                         '{maintainers}'
@@ -1136,8 +1171,7 @@ class PEAR_Info
                         $channel,
                         $maintainers
                         ),
-                    $ptpl
-                );
+                    $ptpl);
             }
             $html_pear_credits .= '
 </table>
@@ -1155,19 +1189,33 @@ class PEAR_Info
      */
     function pearImage()
     {
-        $pear_image = 'R0lGODlhaAAyAMT/AMDAwP3+/TWaAvD47Pj89vz++zebBDmcBj6fDEekFluvKmu3PvX68ujz4XvBS8LgrNXqxeHw1ZnPaa/dgvv9+cLqj8LmltD2msnuls';
-        $pear_image .= '3xmszwmf7+/f///wAAAAAAAAAAACH5BAEAAAAALAAAAABoADIAQAX/ICCOZGmeaKqubOtWWjwJphLLgH1XUu//C1Jisfj9YLEKQnSY3GaixWQqQTkYHM4';
-        $pear_image .= 'AMulNLJFC9pEwIW/odKU8cqTfsWoTTtcomU4ZjbR4ZP+AgYKCG0EiZ1AuiossEhwEXRMEg5SVWQ6MmZqKWD0QlqCUEHubpaYlExwRPRZioZZVp7KzKQoS';
-        $pear_image .= 'DxANDLsNXA5simd2FcQYb4YAc2jEU80TmAAIztPCMcjKdg4OEsZJmwIWWQPQI4ikIwtoVQnddgrv8PFlCWgYCwkI+fp5dkvJ/IlUKMCy6tYrDhNIIKLFE';
-        $pear_image .= 'AWCTxse+ABD4SClWA0zovAjcUJFi6EwahxZwoGqHhFA/4IqoICkyxQSKkbo0gDkuBXV4FRAJkRCnTgi2P28IcEfk5xpWppykFJVuScmEvDTEETAVJ6bEp';
-        $pear_image .= 'ypcADPkz3pvKVAICHChkC7siQ08zVqu4Q6hgIFEFZuEn/KMgRUkaBmAQs+cEHgIiHVH5EAFpIgW4+NT6LnaqhDwe/Ov7YOmWZp4MkiAWBIl0kAVsJWuzc';
-        $pear_image .= 'YpdiNgddc0E8cKBAu/FElBwagMb88ZZKDRAkWJtkWhHh3wwUbKHQJN3wQAaXGR2LpArv5oFHRR34C7Mf6oLXZNfqBgNI7oOLhj1f8PaGpygHQ0xtP8MDV';
-        $pear_image .= 'KwYTSKcgxr9/hS6/pCCAAg5M4B9/sWh1YP9/XSgQWRML/idBfKUc4IBET9lFjggKhDYZAELZJYEBI2BDB3ouNBEABwE8gAwiCcSYgAKqPdEVAG7scM8BP';
-        $pear_image .= 'PZ4AIlM+OgjAgpMhRE24OVoBwsIFEGFA7ZkQQBWienWxmRa7XDjKZXhBdAeSmKQwgLuUVLICa6VEKIGcK2mQWoVZHCBXJblJUFkY06yAXlGsPIHBEYdYi';
-        $pear_image .= 'WHb+WQBgaIJqqoHFNpgMGB7dT5ZQuG/WbBAIAUEEFNfwxAWpokTIXJAWdgoJ9kRFG2g5eDRpXSBpEIF0oEQFaZhDbaSFANRgqcJoEDRARLREtxOQpsPO9';
-        $pear_image .= '06ZUeJgjQB6dZUPBAdwcF8KLXXRVQaKFcsRRLJ6vMiiCNKxRE8ECZKgUA3Va4arOAAqdGRWO7uMZH5AL05gvsjQbg6y4NCjQ1kw8TVGcbdoKGKx8j3bGH';
-        $pear_image .= '7nARBArqwi0gkFJBrZiXBQRbHoIgnhSjcEBKfD7c3HMhz+JIQSY3t8GGKW+SUhfUajxGzKd0IoHBNkNQK86ZYEqdzYA8AHQpqXRUm80oHs1CAgMoBxzRq';
-        $pear_image .= 'vzs9CIKECC1JBp7enUpfXHApwVYNAfo16c4IrYPLVdSAJVob7IAtCBFQGHcs/RRdiUDPHA33oADEAIAOw==';
+        $pear_image
+            = 'R0lGODlhaAAyAMT/AMDAwP3+/TWaAvD47Pj89vz++zebBDmcBj6fDEek'
+            . 'FluvKmu3PvX68ujz4XvBS8LgrNXqxeHw1ZnPaa/dgvv9+cLqj8LmltD2msnuls'
+            . '3xmszwmf7+/f///wAAAAAAAAAAACH5BAEAAAAALAAAAABoADIAQAX/IC'
+            . 'COZGmeaKqubOtWWjwJphLLgH1XUu//C1Jisfj9YLEKQnSY3GaixWQqQTkYHM4'
+            . 'AMulNLJFC9pEwIW/odKU8cqTfsWoTTtcomU4ZjbR4ZP+AgYKCG0EiZ1A'
+            . 'uiossEhwEXRMEg5SVWQ6MmZqKWD0QlqCUEHubpaYlExwRPRZioZZVp7KzKQoS'
+            . 'DxANDLsNXA5simd2FcQYb4YAc2jEU80TmAAIztPCMcjKdg4OEsZJmwIW'
+            . 'WQPQI4ikIwtoVQnddgrv8PFlCWgYCwkI+fp5dkvJ/IlUKMCy6tYrDhNIIKLFE'
+            . 'AWCTxse+ABD4SClWA0zovAjcUJFi6EwahxZwoGqHhFA/4IqoICkyxQSK'
+            . 'kbo0gDkuBXV4FRAJkRCnTgi2P28IcEfk5xpWppykFJVuScmEvDTEETAVJ6bEp'
+            . 'ypcADPkz3pvKVAICHChkC7siQ08zVqu4Q6hgIFEFZuEn/KMgRUkaBmAQ'
+            . 's+cEHgIiHVH5EAFpIgW4+NT6LnaqhDwe/Ov7YOmWZp4MkiAWBIl0kAVsJWuzc'
+            . 'YpdiNgddc0E8cKBAu/FElBwagMb88ZZKDRAkWJtkWhHh3wwUbKHQJN3w'
+            . 'QAaXGR2LpArv5oFHRR34C7Mf6oLXZNfqBgNI7oOLhj1f8PaGpygHQ0xtP8MDV'
+            . 'KwYTSKcgxr9/hS6/pCCAAg5M4B9/sWh1YP9/XSgQWRML/idBfKUc4IBE'
+            . 'T9lFjggKhDYZAELZJYEBI2BDB3ouNBEABwE8gAwiCcSYgAKqPdEVAG7scM8BP'
+            . 'PZ4AIlM+OgjAgpMhRE24OVoBwsIFEGFA7ZkQQBWienWxmRa7XDjKZXhB'
+            . 'dAeSmKQwgLuUVLICa6VEKIGcK2mQWoVZHCBXJblJUFkY06yAXlGsPIHBEYdYi'
+            . 'WHb+WQBgaIJqqoHFNpgMGB7dT5ZQuG/WbBAIAUEEFNfwxAWpokTIXJAW'
+            . 'dgoJ9kRFG2g5eDRpXSBpEIF0oEQFaZhDbaSFANRgqcJoEDRARLREtxOQpsPO9'
+            . '06ZUeJgjQB6dZUPBAdwcF8KLXXRVQaKFcsRRLJ6vMiiCNKxRE8ECZKgU'
+            . 'A3Va4arOAAqdGRWO7uMZH5AL05gvsjQbg6y4NCjQ1kw8TVGcbdoKGKx8j3bGH'
+            . '7nARBArqwi0gkFJBrZiXBQRbHoIgnhSjcEBKfD7c3HMhz+JIQSY3t8GG'
+            . 'KW+SUhfUajxGzKd0IoHBNkNQK86ZYEqdzYA8AHQpqXRUm80oHs1CAgMoBxzRq'
+            . 'vzs9CIKECC1JBp7enUpfXHApwVYNAfo16c4IrYPLVdSAJVob7IAtCBFQ'
+            . 'GHcs/RRdiUDPHA33oADEAIAOw==';
         header('content-type: image/gif');
         echo base64_decode($pear_image);
     }
@@ -1175,10 +1223,11 @@ class PEAR_Info
     /**
      * Returns a members list depending of its category (group, docs, website)
      *
-     * @param  string $group   (optional) Member list category.
-     *                         Either president, group, docs or website
-     * @param  bool   $sort    (optional) Return a member list sorted
-     *                         in alphabetic order
+     * @param string $group (optional) Member list category.
+     *                      Either president, group, docs or website
+     * @param bool   $sort  (optional) Return a member list sorted
+     *                      in alphabetic order
+     *
      * @static
      * @return array
      * @access public
@@ -1186,39 +1235,39 @@ class PEAR_Info
      */
     function getMembers($group = 'all', $sort = true)
     {
-         $members = array(
-             'president' => array('cellog' => 'Gregory Beaver'),
-             'group'     => array(
-                 'mj' => 'Martin Jansen',
-                 'davidc' => 'David Coallier',
-                 'arnaud' => 'Arnaud Limbourg',
-                 'jeichorn' => 'Joshua Eichorn',
-                 'cweiske' => 'Christian Weiske',
-                 'dufuz' => 'Helgi &thorn;ormar',
-                 'pmjones' => 'Paul M. Jones',
-                 ),
-             'docs'      => array(
-                 ),
-             'website'   => array(
-                 )
-             );
+        $members = array(
+            'president' => array('cellog' => 'Gregory Beaver'),
+            'group'     => array(
+                'mj' => 'Martin Jansen',
+                'davidc' => 'David Coallier',
+                'arnaud' => 'Arnaud Limbourg',
+                'jeichorn' => 'Joshua Eichorn',
+                'cweiske' => 'Christian Weiske',
+                'dufuz' => 'Helgi &thorn;ormar',
+                'pmjones' => 'Paul M. Jones',
+                ),
+            'docs'      => array(
+                ),
+            'website'   => array(
+                )
+            );
 
-         if ($group === 'all') {
-             $list = $members;
-             if ($sort === true) {
-                 asort($list['group']);
-                 asort($list['docs']);
-                 asort($list['website']);
-             }
-         }elseif (in_array($group, array_keys($members))) {
-             $list = $members[$group];
-             if ($sort === true) {
-                 asort($list);
-             }
-         } else {
-             $list = false;
-         }
-         return $list;
+        if ($group === 'all') {
+            $list = $members;
+            if ($sort === true) {
+                asort($list['group']);
+                asort($list['docs']);
+                asort($list['website']);
+            }
+        } elseif (in_array($group, array_keys($members))) {
+            $list = $members[$group];
+            if ($sort === true) {
+                asort($list);
+            }
+        } else {
+            $list = false;
+        }
+        return $list;
     }
 
     /**
@@ -1279,7 +1328,8 @@ class PEAR_Info
         $styles = $this->getStyleSheet();
 
         $html = <<<HTML
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>PEAR :: PEAR_Info()</title>
@@ -1303,20 +1353,25 @@ HTML;
     /**
      * Check if a package is installed
      *
-     * @param  string  $name                        Package name
-     * @param  string  $version          (optional) The minimal version that should be installed
-     * @param  string  $channel          (optional) The package channel distribution
-     * @param  string  $user_file        (optional) file to read PEAR user-defined options from
-     * @param  string  $system_file      (optional) file to read PEAR system-wide defaults from
+     * @param string $name        Package name
+     * @param string $version     (optional) The minimal version
+     *                            that should be installed
+     * @param string $channel     (optional) The package channel distribution
+     * @param string $user_file   (optional) file to read PEAR user-defined
+     *                            options from
+     * @param string $system_file (optional) file to read PEAR system-wide
+     *                            defaults from
+     *
      * @static
      * @return bool
      * @access public
      * @since  1.6.0
      */
-    function packageInstalled($name, $version = null, $channel = null, $user_file = '', $system_file = '')
+    function packageInstalled($name, $version = null, $channel = null,
+        $user_file = '', $system_file = '')
     {
         $config =& PEAR_Config::singleton($user_file, $system_file);
-        $reg = &$config->getRegistry();
+        $reg    =& $config->getRegistry();
 
         if (is_null($version)) {
             return $reg->packageExists($name, $channel);
