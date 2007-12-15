@@ -1,16 +1,24 @@
 <?php
 /**
- * Generate phpinfo() style PEAR information, embedded into user-defined html template
+ * Generate phpinfo() style PEAR information,
+ * embedded into user-defined html template
  *
- * @author    Laurent Laville
- * @package   PEAR_Info
- * @version   $Id$
+ * PHP versions 4 and 5
+ *
+ * @category PEAR
+ * @package  PEAR_Info
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version  CVS: $Id$
+ * @link     http://pear.php.net/package/PEAR_Info
  * @ignore
  */
 
-// require the PEAR_Info file
 require_once 'PEAR/Info.php';
 
+/**
+ * @ignore
+ */
 class PEAR_Info3 extends PEAR_Info
 {
     function PEAR_Info3($pear_dir = '', $user_file = '', $system_file = '')

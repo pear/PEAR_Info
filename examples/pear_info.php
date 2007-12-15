@@ -2,9 +2,14 @@
 /**
  * Generate default phpinfo() style PEAR information.
  *
- * @author    Laurent Laville
- * @package   PEAR_Info
- * @version   $Id$
+ * PHP versions 4 and 5
+ *
+ * @category PEAR
+ * @package  PEAR_Info
+ * @author   Laurent Laville <pear@laurent-laville.org>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version  CVS: $Id$
+ * @link     http://pear.php.net/package/PEAR_Info
  * @ignore
  */
 
