@@ -180,7 +180,7 @@ class PEAR_Info
      *
      * @return void
      * @access public
-     * @since  1.0.1
+     * @since  version 1.0.1 (2003-04-24)
      */
     function PEAR_Info($pear_dir = '', $user_file = '', $system_file = '',
         $options = null)
@@ -200,7 +200,7 @@ class PEAR_Info
      *
      * @return void
      * @access private
-     * @since  1.7.0RC1
+     * @since  version 1.7.0RC1 (2007-07-01)
      */
     function __construct($pear_dir = '', $user_file = '', $system_file = '',
         $options = null)
@@ -351,12 +351,14 @@ class PEAR_Info
     /**
      * Sets PEAR HTTP Proxy Server Address
      *
+     * Sets http_proxy config setting at runtime
+     *
      * @param string $proxy PEAR HTTP Proxy Server Address
      *
      * @static
      * @return bool
      * @access public
-     * @since  1.0.6
+     * @since  version 1.0.6 (2003-05-11)
      */
     function setProxy($proxy)
     {
@@ -377,7 +379,7 @@ class PEAR_Info
      *
      * @return string
      * @access public
-     * @since  1.7.0RC1
+     * @since  version 1.7.0RC1 (2007-07-01)
      */
     function getStyleSheet($content = true)
     {
@@ -399,7 +401,7 @@ class PEAR_Info
      *
      * @return bool    True if custom styles, false if default styles applied
      * @access public
-     * @since  1.7.0RC1
+     * @since  version 1.7.0RC1 (2007-07-01)
      */
     function setStyleSheet($css = null)
     {
@@ -422,7 +424,7 @@ class PEAR_Info
      *
      * @return string
      * @access private
-     * @since  1.0.1
+     * @since  version 1.0.1 (2003-04-24)
      */
     function getPackages()
     {
@@ -870,7 +872,7 @@ class PEAR_Info
      *
      * @return string
      * @access private
-     * @since  1.0.1
+     * @since  version 1.0.1 (2003-04-24)
      */
     function getConfig()
     {
@@ -910,7 +912,7 @@ class PEAR_Info
      *
      * @return string
      * @access private
-     * @since  1.7.0RC1
+     * @since  version 1.7.0RC1 (2007-07-01)
      */
     function getChannels()
     {
@@ -979,7 +981,7 @@ class PEAR_Info
      *
      * @return string
      * @access private
-     * @since  1.0.1
+     * @since  version 1.0.1 (2003-04-24)
      */
     function getCredits()
     {
@@ -1185,7 +1187,7 @@ class PEAR_Info
      *
      * @return void
      * @access public
-     * @since  1.0.1
+     * @since  version 1.0.1 (2003-04-24)
      */
     function pearImage()
     {
@@ -1231,7 +1233,7 @@ class PEAR_Info
      * @static
      * @return array
      * @access public
-     * @since  1.7.0RC3
+     * @since  version 1.7.0RC3 (2007-07-10)
      */
     function getMembers($group = 'all', $sort = true)
     {
@@ -1277,7 +1279,7 @@ class PEAR_Info
      *
      * @return void
      * @access public
-     * @since  1.0.1
+     * @since  version 1.0.1 (2003-04-24)
      * @see    setStyleSheet()
      * @deprecated  use display() instead
      */
@@ -1293,7 +1295,7 @@ class PEAR_Info
      *
      * @return void
      * @access public
-     * @since  1.7.0RC1
+     * @since  version 1.7.0RC1 (2007-07-01)
      * @see    setStyleSheet()
      */
     function display()
@@ -1310,7 +1312,7 @@ class PEAR_Info
      *
      * @return string
      * @access public
-     * @since  1.7.0RC1
+     * @since  version 1.7.0RC1 (2007-07-01)
      * @see    setStyleSheet(), getStyleSheet()
      */
     function toHtml()
@@ -1353,6 +1355,9 @@ HTML;
     /**
      * Check if a package is installed
      *
+     * Simple function to check if a package is installed under user
+     * or system PEAR installation. Minimal version and channel info are supported.
+     *
      * @param string $name        Package name
      * @param string $version     (optional) The minimal version
      *                            that should be installed
@@ -1365,7 +1370,7 @@ HTML;
      * @static
      * @return bool
      * @access public
-     * @since  1.6.0
+     * @since  version 1.6.0 (2005-01-03)
      */
     function packageInstalled($name, $version = null, $channel = null,
         $user_file = '', $system_file = '')
