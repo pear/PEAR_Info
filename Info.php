@@ -1183,7 +1183,9 @@ class PEAR_Info
     }
 
     /**
-     * outputs the PEAR logo
+     * Display the PEAR logo
+     *
+     * Display the PEAR logo (gif image) on browser output
      *
      * @return void
      * @access public
@@ -1224,6 +1226,8 @@ class PEAR_Info
 
     /**
      * Returns a members list depending of its category (group, docs, website)
+     *
+     * Retrieve the members list of PEAR group, PEAR doc team, or PEAR website team
      *
      * @param string $group (optional) Member list category.
      *                      Either president, group, docs or website
