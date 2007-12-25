@@ -36,30 +36,48 @@ $options = array('filelistgenerator' => 'cvs',
     'simpleoutput' => true,
     'clearcontents' => false,
     'changelogoldtonew' => false,
-    'ignore' => array('package.php')
+    'ignore' => array(__FILE__)
     );
 
 $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('1.7.0');
+$p2->setReleaseVersion('1.7.1');
 $p2->setAPIVersion('1.7.0');
 $p2->setReleaseStability('stable');
 $p2->setAPIStability('stable');
-$p2->setNotes('* changes since RC3
-- class is fully tested with PHPUnit 3
-- removed trigger_error, but not replaced by PEAR_Error (as suggested).
-  Will output the error at display() method call.
-- docs and website teams are empty and will not be display on credits page.
-- definitively removed support of PEAR 1.3.x
+$p2->setNotes('* changes
+- license upgrades from PHP 3.0 to PHP 3.01
+- removed test/OutputTestCase.php (new feature include since PHPUnit 3.1.4
+  see http://www.phpunit.de/ticket/157)
+- add optional dependency to PHPUnit 3.1.4 (minimum)
+
+* bugs
+- fixed bug #12576: clarify license on temporary unit test code
+
+* QA
+- API is now fully PHPUnit 3 tested
+- Full API is documented into PEAR Manual
+- PEAR installer minimum set to 1.5.4 (to avoid security vulnerability)
 ');
-//$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
+$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
+$p2->setPearinstallerDep('1.5.4');
+$p2->addPackageDepWithChannel('optional', 'PHPUnit', 'pear.phpunit.de', '3.1.4');
 //$p2->addMaintainer('lead', 'farell',
 //    'Laurent Laville', 'pear@laurent-laville.org');
 //$p2->addReplacement('Info.php', 'pear-config', '@data_dir@', 'data_dir');
 //$p2->addReplacement('Info.php', 'package-info', '@package_name@', 'name');
-//$p2->addReplacement('Info.php', 'package-info', '@package_version@', 'version');
+$p2->addReplacement('AllTests.php',
+    'package-info', '@package_version@', 'version');
+$p2->addReplacement('PEAR_Info_TestCase_DefaultConfig.php',
+    'package-info', '@package_version@', 'version');
+$p2->addReplacement('PEAR_Info_TestCase_CustomConfig.php',
+    'package-info', '@package_version@', 'version');
+$p2->addReplacement('PEAR_Info_TestCase_Install.php',
+    'package-info', '@package_version@', 'version');
+$p2->addReplacement('PEAR_Info_TestCase_Output.php',
+    'package-info', '@package_version@', 'version');
 
 if (isset($_GET['make'])
     || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
