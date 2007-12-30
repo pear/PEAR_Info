@@ -267,14 +267,14 @@ class PEAR_Info
         }
         // prevent unexpected result if PEAR config file does not exist
         if (!file_exists($user_file) && !file_exists($system_file)) {
-            $e = '<p class="error">PEAR configuration files '
-                . $user_file . ', ' . $system_file . ' does not exist</p>';
+            $e = '<p class="error">PEAR configuration files "'
+                . $user_file . '", "' . $system_file . '" does not exist</p>';
 
             $this->info = $e;
             return;
         }
         // Get the config's registry object.
-        $this->reg = &$this->config->getRegistry($layer);
+        $this->reg = &$this->config->getRegistry();
 
         // Get list of all channels in your PEAR install,
         // when 'channels' option is empty
