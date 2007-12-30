@@ -29,10 +29,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 chdir(dirname(__FILE__));
 
-require_once 'PEAR_Info_TestCase_DefaultConfig.php';
-require_once 'PEAR_Info_TestCase_CustomConfig.php';
-require_once 'PEAR_Info_TestCase_Install.php';
-require_once 'PEAR_Info_TestCase_Output.php';
+require_once 'PEAR_Info_TestSuite_Standard.php';
 
 /**
  * PEAR_Info no-regression test suite
@@ -80,11 +77,9 @@ class PEAR_Info_AllTests
      */
     public static function suite()
     {
+        $dir   = dirname(__FILE__);
         $suite = new PHPUnit_Framework_TestSuite('PEAR_Info Test Suite');
-        $suite->addTestSuite('PEAR_Info_TestCase_DefaultConfig');
-        $suite->addTestSuite('PEAR_Info_TestCase_CustomConfig');
-        $suite->addTestSuite('PEAR_Info_TestCase_Install');
-        $suite->addTestSuite('PEAR_Info_TestCase_Output');
+        $suite->addTestSuite(new PEAR_Info_TestSuite_Standard($dir));
         return $suite;
     }
 }
