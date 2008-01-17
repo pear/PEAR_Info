@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.6.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.6.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>PEAR_Info</name>
  <channel>pear.php.net</channel>
  <summary>Show Information about your PEAR install and its packages</summary>
@@ -26,23 +26,32 @@
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2007-07-17</date>
- <time>18:21:14</time>
+ <date>2008-01-17</date>
+ <time>11:04:17</time>
  <version>
-  <release>1.7.0</release>
+  <release>1.7.1</release>
   <api>1.7.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
- <license uri="http://www.php.net/license">PHP License</license>
- <notes>* changes since RC3
-- class is fully tested with PHPUnit 3
-- removed trigger_error, but not replaced by PEAR_Error (as suggested).
-  Will output the error at display() method call.
-- docs and website teams are empty and will not be display on credits page.
-- definitively removed support of PEAR 1.3.x
+ <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+ <notes>* changes
+- license upgrades from PHP 3.0 to PHP 3.01
+- removed test/OutputTestCase.php (new feature include since PHPUnit 3.1.4
+  see http://www.phpunit.de/ticket/157)
+
+* bugs
+- fixed bug #12576: clarify license on temporary unit test code
+
+* QA
+- API is now fully PHPUnit 3 tested
+- Full API is documented into PEAR Manual
+- PEAR installer minimum set to 1.5.4 (to avoid security vulnerability)
+- add optional dependency to PHPUnit 3.1.4 (minimum)
+  Unit Tests suite used now .phpt format to solve problem of user/system file config
+  modification (and restore in case of a crash: suggestion given by Christian Weiske)
  </notes>
  <contents>
   <dir baseinstalldir="PEAR" name="/">
@@ -99,12 +108,15 @@
     <dir name="user_dir">
      <file name="empty_dir.txt" role="test" />
     </dir> <!-- /tests/user_dir -->
-    <file name="AllTests.php" role="test" />
-    <file name="OutputTestCase.php" role="test" />
-    <file name="PEAR_Info_TestCase_CustomConfig.php" role="test" />
-    <file name="PEAR_Info_TestCase_DefaultConfig.php" role="test" />
-    <file name="PEAR_Info_TestCase_Install.php" role="test" />
-    <file name="PEAR_Info_TestCase_Output.php" role="test" />
+    <file name="AllTests.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="customConfig.phpt" role="test" />
+    <file name="defaultConfig.phpt" role="test" />
+    <file name="install.phpt" role="test" />
+    <file name="PEAR_Info_TestSuite_Standard.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
    </dir> <!-- /tests -->
    <file name="Info.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -120,17 +132,52 @@
     <min>4.3.0</min>
    </php>
    <pearinstaller>
-    <min>1.4.11</min>
+    <min>1.5.4</min>
    </pearinstaller>
    <package>
     <name>PEAR</name>
     <channel>pear.php.net</channel>
-    <min>1.4.11</min>
+    <min>1.5.4</min>
    </package>
   </required>
+  <optional>
+   <package>
+    <name>PHPUnit</name>
+    <channel>pear.phpunit.de</channel>
+    <min>3.1.4</min>
+   </package>
+  </optional>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.7.1</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-01-17</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>* changes
+- license upgrades from PHP 3.0 to PHP 3.01
+- removed test/OutputTestCase.php (new feature include since PHPUnit 3.1.4
+  see http://www.phpunit.de/ticket/157)
+
+* bugs
+- fixed bug #12576: clarify license on temporary unit test code
+
+* QA
+- API is now fully PHPUnit 3 tested
+- Full API is documented into PEAR Manual
+- PEAR installer minimum set to 1.5.4 (to avoid security vulnerability)
+- add optional dependency to PHPUnit 3.1.4 (minimum)
+  Unit Tests suite used now .phpt format to solve problem of user/system file config
+  modification (and restore in case of a crash: suggestion given by Christian Weiske)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.7.0</release>
@@ -147,8 +194,7 @@
 - removed trigger_error, but not replaced by PEAR_Error (as suggested).
   Will output the error at display() method call.
 - docs and website teams are empty and will not be display on credits page.
-- definitively removed support of PEAR 1.3.x
-   </notes>
+- definitively removed support of PEAR 1.3.x</notes>
   </release>
   <release>
    <version>

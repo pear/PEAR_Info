@@ -51,7 +51,6 @@ $p2->setNotes('* changes
 - license upgrades from PHP 3.0 to PHP 3.01
 - removed test/OutputTestCase.php (new feature include since PHPUnit 3.1.4
   see http://www.phpunit.de/ticket/157)
-- add optional dependency to PHPUnit 3.1.4 (minimum)
 
 * bugs
 - fixed bug #12576: clarify license on temporary unit test code
@@ -60,6 +59,9 @@ $p2->setNotes('* changes
 - API is now fully PHPUnit 3 tested
 - Full API is documented into PEAR Manual
 - PEAR installer minimum set to 1.5.4 (to avoid security vulnerability)
+- add optional dependency to PHPUnit 3.1.4 (minimum)
+  Unit Tests suite used now .phpt format to solve problem of user/system file config
+  modification (and restore in case of a crash: suggestion given by Christian Weiske)
 ');
 $p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 $p2->setPearinstallerDep('1.5.4');
@@ -70,13 +72,7 @@ $p2->addPackageDepWithChannel('optional', 'PHPUnit', 'pear.phpunit.de', '3.1.4')
 //$p2->addReplacement('Info.php', 'package-info', '@package_name@', 'name');
 $p2->addReplacement('AllTests.php',
     'package-info', '@package_version@', 'version');
-$p2->addReplacement('PEAR_Info_TestCase_DefaultConfig.php',
-    'package-info', '@package_version@', 'version');
-$p2->addReplacement('PEAR_Info_TestCase_CustomConfig.php',
-    'package-info', '@package_version@', 'version');
-$p2->addReplacement('PEAR_Info_TestCase_Install.php',
-    'package-info', '@package_version@', 'version');
-$p2->addReplacement('PEAR_Info_TestCase_Output.php',
+$p2->addReplacement('PEAR_Info_TestSuite_Standard.php',
     'package-info', '@package_version@', 'version');
 
 if (isset($_GET['make'])
