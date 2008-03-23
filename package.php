@@ -43,37 +43,40 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('1.7.1');
-$p2->setAPIVersion('1.7.0');
-$p2->setReleaseStability('stable');
+$p2->setReleaseVersion('1.8.0a1');
+$p2->setAPIVersion('1.8.0');
+$p2->setReleaseStability('alpha');
 $p2->setAPIStability('stable');
-$p2->setNotes('* changes
-- license upgrades from PHP 3.0 to PHP 3.01
-- removed test/OutputTestCase.php (new feature include since PHPUnit 3.1.4
-  see http://www.phpunit.de/ticket/157)
+$p2->setNotes('IMPORTANT NOTE
+Even if this version is mark as alpha, I consider API as stable. There are no change
+on Web SAPI.
+Introduce the CLI part: a phpinfo() text clone like, but for PEAR info.
 
-* bugs
-- fixed bug #12576: clarify license on temporary unit test code
+Final and stable release is planned for April 18, 2008 with same features. Unless
+a bug is found or a change is asked by users-end.
 
-* QA
-- API is now fully PHPUnit 3 tested
-- Full API is documented into PEAR Manual
-- PEAR installer minimum set to 1.5.4 (to avoid security vulnerability)
-- add optional dependency to PHPUnit 3.1.4 (minimum)
-  Unit Tests suite used now .phpt format to solve problem of user/system file config
-  modification (and restore in case of a crash: suggestion given by Christian Weiske)
+* news
+- implement request #13401 : outputs plain text in CLI mode
 ');
-$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
-$p2->setPearinstallerDep('1.5.4');
-$p2->addPackageDepWithChannel('optional', 'PHPUnit', 'pear.phpunit.de', '3.1.4');
-//$p2->addMaintainer('lead', 'farell',
-//    'Laurent Laville', 'pear@laurent-laville.org');
+//$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
+//$p2->setPearinstallerDep('1.5.4');
+/*$p2->addPackageDepWithChannel('optional',
+                                'PHPUnit', 'pear.phpunit.de', '3.1.4');*/
+$p2->addPackageDepWithChannel('required',
+                              'Console_Getargs', 'pear.php.net', '1.3.3');
+/*$p2->addMaintainer('lead', 'farell',
+                     'Laurent Laville', 'pear@laurent-laville.org'); */
 //$p2->addReplacement('Info.php', 'pear-config', '@data_dir@', 'data_dir');
 //$p2->addReplacement('Info.php', 'package-info', '@package_name@', 'name');
-$p2->addReplacement('AllTests.php',
-    'package-info', '@package_version@', 'version');
-$p2->addReplacement('PEAR_Info_TestSuite_Standard.php',
-    'package-info', '@package_version@', 'version');
+/*$p2->addReplacement('AllTests.php',
+                    'package-info', '@package_version@', 'version'); */
+/*$p2->addReplacement('PEAR_Info_TestSuite_Standard.php',
+                    'package-info', '@package_version@', 'version'); */
+$p2->addReplacement('Cli.php', 'package-info', '@package_version@', 'version');
+$p2->addReplacement('pearinfo', 'pear-config', '@php_bin@', 'php_bin');
+$p2->addReplacement('pearinfo.bat', 'pear-config', '@php_bin@', 'php_bin');
+$p2->addReplacement('pearinfo.bat', 'pear-config', '@php_dir@', 'php_dir');
+$p2->addReplacement('pearinfo.bat', 'pear-config', '@bin_dir@', 'bin_dir');
 
 if (isset($_GET['make'])
     || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
