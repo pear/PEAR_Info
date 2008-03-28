@@ -43,7 +43,7 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('1.8.0a1');
+$p2->setReleaseVersion('1.8.0a2');
 $p2->setAPIVersion('1.8.0');
 $p2->setReleaseStability('alpha');
 $p2->setAPIStability('stable');
@@ -57,13 +57,18 @@ a bug is found or a change is asked by users-end.
 
 * news
 - implement request #13401 : outputs plain text in CLI mode
+
+Changes since version 1.8.0a1 (2008-03-23)
+
+- CLI print PEAR_Info package version (-V | --version) without help usage
+- fix wrong location of shell script pearinfo on all platforms
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 //$p2->setPearinstallerDep('1.5.4');
 /*$p2->addPackageDepWithChannel('optional',
                                 'PHPUnit', 'pear.phpunit.de', '3.1.4');*/
-$p2->addPackageDepWithChannel('required',
-                              'Console_Getargs', 'pear.php.net', '1.3.3');
+/*$p2->addPackageDepWithChannel('required',
+                              'Console_Getargs', 'pear.php.net', '1.3.3'); */
 /*$p2->addMaintainer('lead', 'farell',
                      'Laurent Laville', 'pear@laurent-laville.org'); */
 //$p2->addReplacement('Info.php', 'pear-config', '@data_dir@', 'data_dir');
@@ -72,11 +77,11 @@ $p2->addPackageDepWithChannel('required',
                     'package-info', '@package_version@', 'version'); */
 /*$p2->addReplacement('PEAR_Info_TestSuite_Standard.php',
                     'package-info', '@package_version@', 'version'); */
-$p2->addReplacement('Cli.php', 'package-info', '@package_version@', 'version');
-$p2->addReplacement('pearinfo', 'pear-config', '@php_bin@', 'php_bin');
-$p2->addReplacement('pearinfo.bat', 'pear-config', '@php_bin@', 'php_bin');
-$p2->addReplacement('pearinfo.bat', 'pear-config', '@php_dir@', 'php_dir');
-$p2->addReplacement('pearinfo.bat', 'pear-config', '@bin_dir@', 'bin_dir');
+//$p2->addReplacement('Cli.php', 'package-info', '@package_version@', 'version');
+//$p2->addReplacement('pearinfo', 'pear-config', '@php_bin@', 'php_bin');
+//$p2->addReplacement('pearinfo.bat', 'pear-config', '@php_bin@', 'php_bin');
+//$p2->addReplacement('pearinfo.bat', 'pear-config', '@php_dir@', 'php_dir');
+//$p2->addReplacement('pearinfo.bat', 'pear-config', '@bin_dir@', 'bin_dir');
 
 if (isset($_GET['make'])
     || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
