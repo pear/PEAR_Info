@@ -233,7 +233,12 @@ class PEAR_Info_Cli extends PEAR_Info
     function run()
     {
         if (isset($this->error)) {
-            $this->_printUsage($this->error);
+            if (strpos($this->error, 'PEAR_Info') === false) {
+                $this->_printUsage($this->error);
+            } else {
+                // when Version asked, do not print help usage
+                echo $this->error;
+            }
             return;
         }
 
