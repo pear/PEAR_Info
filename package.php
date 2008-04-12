@@ -43,20 +43,19 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('1.8.0a2');
+$p2->setReleaseVersion('1.8.0');
 $p2->setAPIVersion('1.8.0');
-$p2->setReleaseStability('alpha');
+$p2->setReleaseStability('stable');
 $p2->setAPIStability('stable');
-$p2->setNotes('IMPORTANT NOTE
-Even if this version is mark as alpha, I consider API as stable. There are no change
-on Web SAPI.
-Introduce the CLI part: a phpinfo() text clone like, but for PEAR info.
-
-Final and stable release is planned for April 18, 2008 with same features. Unless
-a bug is found or a change is asked by users-end.
+$p2->setNotes('Introduce the CLI part:
+a phpinfo() text clone like, but for PEAR info.
 
 * news
 - implement request #13401 : outputs plain text in CLI mode
+
+Changes since version 1.8.0a2 (2008-03-28)
+
+- none
 
 Changes since version 1.8.0a1 (2008-03-23)
 
