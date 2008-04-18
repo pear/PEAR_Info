@@ -26,27 +26,26 @@
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2008-03-28</date>
- <time>15:42:46</time>
+ <date>2008-04-18</date>
+ <time>22:17:07</time>
  <version>
-  <release>1.8.0a2</release>
+  <release>1.8.0</release>
   <api>1.8.0</api>
  </version>
  <stability>
-  <release>alpha</release>
+  <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
- <notes>IMPORTANT NOTE
-Even if this version is mark as alpha, I consider API as stable. There are no change
-on Web SAPI.
-Introduce the CLI part: a phpinfo() text clone like, but for PEAR info.
-
-Final and stable release is planned for April 18, 2008 with same features. Unless
-a bug is found or a change is asked by users-end.
+ <notes>Introduce the CLI part:
+a phpinfo() text clone like, but for PEAR info.
 
 * news
 - implement request #13401 : outputs plain text in CLI mode
+
+Changes since version 1.8.0a2 (2008-03-28)
+
+- none
 
 Changes since version 1.8.0a1 (2008-03-23)
 
@@ -185,6 +184,33 @@ Changes since version 1.8.0a1 (2008-03-23)
  <changelog>
   <release>
    <version>
+    <release>1.8.0</release>
+    <api>1.8.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-04-18</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>Introduce the CLI part:
+a phpinfo() text clone like, but for PEAR info.
+
+* news
+- implement request #13401 : outputs plain text in CLI mode
+
+Changes since version 1.8.0a2 (2008-03-28)
+
+- none
+
+Changes since version 1.8.0a1 (2008-03-23)
+
+- CLI print PEAR_Info package version (-V | --version) without help usage
+- fix wrong location of shell script pearinfo on all platforms
+   </notes>
+  </release>
+  <release>
+   <version>
     <release>1.8.0a2</release>
     <api>1.8.0</api>
    </version>
@@ -208,8 +234,7 @@ a bug is found or a change is asked by users-end.
 Changes since version 1.8.0a1 (2008-03-23)
 
 - CLI print PEAR_Info package version (-V | --version) without help usage
-- fix wrong location of shell script pearinfo on all platforms
-   </notes>
+- fix wrong location of shell script pearinfo on all platforms</notes>
   </release>
   <release>
    <version>
