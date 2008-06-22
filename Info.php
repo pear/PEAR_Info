@@ -1242,15 +1242,15 @@ class PEAR_Info
     function getMembers($group = 'all', $sort = true)
     {
         $members = array(
-            'president' => array('cellog' => 'Gregory Beaver'),
+            'president' => array('davidc' => 'David Coallier'),
             'group'     => array(
-                'mj' => 'Martin Jansen',
-                'davidc' => 'David Coallier',
-                'arnaud' => 'Arnaud Limbourg',
                 'jeichorn' => 'Joshua Eichorn',
-                'cweiske' => 'Christian Weiske',
                 'dufuz' => 'Helgi &thorn;ormar',
-                'pmjones' => 'Paul M. Jones',
+                'jstump' => 'Joe Stump',
+                'cweiske' => 'Christian Weiske',
+                'ashnazg' => 'Chuck Burgess',
+                'tswicegood' => 'Travis Swicegood',
+                'saltybeagle' => 'Brett Bieber',
                 ),
             'docs'      => array(
                 ),
