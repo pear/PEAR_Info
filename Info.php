@@ -604,6 +604,17 @@ class PEAR_Info
                             if (!isset($dep['optional'])) {
                                 $dep['optional'] = '';
                             }
+                            if (isset($dep['name'])) {
+                                if (isset($dep['channel'])) {
+                                    $dep_name = '<a href="http://'
+                                              . $dep['channel'] . '/' . $dep['name']
+                                              . '">' . $dep['name'] . '</a>';
+                                } else {
+                                    $dep_name = $dep['name'];
+                                }
+                            } else {
+                                $dep_name = '';
+                            }
                             $dependencies .= str_replace(array('{dep_required}',
                                     '{dep_type}',
                                     '{dep_name}',
@@ -612,7 +623,7 @@ class PEAR_Info
                                     ),
                                 array(($dep['optional'] == 'no') ? 'Yes' : 'No',
                                     $_deps_type_trans[$dep['type']],
-                                    isset($dep['name']) ? $dep['name'] : '',
+                                    $dep_name,
                                     $_deps_rel_trans[$dep['rel']],
                                     isset($dep['version']) ? $dep['version'] : ''
                                     ),
@@ -655,12 +666,13 @@ class PEAR_Info
 
                 // prepare package informations template
                 $ptpl = '
-<h2><a id="pkg_{package}">{package}</a></h2>
+<h2><a id="pkg_{package_name}"></a><a href="http://{channel}/{package}">{package_name}</a></h2>
 <table>
 ';
 
-                $packages .= str_replace('{package}',
-                    trim($installed['package']),
+                $packages .= str_replace(array('{package_name}',
+                                               '{package}','{channel}'),
+                    array(trim($installed['package']), $name, $channel),
                     $ptpl);
 
                 if ($this->options['resume'] & PEAR_INFO_PACKAGES_CHANNEL) {
