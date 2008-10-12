@@ -160,6 +160,15 @@ class PEAR_Info
     var $config;
 
     /**
+     * Alternative config files
+     *
+     * @var    array
+     * @access public
+     * @since  1.9.0
+     */
+    var $cfg;
+
+    /**
      * instance of PEAR_Registry
      *
      * @var    object
@@ -215,6 +224,16 @@ class PEAR_Info
 
         // to keep compatibility with version less or equal than 1.6.1
         if (!empty($pear_dir) && empty($user_file) && empty($system_file)) {
+            $p_available           = (is_dir($pear_dir));
+            $this->cfg['pear_dir'] = array($pear_dir, $p_available);
+
+            if (!$p_available) {
+                $e = '<p class="error">No valid PEAR directory</p>';
+
+                $this->info = $e;
+                return;
+            }
+
             // try to find a PEAR user-defined config file into $pear_dir
             $user_file = $pear_dir . DIRECTORY_SEPARATOR;
             if (OS_WINDOWS) {
@@ -222,16 +241,25 @@ class PEAR_Info
             } else {
                 $user_file .= '.pearrc';
             }
-            if (!file_exists($user_file)) {
-                // try to find a PEAR system-wide config file into $pear_dir
-                $system_file = $pear_dir . DIRECTORY_SEPARATOR;
-                if (OS_WINDOWS) {
-                    $system_file .= 'pearsys.ini';
-                } else {
-                    $system_file .= 'pear.conf';
-                }
+            $u_available            = file_exists($user_file);
+            $this->cfg['user_file'] = array($user_file, $u_available);
 
-                if (!file_exists($system_file)) {
+            // try to find a PEAR system-wide config file into $pear_dir
+            $system_file = $pear_dir . DIRECTORY_SEPARATOR;
+            if (OS_WINDOWS) {
+                $system_file .= 'pearsys.ini';
+            } else {
+                $system_file .= 'pear.conf';
+            }
+            $s_available              = file_exists($system_file);
+            $this->cfg['system_file'] = array($system_file, $s_available);
+
+            if ($u_available) {
+                if (!$s_available) {
+                    $system_file = '';
+                }
+            } else {
+                if (!$s_available) {
                     $e = '<p class="error">No PEAR configuration files ('
                         . basename($user_file) . ' or ' . basename($system_file)
                         . ") found into '$pear_dir' directory</p>";
@@ -244,6 +272,21 @@ class PEAR_Info
         }
 
         $this->config =& PEAR_Config::singleton($user_file, $system_file);
+
+        // look for default PEAR installation
+        if (empty($pear_dir)) {
+            $php_dir               = $this->config->get('php_dir');
+            $p_available           = (is_dir($php_dir));
+            $this->cfg['pear_dir'] = array($php_dir, $p_available);
+
+            $pear_user_file         = $this->config->getConfFile('user');
+            $u_available            = file_exists($pear_user_file);
+            $this->cfg['user_file'] = array($pear_user_file, $u_available);
+
+            $pear_system_file         = $this->config->getConfFile('system');
+            $s_available              = file_exists($pear_system_file);
+            $this->cfg['system_file'] = array($pear_system_file, $s_available);
+        }
 
         // to keep compatibility with version less or equal than 1.6.1
         if (defined('PEAR_INFO_PROXY')) {
@@ -316,11 +359,41 @@ class PEAR_Info
     <td class="e">Loaded Configuration File</td>
     <td>{value}</td>
 </tr>
+<tr class="v">
+    <td class="e">Alternative Configuration Files</td>
+    <td>{alt}</td>
+</tr>
 </table>
 
 ';
-            $this->info  = str_replace('{value}',
-                $this->config->getConfFile($layer),
+
+            $alt = '<dl>';
+
+            $found = $this->cfg['user_file'][1];
+            if ($found) {
+                $class = 'cfg_found';
+            } else {
+                $class = 'cfg_notfound';
+            }
+            $alt .= '<dt>USER file </dt>';
+            $alt .= '<dd class="' . $class . '">'
+                 . $this->cfg['user_file'][0] .'</dd>';
+
+            $found = $this->cfg['system_file'][1];
+            if ($found) {
+                $class = 'cfg_found';
+            } else {
+                $class = 'cfg_notfound';
+            }
+
+            $alt .= '<dt>SYSTEM file </dt>';
+            $alt .= '<dd class="' . $class . '">'
+                 . $this->cfg['system_file'][0] .'</dd>';
+
+            $alt .= '</dl>';
+
+            $this->info = str_replace(array('{value}','{alt}'),
+                array($this->config->getConfFile($layer), $alt),
                 $this->info);
         }
 

@@ -21,3 +21,12 @@ p.error {font-size:12px; font-weight: bold; color:red; text-align: center;}
 table.d td { border: 0; }
 td.f {background-color: blue; font-weight: bold; color: #FFFFFF; }
 
+/* alternative configuration files render : see request #13741 */
+dl { margin: 0 }
+
+dd.cfg_found { color: blue; }
+dd.cfg_notfound { color: navy; font-weight: bold; }
+
+dd.cfg_found:before { content: "OK => "; }
+dd.cfg_notfound:before { content: "NA => "; }
+

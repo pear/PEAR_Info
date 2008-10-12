@@ -18,7 +18,7 @@
 require_once 'PEAR/Info.php';
 
 // Create PEAR_Info object
-$info = new PEAR_Info('c:\wamp\php');
+$info = new PEAR_Info('c:\wamp\bin\php\php5.2.6');
 
 // Display PEAR_Info output
 $info->display();

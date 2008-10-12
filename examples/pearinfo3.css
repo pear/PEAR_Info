@@ -20,6 +20,12 @@ p.error {font-size:12px; font-weight: bold; color:red; text-align: center;}
 table.d td { border: 0; }
 td.f {background-color: #006600; font-weight: bold; color: #FFFFFF; }
 
+/* added for request #13741 */
+dl { margin: 0 }
+dd.cfg_found:after { content: " => FOUND "; }
+dd.cfg_notfound:after { content: " => NOT FOUND "; }
+/* */
+
 body {
   margin:0;
   border:0;
