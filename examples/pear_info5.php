@@ -20,27 +20,10 @@
 
 require_once 'PEAR/Info.php';
 
-error_reporting(E_ALL);
-
-//$options = array('resume' => PEAR_INFO_PACKAGES_CHANNEL);
-//$options = array('resume' => PEAR_INFO_PACKAGES_SUMMARY);
-//$options = array('resume' => PEAR_INFO_PACKAGES_VERSION);
-//$options = array('resume' => PEAR_INFO_PACKAGES_LICENSE);
-//$options = array('resume' => PEAR_INFO_PACKAGES_DESCRIPTION);
-//$options = array('resume' => PEAR_INFO_PACKAGES_DEPENDENCIES);
-//$options = array('resume' => PEAR_INFO_PACKAGES_UPDATE);
-//$options = array('resume' => PEAR_INFO_PACKAGES_UPDATE | PEAR_INFO_PACKAGES_XML);
-//$options = array('resume' => PEAR_INFO_CHANNELS | PEAR_INFO_PACKAGES_VERSION);
-//$options = array('resume' => PEAR_INFO_PACKAGES_VERSION);
-//$options = array('resume' => PEAR_INFO_CHANNELS);
-//$options = array('resume' => PEAR_INFO_CONFIGURATION);
-//$options = array('resume' => PEAR_INFO_CREDITS);
-//$options = array('resume' => PEAR_INFO_GENERAL | PEAR_INFO_CREDITS |
-//               PEAR_INFO_CONFIGURATION);
 $options = array('resume' =>  PEAR_INFO_GENERAL | PEAR_INFO_CHANNELS |
                 PEAR_INFO_PACKAGES_VERSION | PEAR_INFO_FULLPAGE,
                 'channels' => array('pear.php.net', '__uri'));
 
-$info = new PEAR_Info('', 'c:\wamp\php\pear.ini', '', $options);
+$info = new PEAR_Info('', 'c:\wamp\bin\php\php5.2.6\pear.ini', '', $options);
 $info->display();
 ?>
