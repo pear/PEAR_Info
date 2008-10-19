@@ -324,7 +324,13 @@ class PEAR_Info_Cli extends PEAR_Info
                     }
                     $w = 0;
                 } else {
-                    echo $td[0] . ' => ' . $td[1] . PHP_EOL;
+                    if (isset($td_c) && count($td_c) > 0) {
+                        echo $td[0] . ' => ' . PHP_EOL;
+                        echo $td_c[0] . PHP_EOL;
+                        echo $td_c[1] . PHP_EOL;
+                    } else {
+                        echo $td[0] . ' => ' . $td[1] . PHP_EOL;
+                    }
                 }
 
             } elseif ($skip_table == 0 && $line == '</td>') {
@@ -352,7 +358,20 @@ class PEAR_Info_Cli extends PEAR_Info
                         unset($td_v);
                         preg_match('`\<td(.*)\>(.*)\</td\>`', $line, $matches);
                         if (empty($matches[2])) {
-                            $td[1] = strip_tags($matches[0]);
+                            $td_c = array();
+                            if (substr($line, 0, 8) == '<td><dl>') {
+                                preg_match('`\<td\>\<dl\>\<dt\>(.*)\</dt\>(.*)\<dt\>(.*)\</dt\>(.*)\</dl\>\</td\>`', $line, $matches);
+                                $td_c[0] = ' - '.$matches[1];
+                                $td_c[1] = ' - '.$matches[3];
+                                $dd_user = $matches[2];
+                                $dd_sys  = $matches[4];
+                                preg_match('`\<dd class="cfg_(.*)"\>(.*)\</dd\>`', $dd_user, $matches);
+                                $td_c[0] .= strtoupper($matches[1]).' => '.$matches[2];
+                                preg_match('`\<dd class="cfg_(.*)"\>(.*)\</dd\>`', $dd_sys, $matches);
+                                $td_c[1] .= strtoupper($matches[1]).' => '.$matches[2];
+                            } else {
+                                $td[1] = strip_tags($matches[0]);
+                            }
                         } else {
                             if (empty($matches[1])) {
                                 $td[1] = strip_tags($matches[2]);
