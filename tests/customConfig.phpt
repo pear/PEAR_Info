@@ -159,6 +159,51 @@ $result = (is_null($pearInfo->reg))
     ? 'OK' : strip_tags($pearInfo->info);
 
 echo $testCase . ' : ' . $result;
+echo "\n";
+
+/**
+ * TestCase 6:
+ * class constructor with only $options parameter
+ */
+$testCase = 'testShowResultsWithRenderOptions';
+
+$GLOBALS['_PEAR_Config_instance'] = null;
+
+$pear_dir    = $peardir;
+$user_file   = '';
+$system_file = '';
+$options     = array(
+    'resume' => PEAR_INFO_FULLPAGE |
+                PEAR_INFO_GENERAL | PEAR_INFO_CHANNELS | PEAR_INFO_PACKAGES_VERSION |
+                PEAR_INFO_CREDITS_PACKAGES,
+    'channels' => array()
+);
+
+// try to load PEAR system config from pear dir
+$pearInfo = new PEAR_Info($pear_dir, $user_file, $system_file, $options);
+
+$result = (!is_null($pearInfo->reg))
+    ? 'OK' : 'KO';
+
+echo $testCase . ' : ' . $result;
+echo "\n";
+
+/**
+ * TestCase 7:
+ * class constructor with invalid $peardir parameter
+ */
+$testCase = 'testInvalidPearDir';
+
+$GLOBALS['_PEAR_Config_instance'] = null;
+
+$pear_dir = $dir . $ds . 'invalid_pear_dir';
+
+$pearInfo = new PEAR_Info($pear_dir);
+
+$result = (is_null($pearInfo->reg))
+    ? 'OK' : 'Valid PEAR directory found';
+
+echo $testCase . ' : ' . $result;
 ?>
 --CLEAN--
 <?php
@@ -188,3 +233,5 @@ testConfigFilesExistWithCustomNameInPearDir : OK
 testConfigFilesExistInUserDir : OK
 testNoConfigFilesFoundIntoPearDir : OK
 testNoConfigFilesFoundIntoUserDir : OK
+testShowResultsWithRenderOptions : OK
+testInvalidPearDir : OK
