@@ -13,7 +13,7 @@
  * @category  PEAR
  * @package   PEAR_Info
  * @author    Laurent Laville <pear@laurent-laville.org>
- * @copyright 2007-2008 Laurent Laville
+ * @copyright 2007-2009 Laurent Laville
  * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/PEAR_Info
@@ -39,7 +39,7 @@ require_once 'PEAR_Info_TestSuite_Standard.php';
  * or
  * #php tests/AllTests.php
  * or for code coverage testing
- * #phpunit --report tests/coverage PEAR_Info_AllTests tests/AllTests.php
+ * #phpunit --coverage-html tests/coverage PEAR_Info_AllTests tests/AllTests.php
  *
  * After the code coverage test browse the index.html file in tests/coverage.
  * The code coverage is close to 100%.
@@ -47,7 +47,7 @@ require_once 'PEAR_Info_TestSuite_Standard.php';
  * @category  PEAR
  * @package   PEAR_Info
  * @author    Laurent Laville <pear@laurent-laville.org>
- * @copyright 2007-2008 Laurent Laville
+ * @copyright 2007-2009 Laurent Laville
  * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/PEAR_Info

@@ -13,7 +13,7 @@
  * @category  PEAR
  * @package   PEAR_Info
  * @author    Laurent Laville <pear@laurent-laville.org>
- * @copyright 2007-2008 Laurent Laville
+ * @copyright 2007-2009 Laurent Laville
  * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/PEAR_Info
@@ -33,7 +33,7 @@ require_once 'PHPUnit/Extensions/PhptTestSuite.php';
  * @category  PEAR
  * @package   PEAR_Info
  * @author    Laurent Laville <pear@laurent-laville.org>
- * @copyright 2007-2008 Laurent Laville
+ * @copyright 2007-2009 Laurent Laville
  * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/PEAR_Info
