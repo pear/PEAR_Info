@@ -313,8 +313,8 @@ class PEAR_Info_Cli extends PEAR_Info
                                 $td = $tr_w[3] .' '. $tr_w[2] .' '. $tr_w[1] .' '.
                                       $tr_w[4];
                             } else {
-                                $td = $tr_w[2] .' '. $tr_w[1] .' '. $tr_w[3] .' '.
-                                      $tr_w[4];
+                                $td = strip_tags($tr_w[2]) .' '. $tr_w[1] .' '.
+                                      $tr_w[3] .' '. $tr_w[4];
                             }
                             if ($tr_w[0] == 'No') {
                                 $td .= ' (optional)';
