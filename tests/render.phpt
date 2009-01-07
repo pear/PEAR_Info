@@ -93,6 +93,49 @@ $result = (strcasecmp($html, $packages_tpl) == 0)
     ? 'OK' : 'HTML strings are not same';
 
 echo $testCase . ' : ' . $result;
+echo "\n";
+
+/**
+ * TestCase 3:
+ * display credits page with default stylesheet
+ */
+$testCase = 'testCreditsWithDefaultStyleSheet';
+
+$GLOBALS['_PEAR_Config_instance'] = null;
+
+$options = array('resume' =>  PEAR_INFO_GENERAL |
+                              PEAR_INFO_CREDITS_ALL |
+                              PEAR_INFO_FULLPAGE,
+                 'channels' => array());
+
+$pearInfo = new PEAR_Info($peardir, '', '', $options);
+ob_start();
+$pearInfo->show();
+$html = ob_get_contents();
+ob_end_clean();
+
+$credits_tpl = file_get_contents($tpldir . $ds . 'credits.tpl');
+$credits_tpl = str_replace(
+                    array(
+                        '{styles}',
+                        '{script_filename}',
+                        '{config_file}',
+                        '{usr_config_file}',
+                        '{sys_config_file}'
+                    ),
+                    array(
+                        $pearInfo->getStyleSheet(),
+                        __FILE__,
+                        $conf_file,
+                        $u_conf_file,
+                        $conf_file
+                    ),
+                    $credits_tpl);
+
+$result = (strcasecmp($html, $credits_tpl) == 0)
+    ? 'OK' : 'HTML strings are not same';
+
+echo $testCase . ' : ' . $result;
 ?>
 --CLEAN--
 <?php
@@ -119,3 +162,4 @@ unlink ($custom_file2);
 --EXPECT--
 testCustomStyleSheet : OK
 testDefaultStyleSheet : OK
+testCreditsWithDefaultStyleSheet : OK
