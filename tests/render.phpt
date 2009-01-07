@@ -70,7 +70,6 @@ $options = array('resume' =>  PEAR_INFO_GENERAL |
 
 $pearInfo = new PEAR_Info($peardir, '', '', $options);
 $html = $pearInfo->toHtml();
-file_put_contents($dir . $ds . 'temp_late1.txt', $html);
 
 $packages_tpl = file_get_contents($tpldir . $ds . 'packages.tpl');
 $packages_tpl = str_replace(
@@ -89,7 +88,6 @@ $packages_tpl = str_replace(
                         $conf_file
                     ),
                     $packages_tpl);
-file_put_contents($dir . $ds . 'temp_late2.txt', $packages_tpl);
 
 $result = (strcasecmp($html, $packages_tpl) == 0)
     ? 'OK' : 'HTML strings are not same';
