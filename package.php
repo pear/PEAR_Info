@@ -43,16 +43,16 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('1.9.0');
+$p2->setReleaseVersion('1.9.1');
 $p2->setAPIVersion('1.8.0');
 $p2->setReleaseStability('stable');
 $p2->setAPIStability('stable');
 $p2->setNotes('
-* news
-- implement request #13741 : show list if potential config files
-  see my comment of 2008-10-12 15:58 UTC for more details and usage examples
+* bugs
+- additional fixed for CLI output about request #14543
 
-- implement request #14543 : Beautify output with some additional links
+* QA
+- add more unit tests to improve code coverage from 61 to 82%
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 //$p2->setPearinstallerDep('1.5.4');

@@ -26,10 +26,10 @@
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2008-10-19</date>
- <time>23:48:52</time>
+ <date>2009-01-09</date>
+ <time>19:36:12</time>
  <version>
-  <release>1.9.0</release>
+  <release>1.9.1</release>
   <api>1.8.0</api>
  </version>
  <stability>
@@ -38,11 +38,11 @@
  </stability>
  <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
  <notes>
-* news
-- implement request #13741 : show list if potential config files
-  see my comment of 2008-10-12 15:58 UTC for more details and usage examples
+* bugs
+- additional fixed for CLI output about request #14543
 
-- implement request #14543 : Beautify output with some additional links
+* QA
+- add more unit tests to improve code coverage from 61 to 82%
  </notes>
  <contents>
   <dir baseinstalldir="PEAR" name="/">
@@ -109,6 +109,7 @@
      <file name="empty_dir.txt" role="test" />
     </dir> <!-- /tests/sysconf_dir -->
     <dir name="templates">
+     <file name="blueskin.css" role="test" />
      <file name="credits.tpl" role="test" />
      <file name="general.tpl" role="test" />
      <file name="packages.tpl" role="test" />
@@ -125,6 +126,7 @@
     <file name="PEAR_Info_TestSuite_Standard.php" role="test">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
+    <file name="render.phpt" role="test" />
    </dir> <!-- /tests -->
    <file name="Info.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -177,6 +179,25 @@
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>1.9.1</release>
+    <api>1.8.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-01-09</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>
+* bugs
+- additional fixed for CLI output about request #14543
+
+* QA
+- add more unit tests to improve code coverage from 61 to 82%
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.9.0</release>
