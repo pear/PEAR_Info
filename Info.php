@@ -1239,7 +1239,7 @@ class PEAR_Info
                     $maintainers[]
                         = '<a href="http://pear.php.net/account-info.php?handle='
                         . $i['handle']. '">'
-                        . htmlentities($i['name'])
+                        . htmlentities(html_entity_decode(utf8_decode($i['name'])))
                         . '</a>'
                         .' (' . $i['role']
                         . (isset($i['active']) && $i['active'] === 'no'
