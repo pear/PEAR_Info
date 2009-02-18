@@ -940,7 +940,7 @@ class PEAR_Info
 ';
             }
             $index_header = str_replace(array('{channel}', '{top}', '{count}'),
-                array($channel, 'top'.$anchor_suffix), $index_header);
+                array($channel, 'top'.$anchor_suffix, count($pkg)), $index_header);
             foreach ($index as $i) {
                 $index_header .= ' | <a href="#'.$i.$anchor_suffix.'">'
                               . strtoupper($i) . '</a>';
