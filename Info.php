@@ -923,7 +923,12 @@ class PEAR_Info
             }
 
             $index_header = '
-<h2><a id="{top}">Installed Packages, Channel {channel}</a></h2>
+<h2><a id="{top}">{count} Installed Packages, Channel {channel}</a></h2>
+';
+
+            if (count($pkg) > 0) {
+                // improve render and display index only when there are packages
+                $index_header .= '
 <table>
 <tr>
     <td class="e">
@@ -933,19 +938,22 @@ class PEAR_Info
 <tr>
     <td class ="v" style="text-align: center">
 ';
-            $index_header = str_replace(array('{channel}', '{top}'),
+            }
+            $index_header = str_replace(array('{channel}', '{top}', '{count}'),
                 array($channel, 'top'.$anchor_suffix), $index_header);
             foreach ($index as $i) {
                 $index_header .= ' | <a href="#'.$i.$anchor_suffix.'">'
                               . strtoupper($i) . '</a>';
             }
-            $index_header .= ' |
+            if (count($pkg) > 0) {
+                // improve render and display index only when there are packages
+                $index_header .= ' |
     </td>
 </tr>
 </table>
 
 ';
-
+            }
             $s .= $index_header . $packages;
             $anchor_suffix++;
         }
@@ -1201,6 +1209,10 @@ class PEAR_Info
 
         foreach ($available as $channel => $pkg) {
             if (!in_array($channel, $channel_allowed)) {
+                continue;
+            }
+            if (count($pkg) == 0) {
+                // improve render and did not display channel without package
                 continue;
             }
             $html_pear_credits .= '
