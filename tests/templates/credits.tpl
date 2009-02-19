@@ -60,12 +60,6 @@
 
 <br />
 <table border="0" cellpadding="3" width="600">
-<tr class="hc"><td colspan="2">Channel __uri</td></tr>
-<tr class="h"><td>Package</td><td>Maintainers</td></tr>
-</table>
-
-<br />
-<table border="0" cellpadding="3" width="600">
 <tr class="hc"><td colspan="2">Channel pear.php.net</td></tr>
 <tr class="h"><td>Package</td><td>Maintainers</td></tr>
 <tr>
@@ -106,12 +100,6 @@
         <a href="http://pear.php.net/account-info.php?handle=sb">Sebastian Bergmann</a> (lead)
     </td>
 </tr>
-</table>
-
-<br />
-<table border="0" cellpadding="3" width="600">
-<tr class="hc"><td colspan="2">Channel pecl.php.net</td></tr>
-<tr class="h"><td>Package</td><td>Maintainers</td></tr>
 </table>
 
 </div>

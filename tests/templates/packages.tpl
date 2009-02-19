@@ -36,22 +36,10 @@
 </table>
 
 
-<h2><a id="top0">Installed Packages, Channel __uri</a></h2>
-<table>
-<tr>
-    <td class="e">
-        Index
-    </td>
-</tr>
-<tr>
-    <td class ="v" style="text-align: center">
- |
-    </td>
-</tr>
-</table>
+<h2><a id="top0">0 Installed Packages, Channel __uri</a></h2>
 
+<h2><a id="top1">3 Installed Packages, Channel pear.php.net</a></h2>
 
-<h2><a id="top1">Installed Packages, Channel pear.php.net</a></h2>
 <table>
 <tr>
     <td class="e">
@@ -117,7 +105,8 @@
 </tr>
 </table>
 
-<h2><a id="top2">Installed Packages, Channel pear.phpunit.de</a></h2>
+<h2><a id="top2">1 Installed Packages, Channel pear.phpunit.de</a></h2>
+
 <table>
 <tr>
     <td class="e">
@@ -149,20 +138,7 @@
 </tr>
 </table>
 
-<h2><a id="top3">Installed Packages, Channel pecl.php.net</a></h2>
-<table>
-<tr>
-    <td class="e">
-        Index
-    </td>
-</tr>
-<tr>
-    <td class ="v" style="text-align: center">
- |
-    </td>
-</tr>
-</table>
-
+<h2><a id="top3">0 Installed Packages, Channel pecl.php.net</a></h2>
 
 </div>
 </body>
