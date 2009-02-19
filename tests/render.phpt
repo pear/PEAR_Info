@@ -89,6 +89,10 @@ $packages_tpl = str_replace(
                     ),
                     $packages_tpl);
 
+if (OS_WINDOWS) {
+    $html = str_replace("\r\n", "\n", $html);
+}
+
 $result = (strcasecmp($html, $packages_tpl) == 0)
     ? 'OK' : 'HTML strings are not same';
 
@@ -131,6 +135,10 @@ $credits_tpl = str_replace(
                         $conf_file
                     ),
                     $credits_tpl);
+
+if (OS_WINDOWS) {
+    $html = str_replace("\r\n", "\n", $html);
+}
 
 $result = (strcasecmp($html, $credits_tpl) == 0)
     ? 'OK' : 'HTML strings are not same';
