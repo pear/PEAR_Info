@@ -26,10 +26,10 @@
   <email>pear@laurent-laville.org</email>
   <active>yes</active>
  </lead>
- <date>2009-01-09</date>
- <time>19:36:12</time>
+ <date>2009-02-19</date>
+ <time>19:10:20</time>
  <version>
-  <release>1.9.1</release>
+  <release>1.9.2</release>
   <api>1.8.0</api>
  </version>
  <stability>
@@ -38,11 +38,11 @@
  </stability>
  <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
  <notes>
-* bugs
-- additional fixed for CLI output about request #14543
-
-* QA
-- add more unit tests to improve code coverage from 61 to 82%
+* changes
+- fix encoding character in credits page for S&amp;eacute;rgio Carvalho and Stig S&amp;aelig;ther Bakken
+- improve render and display index only when there are packages (in main page)
+- add a counter of installed packages for each channel (in main page)
+- improve render and did not display maintainers empty list (in credits page)
  </notes>
  <contents>
   <dir baseinstalldir="PEAR" name="/">
@@ -179,6 +179,25 @@
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>1.9.2</release>
+    <api>1.8.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-02-19</date>
+   <license uri="http://www.php.net/license/3_01.txt">PHP License 3.01</license>
+   <notes>
+* changes
+- fix encoding character in credits page for S&amp;eacute;rgio Carvalho and Stig S&amp;aelig;ther Bakken
+- improve render and display index only when there are packages (in main page)
+- add a counter of installed packages for each channel (in main page)
+- improve render and did not display maintainers empty list (in credits page)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.9.1</release>

@@ -43,16 +43,16 @@ $p2 = &PEAR_PackageFileManager2::importOptions($packagefile, $options);
 $p2->setPackageType('php');
 $p2->addRelease();
 $p2->generateContents();
-$p2->setReleaseVersion('1.9.1');
+$p2->setReleaseVersion('1.9.2');
 $p2->setAPIVersion('1.8.0');
 $p2->setReleaseStability('stable');
 $p2->setAPIStability('stable');
 $p2->setNotes('
-* bugs
-- additional fixed for CLI output about request #14543
-
-* QA
-- add more unit tests to improve code coverage from 61 to 82%
+* changes
+- fix encoding character in credits page for S&eacute;rgio Carvalho and Stig S&aelig;ther Bakken
+- improve render and display index only when there are packages (in main page)
+- add a counter of installed packages for each channel (in main page)
+- improve render and did not display maintainers empty list (in credits page)
 ');
 //$p2->setLicense('PHP License 3.01', 'http://www.php.net/license/3_01.txt');
 //$p2->setPearinstallerDep('1.5.4');
