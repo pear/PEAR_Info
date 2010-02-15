@@ -27,9 +27,9 @@ require_once 'PEAR/PackageFileManager2.php';
 
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
-$packagefile = 'c:/php/pear/PEAR_Info/package2.xml';
+$packagefile = dirname(__FILE__) . '/package2.xml';
 
-$options = array('filelistgenerator' => 'cvs',
+$options = array('filelistgenerator' => 'svn',
     'packagefile' => 'package2.xml',
     'baseinstalldir' => 'PEAR',
     'addhiddenfiles' => true,
