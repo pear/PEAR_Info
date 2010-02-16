@@ -10,7 +10,6 @@ $userdir    = $dir . $ds . 'user_dir';
 $tpldir     = $dir . $ds . 'templates';
 
 putenv("PHP_PEAR_SYSCONF_DIR=" . $sysconfdir);
-chdir($dir);
 
 // we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
 include_once 'PEAR/Info.php';

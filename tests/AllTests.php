@@ -27,8 +27,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-chdir(dirname(__FILE__));
-
 require_once 'PEAR_Info_TestSuite_Standard.php';
 
 /**
