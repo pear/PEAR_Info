@@ -2,37 +2,8 @@
 PEAR_Info using custom configuration
 --FILE--
 <?php
-$ds         = DIRECTORY_SEPARATOR;
-$dir        = dirname(__FILE__);
-$sysconfdir = $dir . $ds . 'sysconf_dir';
-$peardir    = $dir . $ds . 'pear_dir';
-$userdir    = $dir . $ds . 'user_dir';
-
-putenv("PHP_PEAR_SYSCONF_DIR=" . $sysconfdir);
-
-// we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
-include_once 'PEAR/Info.php';
-
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $conf_file    = $peardir . $ds . 'pearsys.ini';
-    $custom_file1 = $peardir . $ds . 'name1.pearsys.ini';
-    $custom_file2 = $userdir . $ds . 'name2.pearsys.ini';
-} else {
-    $conf_file    = $peardir . $ds . 'pear.conf';
-    $custom_file1 = $peardir . $ds . 'name1.pear.conf';
-    $custom_file2 = $userdir . $ds . 'name2.pear.conf';
-}
-
-if (!file_exists($conf_file)) {
-    // write once PEAR system-wide config file for simulation
-    $config =& PEAR_Config::singleton();
-    $config->set('php_dir', $peardir);
-    $config->writeConfigFile($conf_file);
-
-    // also writes custom pear system config files
-    $config->writeConfigFile($custom_file1);
-    $config->writeConfigFile($custom_file2);
-}
+$conf_dir_var = 'peardir';
+include dirname(__FILE__) . '/file_create.inc';
 
 /**
  * TestCase 1:
@@ -206,25 +177,9 @@ echo $testCase . ' : ' . $result;
 ?>
 --CLEAN--
 <?php
-$ds         = DIRECTORY_SEPARATOR;
-$dir        = dirname(__FILE__);
-$sysconfdir = $dir . $ds . 'sysconf_dir';
-$peardir    = $dir . $ds . 'pear_dir';
-$userdir    = $dir . $ds . 'user_dir';
-
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $conf_file    = $peardir . $ds . 'pearsys.ini';
-    $custom_file1 = $peardir . $ds . 'name1.pearsys.ini';
-    $custom_file2 = $userdir . $ds . 'name2.pearsys.ini';
-} else {
-    $conf_file    = $peardir . $ds . 'pear.conf';
-    $custom_file1 = $peardir . $ds . 'name1.pear.conf';
-    $custom_file2 = $userdir . $ds . 'name2.pear.conf';
-}
-
-unlink ($conf_file);
-unlink ($custom_file1);
-unlink ($custom_file2);
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
+$conf_dir_var = 'peardir';
+include dirname(__FILE__) . '/file_cleanup.inc';
 ?>
 --EXPECT--
 testConfigFilesExistWithDefaultNameInPearDir : OK

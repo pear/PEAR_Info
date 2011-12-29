@@ -2,40 +2,8 @@
 PEAR_Info using render options
 --FILE--
 <?php
-$ds         = DIRECTORY_SEPARATOR;
-$dir        = dirname(__FILE__);
-$sysconfdir = $dir . $ds . 'sysconf_dir';
-$peardir    = $dir . $ds . 'pear_dir';
-$userdir    = $dir . $ds . 'user_dir';
-$tpldir     = $dir . $ds . 'templates';
-
-putenv("PHP_PEAR_SYSCONF_DIR=" . $sysconfdir);
-
-// we get PEAR_Info class only here due to setting of PEAR_CONFIG_SYSCONFDIR
-include_once 'PEAR/Info.php';
-
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $u_conf_file  = $peardir . $ds . 'pear.ini';
-    $conf_file    = $peardir . $ds . 'pearsys.ini';
-    $custom_file1 = $peardir . $ds . 'name1.pearsys.ini';
-    $custom_file2 = $userdir . $ds . 'name2.pearsys.ini';
-} else {
-    $u_conf_file  = $peardir . $ds . '.pearrc';
-    $conf_file    = $peardir . $ds . 'pear.conf';
-    $custom_file1 = $peardir . $ds . 'name1.pear.conf';
-    $custom_file2 = $userdir . $ds . 'name2.pear.conf';
-}
-
-if (!file_exists($conf_file)) {
-    // write once PEAR system-wide config file for simulation
-    $config =& PEAR_Config::singleton();
-    $config->set('php_dir', $peardir);
-    $config->writeConfigFile($conf_file);
-
-    // also writes custom pear system config files
-    $config->writeConfigFile($custom_file1);
-    $config->writeConfigFile($custom_file2);
-}
+$conf_dir_var = 'peardir';
+include dirname(__FILE__) . '/file_create.inc';
 
 /**
  * TestCase 1:
@@ -68,6 +36,12 @@ $options = array('resume' =>  PEAR_INFO_GENERAL |
                  'channels' => array());
 
 $pearInfo = new PEAR_Info($peardir, '', '', $options);
+
+if ('@php_dir@' == '@'.'php_dir'.'@') {
+    // This package hasn't been installed.  Get the CSS file manually.
+    $pearInfo->setStyleSheet(dirname(dirname(__FILE__)) . '/pearinfo.css');
+}
+
 $html = $pearInfo->toHtml();
 
 $packages_tpl = file_get_contents($tpldir . $ds . 'packages.tpl');
@@ -92,8 +66,15 @@ if (OS_WINDOWS) {
     $html = str_replace("\r\n", "\n", $html);
 }
 
-$result = (strcasecmp($html, $packages_tpl) == 0)
-    ? 'OK' : 'HTML strings are not same';
+if (strcasecmp($html, $packages_tpl) == 0) {
+    $result = 'OK';
+} else {
+    $result = 'HTML strings are not same.  See FAILED* files in tests dir.';
+    file_put_contents(dirname(__FILE__)
+        . "/FAILED-$testCase-HTML.TXT", $html);
+    file_put_contents(dirname(__FILE__)
+        . "/FAILED-$testCase-TEMPLATE.TXT", $packages_tpl);
+}
 
 echo $testCase . ' : ' . $result;
 echo "\n";
@@ -112,6 +93,12 @@ $options = array('resume' =>  PEAR_INFO_GENERAL |
                  'channels' => array());
 
 $pearInfo = new PEAR_Info($peardir, '', '', $options);
+
+if ('@php_dir@' == '@'.'php_dir'.'@') {
+    // This package hasn't been installed.  Get the CSS file manually.
+    $pearInfo->setStyleSheet(dirname(dirname(__FILE__)) . '/pearinfo.css');
+}
+
 ob_start();
 $pearInfo->show();
 $html = ob_get_contents();
@@ -139,32 +126,23 @@ if (OS_WINDOWS) {
     $html = str_replace("\r\n", "\n", $html);
 }
 
-$result = (strcasecmp($html, $credits_tpl) == 0)
-    ? 'OK' : 'HTML strings are not same';
+if (strcasecmp($html, $credits_tpl) == 0) {
+    $result = 'OK';
+} else {
+    $result = 'HTML strings are not same.  See FAILED* files in tests dir.';
+    file_put_contents(dirname(__FILE__)
+        . "/FAILED-$testCase-HTML.TXT", $html);
+    file_put_contents(dirname(__FILE__)
+        . "/FAILED-$testCase-CREDITS.TXT", $credits_tpl);
+}
 
 echo $testCase . ' : ' . $result;
 ?>
 --CLEAN--
 <?php
-$ds         = DIRECTORY_SEPARATOR;
-$dir        = dirname(__FILE__);
-$sysconfdir = $dir . $ds . 'sysconf_dir';
-$peardir    = $dir . $ds . 'pear_dir';
-$userdir    = $dir . $ds . 'user_dir';
-
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    $conf_file    = $peardir . $ds . 'pearsys.ini';
-    $custom_file1 = $peardir . $ds . 'name1.pearsys.ini';
-    $custom_file2 = $userdir . $ds . 'name2.pearsys.ini';
-} else {
-    $conf_file    = $peardir . $ds . 'pear.conf';
-    $custom_file1 = $peardir . $ds . 'name1.pear.conf';
-    $custom_file2 = $userdir . $ds . 'name2.pear.conf';
-}
-
-unlink ($conf_file);
-unlink ($custom_file1);
-unlink ($custom_file2);
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
+$conf_dir_var = 'peardir';
+include dirname(__FILE__) . '/file_cleanup.inc';
 ?>
 --EXPECT--
 testCustomStyleSheet : OK
